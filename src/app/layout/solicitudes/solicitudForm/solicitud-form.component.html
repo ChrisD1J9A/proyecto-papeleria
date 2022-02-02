@@ -1,0 +1,98 @@
+<h1>Nueva Solicitud</h1>
+
+<form>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Nombre</mat-label>
+    <input matInput [(ngModel)]="solicitud.nombre_usuario" name="nombre_usuario">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Sucursal</mat-label>
+    <input matInput [(ngModel)]="solicitud.id_sucursal" name="id_sucursal">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Fecha</mat-label>
+    <input matInput [matDatepicker]="picker1" [formControl]="date">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+
+  <h3>En la tabla de abajo podrá elejir los productos que desee solicitar</h3>
+
+  <br>
+  <div class="area-tabla-p-seleccionados">
+    <li *ngFor="let producto of productosSeleccionados, let i =index">
+      {{producto.unidad.descripcion}}
+      {{producto.descripcion}}
+      <mat-form-field appearance="fill" >
+        <mat-label>Cantidad existente</mat-label>
+        <input matInput type="number" name="cant_existente_{{i}}" >
+      </mat-form-field>
+      <mat-form-field appearance="fill" >
+        <mat-label>Cantidad solicitada</mat-label>
+        <input matInput type="number" name="cant_solicitada_{{i}}" >
+      </mat-form-field>
+      <button class="btn1" mat-mini-fab color="warn" (click)="eliminarProducto(producto)">
+        <mat-icon>remove_circle_outline</mat-icon>
+      </button>
+    </li>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Comentarios </mat-label>
+      <textarea matInput [(ngModel)]="solicitud.observacion_solicitud" name="observacion_solicitud"></textarea>
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button color="primary"> Aceptar </button>
+  <button mat-raised-button color="warn"> Cancelar </button>
+</form>
+
+
+
+
+<div class="area-tabla-p">
+  <h1>Tabla de productos</h1>
+  <mat-form-field appearance="standard">
+    <mat-label>Filtrar por </mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo broche" #input>
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="id_producto">
+      <th mat-header-cell *matHeaderCellDef> Id </th>
+      <td mat-cell *matCellDef="let producto"> {{producto.id_producto}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="unidad">
+      <th mat-header-cell *matHeaderCellDef> Tipo de unidad </th>
+      <td mat-cell *matCellDef="let producto"> {{producto.unidad.descripcion}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+      <td mat-cell *matCellDef="let producto"> {{producto.descripcion}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let producto">
+        <div class="btns">
+          <button class="btn1" mat-mini-fab color="primary" (click)="agregarProducto(producto)">
+            <mat-icon>add_circle_outline</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
+    </tr>
+  </table>
+</div>

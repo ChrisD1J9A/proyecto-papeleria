@@ -1,0 +1,54 @@
+<div>
+  <form>
+    <h1 *ngIf="!producto.id_producto">{{ titulo }}</h1>&nbsp;
+    <h1 *ngIf="producto.id_producto">{{ titulo2 }}</h1>&nbsp;
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Descripción</mat-label>
+      <input matInput [(ngModel)]="producto.descripcion" name="descripcion" required>
+      <mat-error *ngIf="descripcionProducto.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" floatLabel="always">
+      <mat-label>Precio con IVA</mat-label>
+      <input matInput name="precio_iva" type="number" class="example-right-align" placeholder="0" [(ngModel)]="producto.precio_iva">
+      <span matPrefix>$&nbsp;</span>
+      <span matSuffix> pesos</span>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" floatLabel="always">
+      <mat-label>Precio subtotal</mat-label>
+      <input matInput name="precio_subtotal" type="number" class="example-right-align" placeholder="0" [(ngModel)]="producto.precio_subtotal">
+      <span matPrefix>$&nbsp;</span>
+      <span matSuffix> pesos</span>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" floatLabel="always">
+      <mat-label>Precio total</mat-label>
+      <input matInput name="precio_total" type="number" class="example-right-align" placeholder="0" [(ngModel)]="producto.precio_total">
+      <span matPrefix>$&nbsp;</span>
+      <span matSuffix> pesos</span>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Observaciones</mat-label>
+      <textarea matInput name="observaciones" [(ngModel)]="producto.observaciones" placeholder="Deje sus observaciones"></textarea>
+    </mat-form-field>
+
+    <h3 *ngIf="producto.unidad">Tipo de unidad: {{producto.unidad.descripcion}}</h3>
+
+    <mat-form-field>
+      <mat-select placeholder="Unidad" [(ngModel)]="producto.unidad" name="unidad" required>
+        <mat-option *ngFor="let unidad of unidades" [value]="unidad">
+          {{unidad.descripcion}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="unidadProducto.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+    <br><br>
+    <div class="btns">
+      <button mat-raised-button color="primary" (click)="create()" *ngIf="!producto.id_producto"> Guardar </button> &nbsp;
+      <button mat-raised-button color="primary" (click)="update()" *ngIf="producto.id_producto"> Actualizar </button> &nbsp;
+      <button mat-raised-button color="warn" (click)="cancel()"> Cancelar </button> &nbsp;
+    </div>
+  </form>
+</div>

@@ -1,0 +1,38 @@
+<div>
+  <form>
+    <h1 *ngIf="!proveedor.id_proveedor">{{ titulo }}</h1>&nbsp;
+    <h1 *ngIf="proveedor.id_proveedor">{{ titulo2 }}</h1>&nbsp;
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput [(ngModel)]="proveedor.nombre" name="nombre" required>
+      <mat-error *ngIf="nombreProveedor.invalid">{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Dirección</mat-label>
+      <textarea matInput [(ngModel)]="proveedor.direccion" name="direccion"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Teléfono</mat-label>
+      <span matPrefix>+52 &nbsp;</span>
+      <input matInput [(ngModel)]="proveedor.telefono" name="telefono" type="tel" maxlength="10" placeholder="555-555-1234" pattern="^((\\+91-?)|0)?[0-9]{6,10}$">
+      <mat-icon matSuffix>phone</mat-icon>
+      <mat-error *ngIf="telefonoProveedor.invalid">{{getErrorMessage3()}}</mat-error>
+    </mat-form-field>
+
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>RFC</mat-label>
+      <input matInput [(ngModel)]="proveedor.rfc" name="rfc" maxlength="13" required>
+      <mat-error *ngIf="rfcProveedor.invalid">{{getErrorMessage2()}}</mat-error>
+    </mat-form-field>
+
+    <br><br>
+    <div class="btns">
+      <button mat-raised-button color="primary" (click)="create()" *ngIf="!proveedor.id_proveedor"> Guardar </button> &nbsp;
+      <button mat-raised-button color="primary" (click)="update()" *ngIf="proveedor.id_proveedor"> Actualizar </button> &nbsp;
+      <button mat-raised-button color="warn" (click)="cancel()"> Cancelar </button> &nbsp;
+    </div>
+  </form>
+</div>

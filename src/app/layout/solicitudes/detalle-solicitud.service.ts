@@ -1,0 +1,20 @@
+import { Injectable } from '@angular/core';
+import { Detalle_solicitud } from './detalle_solicitud';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DetalleSolicitudService {
+  private urlEndPoint: string = 'http://localhost:8080/api/detalle_solicitud';
+  private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+  constructor(private http: HttpClient) { }
+
+  getDetallesSolicitud(id): Observable<Detalle_solicitud[]>
+  {
+    return this.http.get<Detalle_solicitud[]>(`${this.urlEndPoint}/${id}`);
+  }
+}

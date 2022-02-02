@@ -1,0 +1,48 @@
+<div class="formato1">
+  <div class="formato2">
+    <h1> <mat-icon>assignment</mat-icon> Solicitud {{solicitud.id_solicitud}}</h1>
+    <h2>Solicitud {{solicitud.estatus}} <mat-icon style="color: green" *ngIf="solicitud.estatus==='Aceptada'">check_circle</mat-icon>
+                                        <mat-icon style="color: red" *ngIf="solicitud.estatus==='Rechazada'">cancel</mat-icon>
+                                        <mat-icon style="color: yellow" *ngIf="solicitud.estatus==='Pendiente'">timer</mat-icon></h2>
+  </div>
+  <h2>Fecha de la solicitud:</h2>
+  <p>{{solicitud.fecha_solicitud}}</p>
+  <h2>Comentarios del solicitante:</h2>
+  <p>{{solicitud.observacion_solicitud}}</p>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="tipo_unidad">
+      <th mat-header-cell *matHeaderCellDef> Unidad </th>
+      <td mat-cell *matCellDef="let detalle_solicitud"> {{detalle_solicitud.producto.unidad.descripcion}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion_producto">
+      <th mat-header-cell *matHeaderCellDef> Producto </th>
+      <td mat-cell *matCellDef="let detalle_solicitud"> {{detalle_solicitud.producto.descripcion}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cant_existente">
+      <th mat-header-cell *matHeaderCellDef> Cantidad existente </th>
+      <td mat-cell *matCellDef="let detalle_solicitud"> {{detalle_solicitud.cant_existente}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cant_solicitada">
+      <th mat-header-cell *matHeaderCellDef> Cantidad solicitada </th>
+      <td mat-cell *matCellDef="let detalle_solicitud"> {{detalle_solicitud.cant_solicitada}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cant_autorizada">
+      <th mat-header-cell *matHeaderCellDef> Cantidad autorizada </th>
+      <td mat-cell *matCellDef="let detalle_solicitud"> {{detalle_solicitud.cant_autorizada}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <br>
+  <h2>Comentarios de adquisiciones:</h2>
+  <p> {{solicitud.observacion_aprobacion_rechazo}} </p>
+
+
+
+</div>

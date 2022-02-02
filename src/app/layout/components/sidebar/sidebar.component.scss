@@ -1,0 +1,81 @@
+:host {
+    .mat-icon {
+      vertical-align: middle;
+      margin-right: 1rem;
+    }
+  }
+  .logo {
+    text-align: center;
+    padding: 2.6rem 1rem;
+    img {
+      width: 180px;
+    }
+  }
+  .mat-divider {
+    border-top-width: 2px;
+    border-color: white;
+  }
+  .mat-list-item {
+    color: #f6f7f8 !important;
+    background-color: rgb(0, 0, 0);
+    font-size: 0.8rem;
+    height: 44px !important;
+    margin-bottom: 4px;
+    &:hover {
+      color: #f2f5f7 !important;
+    }
+    ::ng-deep {
+      .mat-list-item-content {
+        border-radius: 5px;
+        margin: 0 8px;
+        &:hover {
+          background: #2c3344 !important;
+        }
+      }
+    }
+  }
+  .list-item-active {
+    // background: blue !important;
+    // border-radius: 0 2rem 2rem 0;
+    // &:hover {
+    //   background: blue;
+    // }
+
+    color: #f2f5f7 !important;
+    ::ng-deep {
+      .mat-list-item-content {
+        background: #000000 !important;
+        &:hover {
+          background: #0c0c0c !important;
+        }
+      }
+    }
+  }
+  .mat-subheader {
+    color: #ffffff;
+    font-size: 0.6rem;
+    font-weight: 100;
+    letter-spacing: 1px;
+  }
+
+  .color_gral{
+    background-color: green;
+  }
+
+  .menu-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+  }
+  .menu-button.rotated {
+    transform: rotate(180deg);
+  }
+  .submenu {
+    overflow-y: hidden;
+    transition: transform 300ms ease;
+    transform: scaleY(0);
+    transform-origin: top;
+    padding-left: 30px;
+  }
+  .submenu.expanded {
+    transform: scaleY(1);
+  }

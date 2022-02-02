@@ -1,0 +1,74 @@
+<mat-card style="text-align: center;">
+
+    <img src="./assets/img/logoSofipa.png" width="50%">
+
+    <mat-card-content>
+
+        <form #loginForm="ngForm">
+            <div class="form-group">
+
+            </div>
+            <div class='row'>
+
+                <div class='column first-col'>
+                    <mat-icon matSuffix style="padding-top: 100%;font-size: 200%; ">person</mat-icon>
+                </div>
+                <div class='column justify-content-center'>
+                    <mat-form-field class="example-form-field" appearance="fill">
+                        <!--span matPrefix><mat-icon matSuffix style="font-size: 180%;">home</mat-icon> &nbsp;&nbsp; &nbsp;&nbsp;</span-->
+
+                        <mat-label>Usuario</mat-label>
+                        <input matInput type="text" [(ngModel)]="usuario.username" name="username" class="form-control"
+                            oninput="this.value = this.value.toUpperCase()" required
+                            [ngClass]="{ 'is-invalid': (username.touched || username.dirty) && username.errors }"
+                            #username="ngModel" />
+
+                        <mat-error *ngIf="username.errors">
+                            El usuario es requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='column first-col'>
+                    <mat-icon matSuffix style="padding-top: 100%;font-size: 150%;">https</mat-icon>
+                </div>
+                <div class='column justify-content-center'>
+                    <mat-form-field class="example-form-field" appearance="fill">
+                        <mat-label>Contraseña</mat-label>
+                        <input matInput type="password" [(ngModel)]="usuario.password" name="password"
+                            class="form-control" required
+                            [ngClass]="{ 'is-invalid': (password.touched || password.dirty) && password.errors }"
+                            #password="ngModel" />
+                        <mat-error *ngIf="password.errors">
+                            La contraseña es requerida
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <div class='row'>
+                <div class='column first-col'>
+                    <mat-icon matSuffix style="padding-top: 80%;font-size: 180%;">home</mat-icon>
+                </div>
+                <div class='column justify-content-center'>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Sucursal</mat-label>
+                        <mat-select placeholder="Sucursal" name="sucursal" [(ngModel)]="sucursal" required>
+                            <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal.nombreSucursal">{{
+                                sucursal.nombreSucursal }}</mat-option>
+                        </mat-select>
+
+                        
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group">
+                <button mat-flat-button color="accent" [disabled]="loading||loginForm.invalid" class="btn btn-primary"
+                    (click)="onSubmit()">Login</button>
+
+            </div>
+
+        </form>
+    </mat-card-content>
+</mat-card>
