@@ -65,7 +65,7 @@ permisosUsuario=false//125
       this.showMenu = '';
       this.pushRightClass = 'push-right';
 
-      this.permisos()
+      //this.permisos()
 
 
   }

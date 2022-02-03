@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormBuilder, FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import swal from 'sweetalert2';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -21,8 +21,21 @@ export class SolicitudFormComponent implements OnInit {
   deta: Detalle_solicitud[];
   dataSource = new MatTableDataSource();
   productosSeleccionados = new Set<Producto>();
+  producto = new Producto();
 
-  constructor(private productosService: ProductosService) { }
+  constructor(private productosService: ProductosService, private formBuilder: FormBuilder) { }
+
+  get detalles(): FormArray {
+    return this.solicitudForm.get('detalles') as FormArray;
+  }
+
+  solicitudForm = this.formBuilder.group({
+    nombre_usuario: [''],
+    id_sucursal: [''],
+    fecha_solicitud: [new Date()],
+    observacion_solicitud: ['Deje aquí sus Comentarios u observaciones a cerca de la solicitud...'],
+    detalles: this.formBuilder.array([])
+  });
 
   ngOnInit(): void {
     this.productosService.getProductos().subscribe(
@@ -36,33 +49,36 @@ export class SolicitudFormComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  agregarProducto(producto: Producto)
-  {
+  submit() {
+    console.log(this.solicitudForm.value);
+    console.log(this.solicitudForm.getRawValue());
+  }
+
+  agregarProducto(producto: Producto) {
     this.productosSeleccionados.add(producto);
-    //this.deta.push(this.crearNuevoDetalle(producto));
-    //this.detalles_solicitud = new MatTableDataSource(this.deta);
+    this.agregarDetalles(producto);
+    this.producto=producto;
   }
 
-  /*eliminarDet(detalle:Detalle_solicitud): void
-  {
-    const indice = this.deta.indexOf(detalle);
-    this.detalles_solicitud.data.slice(indice,1);
-  }
-
-  crearNuevoDetalle(producto: Producto): Detalle_solicitud
-  {
-    return  {
-      solicitud: null,
-      producto: producto,
-      cant_existente: null,
-      cant_solicitada: null,
-      cant_autorizada: null
-    };
-  }*/
-
-  eliminarProducto(producto: Producto)
-  {
+  eliminarProducto(producto: Producto, index: number) {
     this.productosSeleccionados.delete(producto);
+    this.removerDetalles(index);
+  }
+
+  agregarDetalles(p: Producto) {
+    const detalleFormC = this.formBuilder.group({
+      producto_obj: [p],
+      producto: [{value: p.descripcion, disabled: true}],
+      cant_existente: [''],
+      cant_solicitada: ['']
+    });
+
+    this.detalles.push(detalleFormC);
+  }
+
+  removerDetalles(indice: number)
+  {
+    this.detalles.removeAt(indice);
   }
 
 }
