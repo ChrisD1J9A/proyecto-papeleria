@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Solicitud } from '../solicitud';
 import { SolicitudesService } from '../solicitudes.service';
+import { DetalleSolicitudService } from '../detalle-solicitud.service';
 import { Detalle_solicitud } from '../detalle_solicitud';
 import { ProductosService } from 'src/app/layout/catalogo/productos/productos.service';
 import { Producto } from 'src/app/layout/catalogo/productos/producto';
@@ -19,12 +20,13 @@ export class SolicitudFormComponent implements OnInit {
   solicitud = new Solicitud();
   date = new FormControl(new Date());
   displayedColumns: string[] = ['id_producto', 'unidad', 'descripcion', 'action'];
-  detas: any;
+  deta: Detalle_solicitud;
+  fuga: any;
   dataSource = new MatTableDataSource();
   productosSeleccionados = new Set<Producto>();
   producto = new Producto();
 
-  constructor(private productosService: ProductosService, private formBuilder: FormBuilder, private solicitudesService: SolicitudesService, private router: Router) { }
+  constructor(private productosService: ProductosService, private formBuilder: FormBuilder, private solicitudesService: SolicitudesService, private router: Router, private detalleSolicitudService: DetalleSolicitudService) { }
 
   get detalles(): FormArray {
     return this.detalleSForm.get('detalles') as FormArray;
@@ -55,9 +57,10 @@ export class SolicitudFormComponent implements OnInit {
 
   submit() {
     this.solicitud = this.solicitudForm.value;
+    this.solicitud.estatus = "Pendiente";
     console.log(this.solicitud);
-    this.detas = this.detalles.value;
-    console.log(this.detas);
+
+    //this.deta = this.fuga;
     swal.fire({
       title: '¿Desea hacer una nueva solicitud? ',
       showDenyButton: true,
@@ -66,57 +69,52 @@ export class SolicitudFormComponent implements OnInit {
       denyButtonText: `No guardar`,
     }).then((result) => {
       if (result.isConfirmed) {
-      this.solicitudesService.create2(this.solicitud, this.detas)
-      .toPromise()
-      .then((response) => {
-        if (response.solicitud) {
-          swal.fire(
-            'Nueva solicitud hecha',
-            `Solicitud hecha:  ${this.solicitud.fecha_solicitud} espere su aprobación`,
-            'success'
-          );
-          this.router.navigate(['/layout/solicitudes'])
-          this.ngOnInit();
-        } else if (response.mensaje) {
-          swal.fire('Mensaje', `${response.mensaje}!`, 'error');
-        } else {
-          swal.fire('Mensaje', `Error al envíar la solicitud`, 'error');
-        }
-      })
-      .catch((error) => {
-        swal.fire('Error', `Error al envíar la solicitud`, 'error');
-      });
+        this.solicitudesService.create(this.solicitud).subscribe(
+          solicitud => {
+            for (var i = 0; i < this.detalles.getRawValue().length; i++) {
+              this.deta = this.detalles.value.pop();
+              this.deta.solicitud = solicitud;
+              this.detalleSolicitudService.create(this.deta).subscribe(
+                detalle => {
+                  console.log(detalle);
+                }
+              )
+              console.log(this.deta);
+            }
+            this.router.navigate(['/layout/solicitudes'])
+            this.ngOnInit();
+          })
+
       } else if (result.isDenied) {
         swal.fire('La solicitud no fue guardada', '', 'info')
       }
     })
   }
 
-agregarProducto(producto: Producto) {
-  this.productosSeleccionados.add(producto);
-  this.agregarDetalles(producto);
-  this.producto = producto;
-}
+  agregarProducto(producto: Producto) {
+    this.productosSeleccionados.add(producto);
+    this.agregarDetalles(producto);
+    this.producto = producto;
+  }
 
-eliminarProducto(producto: Producto, index: number) {
-  this.productosSeleccionados.delete(producto);
-  this.removerDetalles(index);
-}
+  eliminarProducto(producto: Producto, index: number) {
+    this.productosSeleccionados.delete(producto);
+    this.removerDetalles(index);
+  }
 
-agregarDetalles(p: Producto) {
-  const detalleFormC = this.formBuilder.group({
-    producto_obj: [p],
-    producto: [{ value: p.descripcion, disabled: true }],
-    cant_existente: [''],
-    cant_solicitada: ['']
-  });
+  agregarDetalles(p: Producto) {
+    const detalleFormC = this.formBuilder.group({
+      producto_obj: [p],
+      producto: [{ value: p.descripcion, disabled: true }],
+      cant_existente: [''],
+      cant_solicitada: ['']
+    });
 
-  this.detalles.push(detalleFormC);
-}
+    this.detalles.push(detalleFormC);
+  }
 
-removerDetalles(indice: number)
-{
-  this.detalles.removeAt(indice);
-}
+  removerDetalles(indice: number) {
+    this.detalles.removeAt(indice);
+  }
 
 }

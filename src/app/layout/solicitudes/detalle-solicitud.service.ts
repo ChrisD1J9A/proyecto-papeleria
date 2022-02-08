@@ -13,8 +13,15 @@ export class DetalleSolicitudService {
 
   constructor(private http: HttpClient) { }
 
-  getDetallesSolicitud(id): Observable<Detalle_solicitud[]>
+  public create(detalle_solicitud: Detalle_solicitud): Observable<Detalle_solicitud>
+  {
+      return this.http.post<Detalle_solicitud>(this.urlEndPoint, detalle_solicitud, {headers: this.httpHeaders})
+  }
+
+  public getDetallesSolicitud(id): Observable<Detalle_solicitud[]>
   {
     return this.http.get<Detalle_solicitud[]>(`${this.urlEndPoint}/${id}`);
   }
+
+
 }

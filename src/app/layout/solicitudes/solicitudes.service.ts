@@ -20,11 +20,11 @@ export class SolicitudesService {
       return this.http.post<Solicitud>(this.urlEndPoint, solicitud, {headers: this.httpHeaders})
   }
 
-  public create2(solicitud: Solicitud, detalles: any): Observable<any>
+  /*public create(solicitud: Solicitud, detalles: any): Observable<any>
   {
-      const params = new HttpParams().set('detalles',detalles);
-      return this.http.post<any>(this.urlEndPoint2, solicitud, {params: params, headers: this.httpHeaders});
-  }
+      //const params = new HttpParams().set('detalles', detalles);
+      return this.http.post<any>(this.urlEndPoint2, solicitud, {params: new HttpParams({ fromObject: detalles}) , headers: this.httpHeaders});
+  }*/
 
 
   getSolicitudes(): Observable<Solicitud[]> {
