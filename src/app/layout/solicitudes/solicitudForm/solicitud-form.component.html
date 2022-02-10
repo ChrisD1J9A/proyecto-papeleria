@@ -1,6 +1,6 @@
 <h1>Nueva Solicitud</h1>
 
-<form (submit)="submit()" [formGroup]="solicitudForm">
+<form [formGroup]="solicitudForm">
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Nombre</mat-label>
     <input matInput formControlName="nombre_usuario" name="nombre_usuario">
@@ -21,37 +21,41 @@
 
   <h3>En la tabla de abajo podrá elejir los productos que desee solicitar</h3>
 
-  <br>
   <div FormArrayName="detalles">
-      <div *ngFor="let detalle of detalles.controls; let i = index;">
-        <div [formGroup]="detalle">
-          <mat-form-field appearance="fill">
-            <mat-label>Producto</mat-label>
-            <input matInput formControlName="producto_">
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Cantidad existente</mat-label>
-            <input matInput type="number" formControlName="cant_existente">
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Cantidad solicitada</mat-label>
-            <input matInput type="number" formControlName="cant_solicitada">
-          </mat-form-field>
-          <button class="btn1" mat-mini-fab color="warn" (click)="eliminarProducto(i)">
-            <mat-icon>remove_circle_outline</mat-icon>
-          </button>
+    <button class="btn1" mat-raised-button color="warn" *ngIf="productosSeleccionados.size>=1" (click)="eliminarTodo()">
+      <mat-icon>delete</mat-icon>
+      Borrar todo
+    </button>
+    <br><br>
+    <div *ngFor="let detalle of detalles.controls; let i = index;" class="areaProductosSeleccionados">
+      <div [formGroup]="detalle">
+        <mat-form-field appearance="fill">
+          <mat-label>Producto</mat-label>
+          <input matInput formControlName="producto_">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Cantidad existente</mat-label>
+          <input matInput type="number" formControlName="cant_existente">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Cantidad solicitada</mat-label>
+          <input matInput type="number" formControlName="cant_solicitada">
+        </mat-form-field>
+        <button class="btn1" mat-mini-fab color="warn" (click)="eliminarProducto(i)">
+          <mat-icon>remove_circle_outline</mat-icon>
+        </button>
       </div>
     </div>
   </div>
 
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Comentarios </mat-label>
-    <textarea matInput formControlName="observacion_solicitud" name="observacion_solicitud"></textarea>
+    <textarea matInput formControlName="observacion_solicitud" name="observacion_solicitud" placeholder="Deje aquí sus Comentarios u observaciones sobre la solicitud..."></textarea>
   </mat-form-field>
 
   <br>
-  <button mat-raised-button color="primary"> Aceptar </button>
-  <button mat-raised-button color="warn" (click)="cancelar()" > Cancelar </button>
+  <button mat-raised-button color="primary" (click)="submit()"> Aceptar </button>
+  <button mat-raised-button color="warn" (click)="cancelar()"> Cancelar </button>
 </form>
 
 
