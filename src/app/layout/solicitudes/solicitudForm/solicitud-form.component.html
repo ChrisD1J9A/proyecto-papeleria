@@ -23,23 +23,23 @@
 
   <br>
   <div FormArrayName="detalles">
-    <div *ngFor="let detalle of detalles.controls; let i = index">
-      <div [formGroup]="detalle">
-        <mat-form-field appearance="fill">
-          <mat-label>Producto</mat-label>
-          <input matInput formControlName="producto">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Cantidad existente</mat-label>
-          <input matInput type="number" formControlName="cant_existente">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Cantidad solicitada</mat-label>
-          <input matInput type="number" formControlName="cant_solicitada">
-        </mat-form-field>
-        <button class="btn1" mat-mini-fab color="warn" (click)="eliminarProducto(producto, i)">
-          <mat-icon>remove_circle_outline</mat-icon>
-        </button>
+      <div *ngFor="let detalle of detalles.controls; let i = index;">
+        <div [formGroup]="detalle">
+          <mat-form-field appearance="fill">
+            <mat-label>Producto</mat-label>
+            <input matInput formControlName="producto_">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Cantidad existente</mat-label>
+            <input matInput type="number" formControlName="cant_existente">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Cantidad solicitada</mat-label>
+            <input matInput type="number" formControlName="cant_solicitada">
+          </mat-form-field>
+          <button class="btn1" mat-mini-fab color="warn" (click)="eliminarProducto(i)">
+            <mat-icon>remove_circle_outline</mat-icon>
+          </button>
       </div>
     </div>
   </div>
@@ -51,7 +51,7 @@
 
   <br>
   <button mat-raised-button color="primary"> Aceptar </button>
-  <button mat-raised-button color="warn"> Cancelar </button>
+  <button mat-raised-button color="warn" (click)="cancelar()" > Cancelar </button>
 </form>
 
 

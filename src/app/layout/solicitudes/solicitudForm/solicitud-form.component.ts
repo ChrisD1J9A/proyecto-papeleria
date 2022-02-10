@@ -25,6 +25,7 @@ export class SolicitudFormComponent implements OnInit {
   dataSource = new MatTableDataSource();
   productosSeleccionados = new Set<Producto>();
   producto = new Producto();
+  pds = new Array();
 
   constructor(private productosService: ProductosService, private formBuilder: FormBuilder, private solicitudesService: SolicitudesService, private router: Router, private detalleSolicitudService: DetalleSolicitudService) { }
 
@@ -74,6 +75,7 @@ export class SolicitudFormComponent implements OnInit {
             for (var i = 0; i < this.detalles.getRawValue().length; i++) {
               this.deta = this.detalles.value.pop();
               this.deta.solicitud = solicitud;
+              console.log(this.deta);
               this.detalleSolicitudService.create(this.deta).subscribe(
                 detalle => {
                   console.log(detalle);
@@ -91,26 +93,47 @@ export class SolicitudFormComponent implements OnInit {
     })
   }
 
-  agregarProducto(producto: Producto) {
-    this.productosSeleccionados.add(producto);
-    this.agregarDetalles(producto);
-    this.producto = producto;
+  cancelar()
+  {
+    
   }
 
-  eliminarProducto(producto: Producto, index: number) {
-    this.productosSeleccionados.delete(producto);
+  agregarProducto(producto: Producto) {
+    if (this.productosSeleccionados.has(producto)) {
+      swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Ya haz seleccionado este producto',
+      })
+    } else {
+      this.productosSeleccionados.add(producto);
+      this.agregarDetalles(producto);
+    }
+  }
+
+  eliminarProducto(index: number) {
+    //this.productosSeleccionados.delete(p);
+    var i = 0;
+    for (let producto of this.productosSeleccionados) {
+      if (index === i) {
+        this.producto = producto;
+      }
+      i++;
+    }
+    this.productosSeleccionados.delete(this.producto);
     this.removerDetalles(index);
   }
 
   agregarDetalles(p: Producto) {
     const detalleFormC = this.formBuilder.group({
-      producto_obj: [p],
-      producto: [{ value: p.descripcion, disabled: true }],
+      producto: [p],
+      producto_: [{ value: p.descripcion, disabled: true }],
       cant_existente: [''],
       cant_solicitada: ['']
     });
 
     this.detalles.push(detalleFormC);
+
   }
 
   removerDetalles(indice: number) {
