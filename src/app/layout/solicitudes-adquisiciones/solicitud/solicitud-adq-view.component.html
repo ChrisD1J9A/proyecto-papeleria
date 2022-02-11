@@ -1,0 +1,71 @@
+<div class="formato1">
+  <div class="formato2">
+    <h1>
+      <mat-icon>assignment</mat-icon> Solicitud {{solicitud.id_solicitud}}
+    </h1>
+    <h2>Solicitud {{solicitud.estatus}}
+      <mat-icon style="color: green" *ngIf="solicitud.estatus==='Aceptada'">check_circle</mat-icon>
+      <mat-icon style="color: red" *ngIf="solicitud.estatus==='Rechazada'">cancel</mat-icon>
+      <mat-icon style="color: yellow" *ngIf="solicitud.estatus==='Pendiente'">timer</mat-icon>
+    </h2>
+  </div>
+  <p>Sucursal {{solicitud.id_sucursal}}</p>
+  <h2>Solicitante:</h2>
+  <p>{{solicitud.nombre_usuario}}</p>
+  <h2>Fecha de la solicitud:</h2>
+  <p>{{solicitud.fecha_solicitud}}</p>
+  <h2>Comentarios del solicitante:</h2>
+  <p>{{solicitud.observacion_solicitud}}</p>
+  <h2>Solicita:</h2>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="tipo_unidad">
+      <th mat-header-cell *matHeaderCellDef> Unidad </th>
+      <td mat-cell *matCellDef="let detalle_solicitud"> {{detalle_solicitud.producto.unidad.descripcion}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion_producto">
+      <th mat-header-cell *matHeaderCellDef> Producto </th>
+      <td mat-cell *matCellDef="let detalle_solicitud"> {{detalle_solicitud.producto.descripcion}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cant_existente">
+      <th mat-header-cell *matHeaderCellDef> Cantidad existente </th>
+      <td mat-cell *matCellDef="let detalle_solicitud"> {{detalle_solicitud.cant_existente}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cant_solicitada">
+      <th mat-header-cell *matHeaderCellDef> Cantidad solicitada </th>
+      <td mat-cell *matCellDef="let detalle_solicitud"> {{detalle_solicitud.cant_solicitada}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cant_autorizada">
+      <th mat-header-cell *matHeaderCellDef> Cantidad autorizada </th>
+      <td mat-cell *matCellDef="let detalle_solicitud">
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Cantidad autorizada</mat-label>
+          <input matInput name="cant_autorizada" type="number" placeholder="0" [(ngModel)]="detalle_solicitud.cant_autorizada">
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <br><br>
+
+  <h2>Deje sus comentarios al solicitante:</h2>
+
+  <form>
+    <mat-form-field appearance="fill">
+      <mat-label>Observaciones</mat-label>
+      <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo"></textarea>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="primary" (click)="guardarSolicitud()"> Aceptar Solicitud</button>
+    <button mat-raised-button color="warn"> Rechazar Solicitud </button>
+  </form>
+
+
+
+</div>

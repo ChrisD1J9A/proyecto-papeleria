@@ -54,6 +54,8 @@ import { ProveedorFormComponent } from './layout/catalogo/proveedores/proveedor-
 import { SolicitudesComponent } from './layout/solicitudes/solicitudes.component';
 import { SolicitudFormComponent } from './layout/solicitudes/solicitudForm/solicitud-form.component';
 import { SolicitudFViewComponent } from './layout/solicitudes/solicitud/solicitud-fview.component';
+import { SolicitudesAdquisicionesComponent } from './layout/solicitudes-adquisiciones/solicitudes-adquisiciones.component';
+import { SolicitudAdqViewComponent } from './layout/solicitudes-adquisiciones/solicitud/solicitud-adq-view.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +74,8 @@ import { SolicitudFViewComponent } from './layout/solicitudes/solicitud/solicitu
     SolicitudesComponent,
     SolicitudFormComponent,
     SolicitudFViewComponent,
+    SolicitudesAdquisicionesComponent,
+    SolicitudAdqViewComponent,
   ],
   imports: [
     BrowserModule,

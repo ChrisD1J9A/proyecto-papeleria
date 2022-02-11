@@ -10,6 +10,7 @@ import { Detalle_solicitud } from '../detalle_solicitud';
 import { ProductosService } from 'src/app/layout/catalogo/productos/productos.service';
 import { Producto } from 'src/app/layout/catalogo/productos/producto';
 
+
 @Component({
   selector: 'app-solicitud-form',
   templateUrl: './solicitud-form.component.html',
@@ -19,15 +20,23 @@ import { Producto } from 'src/app/layout/catalogo/productos/producto';
 export class SolicitudFormComponent implements OnInit {
   solicitud = new Solicitud();
   date = new Date();
+  minDate: Date;
   displayedColumns: string[] = ['id_producto', 'unidad', 'descripcion', 'action'];
   deta: Detalle_solicitud;
-  fuga: any;
   dataSource = new MatTableDataSource();
   productosSeleccionados = new Set<Producto>();
   producto = new Producto();
   pds = new Array();
 
-  constructor(private productosService: ProductosService, private formBuilder: FormBuilder, private solicitudesService: SolicitudesService, private router: Router, private detalleSolicitudService: DetalleSolicitudService) { }
+  constructor(private productosService: ProductosService,
+              private formBuilder: FormBuilder,
+              private solicitudesService: SolicitudesService,
+              private router: Router,
+              private detalleSolicitudService: DetalleSolicitudService)
+  {
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 1, 0, 1);
+  }
 
   get detalles(): FormArray {
     return this.detalleSForm.get('detalles') as FormArray;
@@ -47,7 +56,8 @@ export class SolicitudFormComponent implements OnInit {
   ngOnInit(): void {
     this.productosService.getProductos().subscribe(
       productos => {
-        this.dataSource = new MatTableDataSource(productos);
+        this.pds = productos.filter(p => p.estatus === 1);
+        this.dataSource = new MatTableDataSource(this.pds);
       });
   }
 
@@ -167,8 +177,8 @@ export class SolicitudFormComponent implements OnInit {
     const detalleFormC = this.formBuilder.group({
       producto: [p],
       producto_: [{ value: p.descripcion, disabled: true }],
-      cant_existente: [''],
-      cant_solicitada: ['']
+      cant_existente: ['',  {validators: [Validators.required]}],
+      cant_solicitada: ['', {validators: [Validators.required]}]
     });
 
     this.detalles.push(detalleFormC);

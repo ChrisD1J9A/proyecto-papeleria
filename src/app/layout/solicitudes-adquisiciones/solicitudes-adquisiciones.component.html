@@ -1,0 +1,164 @@
+<div class="area-txt">
+  <h1>Solicitudes</h1>
+  <h1>Tablas solicitudes</h1>
+</div>
+
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon" style="color: yellow">timer</mat-icon>
+      Pendientes
+    </ng-template>
+
+    <mat-form-field appearance="standard" class="area-txt">
+      <mat-label>Filtrar por </mat-label>
+      <input matInput (keyup)="applyFilter3($event)" placeholder="Ejemplo solicitud 1" #input>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8">
+      <ng-container matColumnDef="id_solicitud">
+        <th mat-header-cell *matHeaderCellDef> N° Solicitud </th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.id_solicitud}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha_solicitud">
+        <th mat-header-cell *matHeaderCellDef> Fecha de solicitud</th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.fecha_solicitud}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombre_usuario">
+        <th mat-header-cell *matHeaderCellDef> Nombre del solicitante</th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.nombre_usuario}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estatus">
+        <th mat-header-cell *matHeaderCellDef> Estatus de la solicitud </th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.estatus}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let solicitud">
+          <div class="btns">
+            <button class="btn1" mat-icon-button [routerLink]="['detalle_solicitud', solicitud.id_solicitud]">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
+      </tr>
+    </table>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon" style="color: red">cancel</mat-icon>
+      Rechazadas
+    </ng-template>
+
+    <mat-form-field appearance="standard" class="area-txt">
+      <mat-label>Filtrar por </mat-label>
+      <input matInput (keyup)="applyFilter2($event)" placeholder="Ejemplo solicitud 1" #input>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
+      <ng-container matColumnDef="id_solicitud">
+        <th mat-header-cell *matHeaderCellDef> N° Solicitud </th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.id_solicitud}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha_solicitud">
+        <th mat-header-cell *matHeaderCellDef> Fecha de solicitud</th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.fecha_solicitud}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombre_usuario">
+        <th mat-header-cell *matHeaderCellDef> Nombre del solicitante</th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.nombre_usuario}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estatus">
+        <th mat-header-cell *matHeaderCellDef> Estatus de la solicitud </th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.estatus}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let solicitud">
+          <div class="btns">
+            <button class="btn1" mat-icon-button [routerLink]="['detalle_solicitud', solicitud.id_solicitud]">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
+      </tr>
+    </table>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon style="color: green">check_circle</mat-icon>
+      Aceptadas
+    </ng-template>
+
+    <mat-form-field appearance="standard" class="area-txt">
+      <mat-label>Filtrar por </mat-label>
+      <input matInput (keyup)="applyFilter1($event)" placeholder="Ejemplo solicitud 1" #input>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8">
+      <ng-container matColumnDef="id_solicitud">
+        <th mat-header-cell *matHeaderCellDef> N° Solicitud </th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.id_solicitud}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha_solicitud">
+        <th mat-header-cell *matHeaderCellDef> Fecha de solicitud</th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.fecha_solicitud}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombre_usuario">
+        <th mat-header-cell *matHeaderCellDef> Nombre del solicitante</th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.nombre_usuario}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estatus">
+        <th mat-header-cell *matHeaderCellDef> Estatus de la solicitud </th>
+        <td mat-cell *matCellDef="let solicitud"> {{solicitud.estatus}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+        <td mat-cell *matCellDef="let solicitud">
+          <div class="btns">
+            <button class="btn1" mat-icon-button [routerLink]="['detalle_solicitud', solicitud.id_solicitud]">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
+      </tr>
+    </table>
+  </mat-tab>

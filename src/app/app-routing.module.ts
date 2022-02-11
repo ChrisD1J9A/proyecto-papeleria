@@ -6,7 +6,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { SolicitudesComponent } from './layout/solicitudes/solicitudes.component';
 import { SolicitudFViewComponent } from './layout/solicitudes/solicitud/solicitud-fview.component';
 import { SolicitudFormComponent } from './layout/solicitudes/solicitudForm/solicitud-form.component';
-
+import { SolicitudesAdquisicionesComponent } from './layout/solicitudes-adquisiciones/solicitudes-adquisiciones.component';
+import { SolicitudAdqViewComponent } from './layout/solicitudes-adquisiciones/solicitud/solicitud-adq-view.component';
 import { LoginComponent } from './login/login.component';
 import { UnidadComponent } from './layout/catalogo/configuraciones/unidad/unidad.component';
 import { ProductosComponent } from './layout/catalogo/productos/productos.component';
@@ -30,6 +31,8 @@ const routes: Routes = [
          { path: 'solicitudes', component: SolicitudesComponent },
          { path: 'solicitudes/detalle_solicitud/:id', component: SolicitudFViewComponent},
          { path: 'solicitudes/solicitud-form', component: SolicitudFormComponent},
+         { path: 'solicitudes-adquisiciones', component: SolicitudesAdquisicionesComponent},
+         { path: 'solicitudes-adquisiciones/detalle_solicitud/:id', component: SolicitudAdqViewComponent},
          { path: 'productos', component: ProductosComponent},
          { path: 'productos/producto-form', component: ProductoFormComponent},
          { path: 'productos/producto-form/:id', component: ProductoFormComponent},
