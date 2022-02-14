@@ -15,9 +15,10 @@ import { MatTableDataSource } from '@angular/material/table';
 export class SolicitudAdqViewComponent implements OnInit {
   solicitud = new Solicitud();
   detalle_solicitud = new Detalle_solicitud();
-  detalles_solicitud=  new Array();
+  detalles_solicitud = new Array();
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];
   dataSource = new MatTableDataSource();
+  flag: boolean;
 
 
   constructor(private solicitudesService: SolicitudesService,
@@ -38,9 +39,15 @@ export class SolicitudAdqViewComponent implements OnInit {
       let id = params['id']
       if (id) {
         this.solicitudesService.getSolicitud(id).subscribe(
-          (solicitud) =>
-            this.solicitud = solicitud
-        )
+          (solicitud) =>{
+            this.solicitud = solicitud;
+            if(this.solicitud.estatus === "Pendiente")
+            {
+              this.flag = false;
+            }else{
+              this.flag = true;
+            }
+          })
         this.detalleSolicitudService.getDetallesSolicitud(id).subscribe(
           deta_solicitudes => {
             this.dataSource = new MatTableDataSource(deta_solicitudes);
@@ -54,7 +61,7 @@ export class SolicitudAdqViewComponent implements OnInit {
   guardarSolicitud(): void {
     this.detalles_solicitud = this.dataSource.data;
     this.solicitud.estatus = "Aceptada";
-    this.solicitud.fecha_aprobacion = new Date().toString();
+    this.solicitud.fecha_aprobacion = new Date();
     this.solicitud.id_usuario_aprob = 1;
     console.log(this.solicitud);
     swal.fire({
@@ -64,28 +71,67 @@ export class SolicitudAdqViewComponent implements OnInit {
       confirmButtonText: 'Si',
       denyButtonText: `Seguir`,
     }).then((result) => {
-      /*if (result.isConfirmed) {
+      if (result.isConfirmed) {
         this.solicitudesService.update(this.solicitud).subscribe(
           solicitud => {
-            for (var i = 0; i < this.detalles.getRawValue().length; i++) {
-              this.deta = this.detalles.value.pop();
-              this.deta.solicitud = solicitud;
-              console.log(this.deta);
-              this.detalleSolicitudService.create(this.deta).subscribe(
-                detalle => {
-                  console.log(detalle);
+            this.detalleSolicitudService.update(this.detalles_solicitud, solicitud.id_solicitud).subscribe(
+              detalles => {
+                if (detalles) {
+                  swal.fire(
+                    'Mensaje',
+                    `La solicitud:  ${solicitud.id_solicitud} fue aprobada con éxito`,
+                    'success'
+                  );
+                  this.router.navigate(['/layout/solicitudes-adquisiciones'])
+                }else {
+                  swal.fire(
+                    'Mensaje',
+                    `Error al aceptar la solicitud`,
+                    'error'
+                  );
                 }
-              )
-              console.log(this.deta);
-            }
-            this.router.navigate(['/layout/solicitudes'])
-            //this.ngOnInit();
+              })
           })
-
       } else if (result.isDenied) {
         swal.fire('La solicitud no fue guardada', '', 'info')
-      }*/
+      }
     })
+  }
+
+  rechazarSolicitud():void
+  {
+    this.solicitud.estatus = "Rechazada";
+    this.solicitud.fecha_aprobacion = new Date();
+    this.solicitud.id_usuario_aprob = 1;
+
+    swal.fire({
+      title: '¿Está seguro de rechazar esta solicitud? ',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Si',
+      denyButtonText: `Seguir`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.solicitudesService.update(this.solicitud).subscribe(
+          solicitud => {
+            console.log(solicitud);
+            if (solicitud) {
+              swal.fire(
+                'Mensaje',
+                `La solicitud:  ${solicitud.id_solicitud} fue rechazada con éxito`,
+                'success'
+              );
+              this.router.navigate(['/layout/solicitudes-adquisiciones'])
+            }else {
+              swal.fire(
+                'Mensaje',
+                `Error al rechazar la solicitud`,
+                'error'
+              );
+            }
+          })
+        }
+      })
   }
 
 }

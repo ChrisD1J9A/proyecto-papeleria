@@ -9,14 +9,30 @@
       <mat-icon style="color: yellow" *ngIf="solicitud.estatus==='Pendiente'">timer</mat-icon>
     </h2>
   </div>
-  <p>Sucursal {{solicitud.id_sucursal}}</p>
-  <h2>Solicitante:</h2>
-  <p>{{solicitud.nombre_usuario}}</p>
-  <h2>Fecha de la solicitud:</h2>
-  <p>{{solicitud.fecha_solicitud}}</p>
-  <h2>Comentarios del solicitante:</h2>
-  <p>{{solicitud.observacion_solicitud}}</p>
-  <h2>Solicita:</h2>
+
+  <div class="datos">
+    <mat-form-field appearance="outline">
+      <mat-label>Sucursal: </mat-label>
+      <input matInput [(ngModel)]="solicitud.id_sucursal" name="sucursal" readonly>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de la solicitud: </mat-label>
+      <input matInput [(ngModel)]="solicitud.fecha_solicitud" name="fecha_solicitud" readonly>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="largeInput">
+      <mat-label>Nombre del solicitante: </mat-label>
+      <input matInput [(ngModel)]="solicitud.nombre_usuario" name="solicitante" readonly>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="largeInput">
+      <mat-label>Comentarios del solicitante: </mat-label>
+      <textarea matInput [(ngModel)]="solicitud.observacion_solicitud" name="observacion_solicitud" readonly></textarea>
+    </mat-form-field>
+
+    <h2>Solicita:</h2>
+  </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="tipo_unidad">
@@ -44,7 +60,7 @@
       <td mat-cell *matCellDef="let detalle_solicitud">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Cantidad autorizada</mat-label>
-          <input matInput name="cant_autorizada" type="number" placeholder="0" [(ngModel)]="detalle_solicitud.cant_autorizada">
+          <input matInput name="cant_autorizada" type="number" placeholder="0" [(ngModel)]="detalle_solicitud.cant_autorizada" readonly={{flag}}>
         </mat-form-field>
       </td>
     </ng-container>
@@ -54,18 +70,19 @@
   </table>
   <br><br>
 
-  <h2>Deje sus comentarios al solicitante:</h2>
+  <h2 *ngIf="solicitud.estatus==='Pendiente'">Deje sus comentarios al solicitante:</h2>
 
-  <form>
-    <mat-form-field appearance="fill">
+  <div>
+    <mat-form-field appearance="outline" class="fullW">
       <mat-label>Observaciones</mat-label>
-      <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo"></textarea>
+      <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo" readonly={{flag}}></textarea>
     </mat-form-field>
     <br>
-    <button mat-raised-button color="primary" (click)="guardarSolicitud()"> Aceptar Solicitud</button>
-    <button mat-raised-button color="warn"> Rechazar Solicitud </button>
-  </form>
-
+    <div class="botones">
+      <button mat-raised-button *ngIf="solicitud.estatus==='Pendiente'" color="primary" (click)="guardarSolicitud()"> Aceptar Solicitud</button>
+      <button mat-raised-button *ngIf="solicitud.estatus==='Pendiente'" color="warn" (click)="rechazarSolicitud()"> Rechazar Solicitud </button>
+    </div>
+  </div>
 
 
 </div>

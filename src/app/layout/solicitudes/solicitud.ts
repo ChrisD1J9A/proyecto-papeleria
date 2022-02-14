@@ -3,11 +3,11 @@ export class Solicitud{
   id_usuario_aprob: number;
   id_sucursal: number;
   nombre_usuario: string;
-  fecha_solicitud: string;
-  fecha_rechazo: string;
-  fecha_aprobacion: string;
-  fecha_abastecimiento: string;
-  fecha_cancelacion: string;
+  fecha_solicitud: Date;
+  fecha_rechazo: Date;
+  fecha_aprobacion: Date;
+  fecha_abastecimiento: Date;
+  fecha_cancelacion: Date;
   observacion_solicitud: string;
   observacion_aprobacion_rechazo: string;
   estatus: string;

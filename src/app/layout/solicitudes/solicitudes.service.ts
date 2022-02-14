@@ -20,6 +20,11 @@ export class SolicitudesService {
       return this.http.post<Solicitud>(this.urlEndPoint, solicitud, {headers: this.httpHeaders})
   }
 
+  public  update(solicitud: Solicitud): Observable<Solicitud>
+  {
+    return this.http.put<Solicitud>(`${this.urlEndPoint}/${solicitud.id_solicitud}`, solicitud, {headers: this.httpHeaders})
+  }
+
   /*public create(solicitud: Solicitud, detalles: any): Observable<any>
   {
       //const params = new HttpParams().set('detalles', detalles);

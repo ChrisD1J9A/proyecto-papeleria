@@ -29,7 +29,7 @@
     <br><br>
     <div *ngFor="let detalle of detalles.controls; let i = index;" class="areaProductosSeleccionados">
       <div [formGroup]="detalle">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline" class="inputW">
           <mat-label>Producto</mat-label>
           <input matInput formControlName="producto_">
         </mat-form-field>

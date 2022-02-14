@@ -18,6 +18,11 @@ export class DetalleSolicitudService {
       return this.http.post<Detalle_solicitud>(this.urlEndPoint, detalle_solicitud, {headers: this.httpHeaders})
   }
 
+  public update(detalle_solicitud: Detalle_solicitud[], id_solicitud: number): Observable<Detalle_solicitud[]>
+  {
+    return this.http.put<Detalle_solicitud[]>(`${this.urlEndPoint}/${id_solicitud}`, detalle_solicitud, {headers: this.httpHeaders})
+  }
+
   public getDetallesSolicitud(id): Observable<Detalle_solicitud[]>
   {
     return this.http.get<Detalle_solicitud[]>(`${this.urlEndPoint}/${id}`);

@@ -1,36 +1,50 @@
-h1
-{
+h1 {
   font-weight: bold;
 }
 
-.formato1
-{
-  position: relative;
-  width  : 1000px;
-  height : 600px;
+.formato1 {
+  width: 1000px;
+  height: 600px;
   margin-left: 40px;
   //border: 2px solid #ccc;
   //display: inline;
   //text-align: center;
 }
 
-.mat-form-field
+.largeInput
 {
-  padding-left: 10px;
-  padding-right: 10px;
+  width: 500px;
 }
 
-button
-{
+.mat-form-field {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+button {
   margin-right: 50px;
 }
 
-.formato2
-{
+.formato2 {
   text-align: center;
 }
 
 table {
   width: 100%;
   margin: auto;
+}
+
+textarea{
+  height: 100px;
+}
+
+.fullW {
+  width: 100%;
+}
+
+.botones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
 }
