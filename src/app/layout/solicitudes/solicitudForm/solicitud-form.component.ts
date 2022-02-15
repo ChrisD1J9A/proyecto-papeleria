@@ -9,7 +9,7 @@ import { DetalleSolicitudService } from '../detalle-solicitud.service';
 import { Detalle_solicitud } from '../detalle_solicitud';
 import { ProductosService } from 'src/app/layout/catalogo/productos/productos.service';
 import { Producto } from 'src/app/layout/catalogo/productos/producto';
-import {AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
+import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 
 @Component({
@@ -17,9 +17,9 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
   templateUrl: './solicitud-form.component.html',
   styleUrls: ['./solicitud-form.component.scss'],
   providers: [
-      { provide: DateAdapter, useClass: AppDateAdapter },
-      { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
-    ]
+    { provide: DateAdapter, useClass: AppDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
+  ]
 })
 
 export class SolicitudFormComponent implements OnInit {
@@ -34,11 +34,10 @@ export class SolicitudFormComponent implements OnInit {
   pds = new Array();
 
   constructor(private productosService: ProductosService,
-              private formBuilder: FormBuilder,
-              private solicitudesService: SolicitudesService,
-              private router: Router,
-              private detalleSolicitudService: DetalleSolicitudService)
-  {
+    private formBuilder: FormBuilder,
+    private solicitudesService: SolicitudesService,
+    private router: Router,
+    private detalleSolicitudService: DetalleSolicitudService) {
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 1, 0, 1);
   }
@@ -99,8 +98,20 @@ export class SolicitudFormComponent implements OnInit {
                 )
                 console.log(this.deta);
               }
-              this.router.navigate(['/layout/solicitudes'])
-              //this.ngOnInit();
+              if (solicitud.id_solicitud) {
+                swal.fire(
+                  'Mensaje',
+                  `La solicitud fue enviada con éxito y queda como ${solicitud.estatus}`,
+                  'success'
+                );
+                this.router.navigate(['/layout/solicitudes'])
+              } else {
+                swal.fire(
+                  'Mensaje',
+                  `Error al envíar la solicitud`,
+                  'error'
+                );
+              }
             })
 
         } else if (result.isDenied) {
@@ -181,9 +192,9 @@ export class SolicitudFormComponent implements OnInit {
   agregarDetalles(p: Producto) {
     const detalleFormC = this.formBuilder.group({
       producto: [p],
-      producto_: [{ value: p.descripcion, disabled: true}],
-      cant_existente: ['',  {validators: [Validators.required]}],
-      cant_solicitada: ['', {validators: [Validators.required]}]
+      producto_: [{ value: p.descripcion, disabled: true }],
+      cant_existente: ['0', { validators: [Validators.required] }],
+      cant_solicitada: ['0', { validators: [Validators.required] }]
     });
 
     this.detalles.push(detalleFormC);

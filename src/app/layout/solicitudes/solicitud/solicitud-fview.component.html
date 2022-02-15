@@ -5,10 +5,19 @@
                                         <mat-icon style="color: red" *ngIf="solicitud.estatus==='Rechazada'">cancel</mat-icon>
                                         <mat-icon style="color: yellow" *ngIf="solicitud.estatus==='Pendiente'">timer</mat-icon></h2>
   </div>
-  <h2>Fecha de la solicitud:</h2>
-  <p>{{solicitud.fecha_solicitud}}</p>
-  <h2>Comentarios del solicitante:</h2>
-  <p>{{solicitud.observacion_solicitud}}</p>
+
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de la solicitud: </mat-label>
+      <input matInput [(ngModel)]="solicitud.fecha_solicitud" name="fecha_solicitud" readonly>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="largeInput">
+      <mat-label>Comentarios del solicitante: </mat-label>
+      <textarea matInput [(ngModel)]="solicitud.observacion_solicitud" name="observacion_solicitud" readonly></textarea>
+    </mat-form-field>
+
+  </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="tipo_unidad">
@@ -40,9 +49,12 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
   <br>
-  <h2>Comentarios de adquisiciones:</h2>
-  <p> {{solicitud.observacion_aprobacion_rechazo}} </p>
 
-
+  <div>
+    <mat-form-field appearance="outline" class="largeInput">
+      <mat-label>Comentarios de adquisiciones: </mat-label>
+      <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo" readonly></textarea>
+    </mat-form-field>
+  </div>
 
 </div>

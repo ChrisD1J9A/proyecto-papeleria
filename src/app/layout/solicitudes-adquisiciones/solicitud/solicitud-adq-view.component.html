@@ -10,7 +10,7 @@
     </h2>
   </div>
 
-  <div class="datos">
+  <div>
     <mat-form-field appearance="outline">
       <mat-label>Sucursal: </mat-label>
       <input matInput [(ngModel)]="solicitud.id_sucursal" name="sucursal" readonly>
@@ -60,7 +60,8 @@
       <td mat-cell *matCellDef="let detalle_solicitud">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Cantidad autorizada</mat-label>
-          <input matInput name="cant_autorizada" type="number" placeholder="0" [(ngModel)]="detalle_solicitud.cant_autorizada" readonly={{flag}}>
+          <input matInput name="cant_autorizada" type="number" placeholder="0" [(ngModel)]="detalle_solicitud.cant_autorizada" readonly={{flag}} required>
+          <mat-error *ngIf="cant_autorizada.invalid">{{getErrorMessage2()}}</mat-error>
         </mat-form-field>
       </td>
     </ng-container>
@@ -75,12 +76,13 @@
   <div>
     <mat-form-field appearance="outline" class="fullW">
       <mat-label>Observaciones</mat-label>
-      <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo" readonly={{flag}}></textarea>
+      <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo" readonly={{flag}} required></textarea>
+      <mat-error *ngIf="observacion_aprobacion_rechazo.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <br>
     <div class="botones">
-      <button mat-raised-button *ngIf="solicitud.estatus==='Pendiente'" color="primary" (click)="guardarSolicitud()"> Aceptar Solicitud</button>
-      <button mat-raised-button *ngIf="solicitud.estatus==='Pendiente'" color="warn" (click)="rechazarSolicitud()"> Rechazar Solicitud </button>
+      <button mat-raised-button *ngIf="solicitud.estatus==='Pendiente'" color="primary" (click)="guardarSolicitud()"> Aceptar Solicitud <mat-icon>check_circle</mat-icon></button>
+      <button mat-raised-button *ngIf="solicitud.estatus==='Pendiente'" color="warn" (click)="rechazarSolicitud()"> Rechazar Solicitud <mat-icon>cancel</mat-icon></button>
     </div>
   </div>
 
