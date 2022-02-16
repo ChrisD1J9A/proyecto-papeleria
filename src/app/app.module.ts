@@ -56,6 +56,8 @@ import { SolicitudFormComponent } from './layout/solicitudes/solicitudForm/solic
 import { SolicitudFViewComponent } from './layout/solicitudes/solicitud/solicitud-fview.component';
 import { SolicitudesAdquisicionesComponent } from './layout/solicitudes-adquisiciones/solicitudes-adquisiciones.component';
 import { SolicitudAdqViewComponent } from './layout/solicitudes-adquisiciones/solicitud/solicitud-adq-view.component';
+import { ComprasComponent } from './layout/compras/compras.component';
+import { CompraFViewComponent } from './layout/compras/compra/compra-fview.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { SolicitudAdqViewComponent } from './layout/solicitudes-adquisiciones/so
     SolicitudFViewComponent,
     SolicitudesAdquisicionesComponent,
     SolicitudAdqViewComponent,
+    ComprasComponent,
+    CompraFViewComponent,
   ],
   imports: [
     BrowserModule,

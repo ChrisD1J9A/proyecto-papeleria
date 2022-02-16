@@ -56,11 +56,11 @@
     </ng-container>
 
     <ng-container matColumnDef="cant_autorizada">
-      <th mat-header-cell *matHeaderCellDef> Cantidad autorizada </th>
+      <th mat-header-cell *matHeaderCellDef> Cantidad autorizadas </th>
       <td mat-cell *matCellDef="let detalle_solicitud">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Cantidad autorizada</mat-label>
-          <input matInput name="cant_autorizada" type="number" placeholder="0" [(ngModel)]="detalle_solicitud.cant_autorizada" readonly={{flag}} required>
+          <input matInput name="cant_autorizada" type="number" placeholder=" " [(ngModel)]="detalle_solicitud.cant_autorizada" readonly={{flag}} required>
           <mat-error *ngIf="cant_autorizada.invalid">{{getErrorMessage2()}}</mat-error>
         </mat-form-field>
       </td>

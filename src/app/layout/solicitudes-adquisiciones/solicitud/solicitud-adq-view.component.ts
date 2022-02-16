@@ -68,61 +68,62 @@ export class SolicitudAdqViewComponent implements OnInit {
     })
   }
 
-  validarDetalles():boolean
-  {
-      this.detalles_solicitud = this.dataSource.data;
-      let bandera =  false;
-      for(this.detalle_solicitud of this.detalles_solicitud)
-      {
-        if(this.detalle_solicitud.cant_autorizada == 0)
-        {
-          bandera = true;
-        }
+  validarDetalles(): boolean {
+    this.detalles_solicitud = this.dataSource.data;
+    let bandera = false;
+    for (this.detalle_solicitud of this.detalles_solicitud) {
+      if (this.detalle_solicitud.cant_autorizada == null || this.detalle_solicitud.cant_autorizada < 1) {
+        bandera = true;
       }
-      return bandera;
+    }
+    return bandera;
   }
 
   guardarSolicitud(): void {
     console.log(this.validarDetalles());
-    if (this.solicitud.observacion_aprobacion_rechazo) {
-      swal.fire({
-        title: '¿Está seguro de aprobar esta solicitud? ',
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: 'Si',
-        denyButtonText: `No, seguir viendo`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.detalles_solicitud = this.dataSource.data;
-          this.solicitud.estatus = "Aceptada";
-          this.solicitud.fecha_aprobacion = new Date();
-          this.solicitud.id_usuario_aprob = 1;
-          this.solicitudesService.update(this.solicitud).subscribe(
-            solicitud => {
-              this.detalleSolicitudService.update(this.detalles_solicitud, solicitud.id_solicitud).subscribe(
-                detalles => {
-                  if (detalles) {
-                    swal.fire(
-                      'Mensaje',
-                      `La solicitud:  ${solicitud.id_solicitud} fue aprobada con éxito`,
-                      'success'
-                    );
-                    this.router.navigate(['/layout/solicitudes-adquisiciones'])
-                  } else {
-                    swal.fire(
-                      'Mensaje',
-                      `Error al aceptar la solicitud`,
-                      'error'
-                    );
-                  }
-                })
-            })
-        } else if (result.isDenied) {
-          swal.fire('La solicitud no fue guardada', '', 'info');
-        }
-      })
+    if (this.validarDetalles()) {
+      swal.fire('Para aceptar la solicitud debe de ingresar un valor diferente de cero o válido en la cantidad que autoriza', '', 'info');
     } else {
-      swal.fire('Rellene todos los campos requeridos', '', 'info')
+      if (this.solicitud.observacion_aprobacion_rechazo) {
+        swal.fire({
+          title: '¿Está seguro de aprobar esta solicitud? ',
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: 'Si',
+          denyButtonText: `No, seguir viendo`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.detalles_solicitud = this.dataSource.data;
+            this.solicitud.estatus = "Aceptada";
+            this.solicitud.fecha_aprobacion = new Date();
+            this.solicitud.id_usuario_aprob = 1;
+            this.solicitudesService.update(this.solicitud).subscribe(
+              solicitud => {
+                this.detalleSolicitudService.update(this.detalles_solicitud, solicitud.id_solicitud).subscribe(
+                  detalles => {
+                    if (detalles) {
+                      swal.fire(
+                        'Mensaje',
+                        `La solicitud:  ${solicitud.id_solicitud} fue aceptada con éxito`,
+                        'success'
+                      );
+                      this.router.navigate(['/layout/solicitudes-adquisiciones'])
+                    } else {
+                      swal.fire(
+                        'Mensaje',
+                        `Error al aceptar la solicitud`,
+                        'error'
+                      );
+                    }
+                  })
+              })
+          } else if (result.isDenied) {
+            swal.fire('La solicitud no fue guardada', '', 'info');
+          }
+        })
+      } else {
+        swal.fire('Deje algún comentario para continuar', '', 'info')
+      }
     }
   }
 
