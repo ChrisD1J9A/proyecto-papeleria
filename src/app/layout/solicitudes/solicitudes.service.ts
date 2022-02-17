@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Solicitud } from './solicitud';
-import { Detalle_solicitud } from './detalle_solicitud';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
@@ -10,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class SolicitudesService {
   private urlEndPoint: string = 'http://localhost:8080/api/solicitudes';
-  private urlEndPoint2: string = 'http://localhost:8080/api/solicitudesDet';
+  //private urlEndPoint2: string = 'http://localhost:8080/api/solicitudesDet';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }

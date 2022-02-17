@@ -1,1 +1,18 @@
-<p>compra-fview works!</p>
+<div class="formato1">
+  <div class="formato2">
+    <h1> <mat-icon>assignment</mat-icon> Compra {{compra.id_compra}}</h1>
+    <h2>Compra {{compra.estatus}} </h2>
+  </div>
+
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de la compra: </mat-label>
+      <input matInput [(ngModel)]="compra.fecha_creacion" name="fecha_creacion" readonly>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" class="largeInput">
+      <mat-label>Proveedor: </mat-label>
+      <textarea matInput [(ngModel)]="compra.proveedor.nombre" name="proveedor_nombre" readonly></textarea>
+    </mat-form-field>
+
+  </div>
