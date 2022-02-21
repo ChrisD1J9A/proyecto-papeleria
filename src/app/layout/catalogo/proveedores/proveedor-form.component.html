@@ -24,9 +24,11 @@
     <br>
     <mat-form-field appearance="fill">
       <mat-label>RFC</mat-label>
-      <input matInput [(ngModel)]="proveedor.rfc" name="rfc" maxlength="13" required>
+      <input matInput [(ngModel)]="proveedor.rfc" name="rfc" maxlength="13" required (input)="ValidaRFC($event.target.value)">
       <mat-error *ngIf="rfcProveedor.invalid">{{getErrorMessage2()}}</mat-error>
     </mat-form-field>
+    <p class="validationError" *ngIf="rfcflag==false">{{rfcmsg}} <mat-icon>cancel</mat-icon></p>
+    <p class="validationAp" *ngIf="rfcflag==true">{{rfcmsg}} <mat-icon>check_circle</mat-icon></p>
 
     <br><br>
     <div class="btns">

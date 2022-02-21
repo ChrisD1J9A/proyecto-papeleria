@@ -26,7 +26,6 @@ export class ProductoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.precios();
     this.unidadService.getUnidades().subscribe(
       unidades => {
         this.unidades = unidades
@@ -34,16 +33,19 @@ export class ProductoFormComponent implements OnInit {
     this.cargarProducto();
   }
 
-  precios():void
-  {
-    var iva = 0.16;
-    var precio_iva = this.producto.precio_subtotal * iva;
-    this.producto.precio_iva = precio_iva;
-    this.producto.precio_total = this.producto.precio_subtotal + precio_iva;
-  }
-
   getErrorMessage() {
     return this.descripcionProducto.hasError('required') ? 'Ingrese/seleccione algún dato' : '';
+  }
+
+  precio_input1(n: any)
+  {
+    this.producto.precio_iva = n * 0.16;
+    this.producto.precio_total = this.producto.precio_subtotal + this.producto.precio_iva;
+  }
+
+  precio_input2(n: any)
+  {
+    this.producto.precio_total = this.producto.precio_subtotal + this.producto.precio_iva;
   }
 
   cargarProducto(): void {

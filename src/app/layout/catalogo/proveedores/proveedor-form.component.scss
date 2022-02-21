@@ -1,8 +1,8 @@
 form {
   position: relative;
-  width  : 500px;
-  height : 550px;
-  margin : 0 auto;
+  width: 500px;
+  height: 550px;
+  margin: 0 auto;
   //border: 2px solid #ccc;
   //text-align: center;
 }
@@ -11,7 +11,22 @@ form {
   width: 100%;
 }
 
-.btns
-{
+.btns {
   text-align: center;
+}
+
+.validationError {
+  padding-left: 20px;
+  display: inline;
+  color: #D63301;
+  background-position: 10px center;
+  font-size: 12px;
+}
+
+.validationAp {
+  padding-left: 20px;
+  display: inline;
+  color: green;
+  background-position: 10px center;
+  font-size: 12px;
 }

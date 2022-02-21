@@ -10,21 +10,21 @@
 
     <mat-form-field appearance="fill" floatLabel="always">
       <mat-label>Precio subtotal</mat-label>
-      <input matInput name="precio_subtotal" type="number" placeholder="0" [(ngModel)]="producto.precio_subtotal">
+      <input matInput name="precio_subtotal" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_subtotal" (input)="precio_input1($event.target.value)" pattern="[0-9]+([,\.][0-9]+)?" >
       <span matPrefix>$&nbsp;</span>
       <span matSuffix>pesos</span>
     </mat-form-field>
 
     <mat-form-field appearance="fill" floatLabel="always">
       <mat-label>Precio con IVA</mat-label>
-      <input matInput name="precio_iva" type="number" placeholder="0" value="{{producto.precio_subtotal * 0.16}}" [(ngModel)]="producto.precio_iva">
+      <input matInput name="precio_iva" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_iva" (input)="precio_input2($event.target.value)">
       <span matPrefix>$&nbsp;</span>
       <span matSuffix>pesos</span>
     </mat-form-field>
 
     <mat-form-field appearance="fill" floatLabel="always">
       <mat-label>Precio total</mat-label>
-      <input matInput name="precio_total" type="number" class="example-right-align" placeholder="0" value="{{producto.precio_subtotal + (producto.precio_subtotal * 0.16)}}" [(ngModel)]="producto.precio_total" readonly>
+      <input matInput name="precio_total" type="number" placeholder="0.00" class="example-right-align" placeholder="0" [(ngModel)]="producto.precio_total" readonly>
       <span matPrefix>$&nbsp;</span>
       <span matSuffix>pesos</span>
     </mat-form-field>
