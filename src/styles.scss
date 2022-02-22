@@ -2,3 +2,19 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mySnackbarSucess {
+  color: white;
+}
+
+.mySnackbarSucess .mat-simple-snackbar-action  {
+    color: #3D5AFE;
+  }
+
+  .mySnackbarDelete {
+    color: white;
+  }
+
+  .mySnackbarDelete .mat-simple-snackbar-action  {
+      color: red;
+    }

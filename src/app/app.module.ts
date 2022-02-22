@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { DecimalPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home';
@@ -58,6 +58,7 @@ import { SolicitudesAdquisicionesComponent } from './layout/solicitudes-adquisic
 import { SolicitudAdqViewComponent } from './layout/solicitudes-adquisiciones/solicitud/solicitud-adq-view.component';
 import { ComprasComponent } from './layout/compras/compras.component';
 import { CompraFViewComponent } from './layout/compras/compra/compra-fview.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -125,7 +126,8 @@ import { CompraFViewComponent } from './layout/compras/compra/compra-fview.compo
     MatCardModule,
     MatDialogModule,
     MatCheckboxModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSnackBarModule
   ],
   providers: [
     MatDatepickerModule,
@@ -133,6 +135,7 @@ import { CompraFViewComponent } from './layout/compras/compra/compra-fview.compo
     UnidadService,
     ProductosService,
     ProveedoresService,
+    DecimalPipe,
   ],
   bootstrap: [AppComponent]
 })

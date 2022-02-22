@@ -6,6 +6,7 @@ import { Unidad } from 'src/app/layout/catalogo/configuraciones/unidad/unidad';
 import { UnidadService } from 'src/app/layout/catalogo/configuraciones/unidad/unidad.service';
 import swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-producto-form',
@@ -21,8 +22,13 @@ export class ProductoFormComponent implements OnInit {
   unidades: Unidad[];
   descripcionProducto = new FormControl('', [Validators.required]);
   unidadProducto = new FormControl('', [Validators.required]);
+  bandera: Boolean;
 
-  constructor(private productosService: ProductosService, private unidadService: UnidadService, private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private productosService: ProductosService,
+              private unidadService: UnidadService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private _decimalPipe: DecimalPipe) {
   }
 
   ngOnInit(): void {
@@ -31,6 +37,7 @@ export class ProductoFormComponent implements OnInit {
         this.unidades = unidades
       });
     this.cargarProducto();
+    this.bandera=false;
   }
 
   getErrorMessage() {
@@ -41,6 +48,16 @@ export class ProductoFormComponent implements OnInit {
   {
     this.producto.precio_iva = n * 0.16;
     this.producto.precio_total = this.producto.precio_subtotal + this.producto.precio_iva;
+    if (n % 1 == 0) {
+        this.bandera =  true;
+        console.log(n);
+        console.log(this.bandera);
+    } else {
+        this.bandera = false;
+        console.log(n);
+        console.log(this.bandera);
+    }
+    //{{ this.producto.precio_subtotal | number: 1.2-2:'fr'}}
   }
 
   precio_input2(n: any)
@@ -70,6 +87,7 @@ export class ProductoFormComponent implements OnInit {
       }).then((result) => {
         if (result.isConfirmed) {
           this.producto.estatus = 1;
+          //this.producto.precio_subtotal =  Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(this.producto.precio_subtotal;
           this.productosService.create(this.producto).subscribe(
             response => {
               this.router.navigate(['/layout/productos'])

@@ -11,6 +11,11 @@ import { ProductosService } from 'src/app/layout/catalogo/productos/productos.se
 import { Producto } from 'src/app/layout/catalogo/productos/producto';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-solicitud-form',
@@ -32,12 +37,15 @@ export class SolicitudFormComponent implements OnInit {
   productosSeleccionados = new Set<Producto>();
   producto = new Producto();
   pds = new Array();
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(private productosService: ProductosService,
     private formBuilder: FormBuilder,
     private solicitudesService: SolicitudesService,
     private router: Router,
-    private detalleSolicitudService: DetalleSolicitudService) {
+    private detalleSolicitudService: DetalleSolicitudService,
+    private _snackBar: MatSnackBar) {
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 1, 0, 1);
   }
@@ -163,6 +171,24 @@ export class SolicitudFormComponent implements OnInit {
 
   }
 
+  snackBarSuccess() {
+    this._snackBar.open('Producto seleccionado ✔️', 'Aceptar', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2 * 1000,
+      panelClass: ['mySnackbarSucess']
+    });
+  }
+
+  snackBarDelete() {
+    this._snackBar.open('Producto removido ❌', 'Aceptar', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 2 * 1000,
+      panelClass: ['mySnackbarDelete']
+    });
+  }
+
   agregarProducto(producto: Producto) {
     if (this.productosSeleccionados.has(producto)) {
       swal.fire({
@@ -171,6 +197,7 @@ export class SolicitudFormComponent implements OnInit {
         text: 'Ya haz seleccionado este producto',
       })
     } else {
+      this.snackBarSuccess();
       this.productosSeleccionados.add(producto);
       this.agregarDetalles(producto);
     }
@@ -187,6 +214,7 @@ export class SolicitudFormComponent implements OnInit {
     }
     this.productosSeleccionados.delete(this.producto);
     this.removerDetalles(index);
+    this.snackBarDelete()
   }
 
   agregarDetalles(p: Producto) {

@@ -12,7 +12,7 @@ import swal from 'sweetalert2';
 })
 export class ProductosComponent implements OnInit {
   producto = new Producto();
-  displayedColumns: string[] = ['id_producto', 'descripcion', 'precio_iva', 'precio_subtotal', 'precio_total', 'estatus', 'observaciones', 'id_unidad', 'action'];
+  displayedColumns: string[] = ['id_producto', 'descripcion', 'precio_subtotal', 'precio_iva', 'precio_total', 'estatus', 'observaciones', 'id_unidad', 'action'];
   dataSource = new MatTableDataSource();
 
   constructor(private productosService: ProductosService, private activatedRoute: ActivatedRoute) { }
