@@ -1,3 +1,19 @@
+.formato1
+{
+  position: relative;
+  width  : 1000px;
+  height : 600px;
+  margin-left: 40px;
+  //border: 2px solid #ccc;
+  //display: inline;
+  //text-align: center;
+}
+
+.formato2
+{
+  text-align: center;
+}
+
 textarea{
   height: 100px;
 }
@@ -13,4 +29,8 @@ table {
 
 .inputs{
   padding-right: 500px;
+}
+
+.largeInput{
+  padding-right: 50px;
 }

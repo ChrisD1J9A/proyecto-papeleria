@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 export class ComprasService {
   private urlEndPoint: string = 'http://localhost:8080/api/compras';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private httpHeadersArchivo = new HttpHeaders({ 'Content-Type': 'application/octet-stream' });
 
   constructor(private http: HttpClient) { }
 
@@ -32,5 +33,10 @@ export class ComprasService {
   getCompra(id): Observable<Compra>
   {
     return this.http.get<Compra>(`${this.urlEndPoint}/${id}`);
+  }
+
+  descargarTicket(nombreArchivo: String): Observable<any>
+  {
+    return this.http.get(`${this.urlEndPoint}/show/archivo/${nombreArchivo}`, { headers: this.httpHeadersArchivo, responseType: 'blob' } )
   }
 }

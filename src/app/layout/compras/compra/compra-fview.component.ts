@@ -21,6 +21,8 @@ export class CompraFViewComponent implements OnInit {
   proveedor = new Proveedor();
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada', 'cant_final'];
   dataSource = new MatTableDataSource();
+  nombreProveedor: String;
+  banderaEditar: Boolean;
 
   constructor(private comprasService: ComprasService, private detalleCompraService: DetalleCompraService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
@@ -41,7 +43,8 @@ export class CompraFViewComponent implements OnInit {
           (compra) =>{
           this.compra = compra
           this.proveedor =  this.compra.proveedor;
-          console.log(this.compra);
+          this.nombreProveedor = compra.proveedor.nombre;
+          console.log(this.nombreProveedor);
         })
         this.detalleCompraService.getDetallesCompra(id).subscribe(
           deta_compra => {
@@ -50,7 +53,19 @@ export class CompraFViewComponent implements OnInit {
           });
       }
     })
+    if(this.compra.estatus=='Completada')
+    {
+      this.banderaEditar = false;
+    }else{
+      this.banderaEditar = true;
+    }
   }
 
+  descargarTicket()
+  {
+    var nombreArchivo = "ticket_compra_" + this.compra.id_compra;
+    console.log(nombreArchivo);
+    this.comprasService.descargarTicket(nombreArchivo);
+  }
 
 }
