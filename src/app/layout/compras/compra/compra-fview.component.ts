@@ -45,6 +45,12 @@ export class CompraFViewComponent implements OnInit {
           this.proveedor =  this.compra.proveedor;
           this.nombreProveedor = compra.proveedor.nombre;
           console.log(this.nombreProveedor);
+          if(compra.estatus=='Completada')
+          {
+            this.banderaEditar = false;
+          }else{
+            this.banderaEditar = true;
+          }
         })
         this.detalleCompraService.getDetallesCompra(id).subscribe(
           deta_compra => {
@@ -53,12 +59,6 @@ export class CompraFViewComponent implements OnInit {
           });
       }
     })
-    if(this.compra.estatus=='Completada')
-    {
-      this.banderaEditar = false;
-    }else{
-      this.banderaEditar = true;
-    }
   }
 
   descargarTicket()

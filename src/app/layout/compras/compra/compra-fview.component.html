@@ -7,14 +7,14 @@
   </div>
 
   <div>
-    <mat-form-field appearance="fill" class="largeInput">
+    <mat-form-field appearance="fill" class="largeInput" *ngIf="banderaEditar==false">
       <mat-label>Fecha de la compra</mat-label>
-      <input matInput [(ngModel)]="compra.fecha_creacion" type="date" name="fecha_compra" readonly="{{banderaEditar}}">
+      <input matInput [(ngModel)]="compra.fecha_creacion" type="date" name="fecha_compra" readonly="{{banderaEditar==false}}">
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="largeInput">
       <mat-label>Proveedor </mat-label>
-      <input matInput name="proveedor" value="{{nombreProveedor}}" readonly="{{banderaEditar}}">
+      <input matInput name="proveedor" value="{{nombreProveedor}}" readonly="{{banderaEditar==false}}">
     </mat-form-field>
   </div>
 
@@ -56,7 +56,7 @@
         <td mat-cell *matCellDef="let detalle_compra">
           <mat-form-field appearance="fill">
             <mat-label>Cantidad comprada</mat-label>
-            <input matInput [(ngModel)]="detalle_compra.cant_comprada" name="cant_comprada" readonly="{{banderaEditar}}">
+            <input matInput [(ngModel)]="detalle_compra.cant_comprada" name="cant_comprada" readonly="{{banderaEditar==false}}">
           </mat-form-field>
         </td>
       </ng-container>
@@ -78,13 +78,13 @@
 
   <mat-form-field appearance="outline" class="largeInput">
     <mat-label>Gasto total </mat-label>
-    <input matInput [(ngModel)]="compra.gasto_total" name="gasto_total" readonly="{{banderaEditar}}">
+    <input matInput [(ngModel)]="compra.gasto_total" name="gasto_total" readonly="{{banderaEditar==false}}">
   </mat-form-field>
   <br>
 
   <mat-form-field appearance="outline" class="inputs">
     <mat-label>Observaciones </mat-label>
-    <textarea matInput [(ngModel)]="compra.observaciones" name="observaciones" readonly="{{banderaEditar}}"></textarea>
+    <textarea matInput [(ngModel)]="compra.observaciones" name="observaciones" readonly="{{banderaEditar==false}}"></textarea>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="largeInput">
@@ -92,5 +92,5 @@
     <button mat-raised-button name="descargarTicket" (click)="descargarTicket()">
     <mat-icon>cloud_download</mat-icon>
     </button>
-    <textarea matInput [(ngModel)]="compra.ticket" name="ticket" readonly="{{banderaEditar}}"> </textarea>
+    <textarea matInput [(ngModel)]="compra.ticket" name="ticket" readonly="{{banderaEditar==false}}"> </textarea>
   </mat-form-field>

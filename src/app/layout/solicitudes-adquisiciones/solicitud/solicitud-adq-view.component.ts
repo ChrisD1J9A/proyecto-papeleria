@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Proveedor } from '../../catalogo/proveedores/proveedor';
+import { ProveedoresService } from '../../catalogo/proveedores/proveedores.service';
 import { Solicitud } from '../../solicitudes/solicitud';
 import { Detalle_solicitud } from '../../solicitudes/detalle_solicitud';
+import { Compra } from '../../../administracion/modelos/compra';
+import { Detalle_compra } from '../../../administracion/modelos/detalle_compra';
 import { SolicitudesService } from '../../solicitudes/solicitudes.service';
 import { DetalleSolicitudService } from '../../solicitudes/detalle-solicitud.service';
+import { ComprasService } from '../../../administracion/servicios/compras.service';
+import { DetalleCompraService } from '../../../administracion/servicios/detalle-compra.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -17,6 +23,8 @@ export class SolicitudAdqViewComponent implements OnInit {
   solicitud = new Solicitud();
   detalle_solicitud = new Detalle_solicitud();
   detalles_solicitud = new Array();
+  compra = new Compra();
+  detalle_compra = new Detalle_compra();
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];
   dataSource = new MatTableDataSource();
   flag: boolean;
@@ -26,7 +34,9 @@ export class SolicitudAdqViewComponent implements OnInit {
 
   constructor(private solicitudesService: SolicitudesService,
     private detalleSolicitudService: DetalleSolicitudService,
-    private router: Router, private activatedRoute: ActivatedRoute) { }
+    private router: Router, private activatedRoute: ActivatedRoute,
+    private comprasService: ComprasService,
+    private detalleCompraService: DetalleCompraService) { }
 
   ngOnInit(): void {
     this.cargarSolicitud();
@@ -61,6 +71,7 @@ export class SolicitudAdqViewComponent implements OnInit {
         this.detalleSolicitudService.getDetallesSolicitud(id).subscribe(
           deta_solicitudes => {
             this.dataSource = new MatTableDataSource(deta_solicitudes);
+            this.detalles_solicitud = deta_solicitudes;
             console.log(id);
             console.log(this.dataSource.data);
           });
@@ -69,7 +80,6 @@ export class SolicitudAdqViewComponent implements OnInit {
   }
 
   validarDetalles(): boolean {
-    this.detalles_solicitud = this.dataSource.data;
     let bandera = false;
     for (this.detalle_solicitud of this.detalles_solicitud) {
       if (this.detalle_solicitud.cant_autorizada == null || this.detalle_solicitud.cant_autorizada < 1) {
@@ -107,6 +117,7 @@ export class SolicitudAdqViewComponent implements OnInit {
                         `La solicitud:  ${solicitud.id_solicitud} fue aceptada con éxito`,
                         'success'
                       );
+                      this.crearCompra()
                       this.router.navigate(['/layout/solicitudes-adquisiciones'])
                     } else {
                       swal.fire(
@@ -167,4 +178,26 @@ export class SolicitudAdqViewComponent implements OnInit {
     }
   }
 
+
+  crearCompra()
+  {
+    var detallesoli = new Detalle_solicitud();
+    this.compra.usuario = 1;
+    this.compra.solicitud = this.solicitud;
+    this.compra.estatus = 'En proceso';
+    this.comprasService.create(this.compra).subscribe(
+      compra => {
+        for (detallesoli of this.detalles_solicitud){
+          this.detalle_compra.compra = compra;
+          this.detalle_compra.producto = detallesoli.producto;
+          this.detalle_compra.cant_existente = detallesoli.cant_existente;
+          this.detalle_compra.cant_solicitada = detallesoli.cant_solicitada;
+          this.detalle_compra.cant_autorizda = detallesoli.cant_autorizada;
+          this.detalleCompraService.create(this.detalle_compra).subscribe(
+            detalles =>{
+              console.log(detalles);
+            })
+        }
+      })
+  }
 }
