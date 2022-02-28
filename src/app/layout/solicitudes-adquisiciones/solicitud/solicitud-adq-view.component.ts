@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Proveedor } from '../../catalogo/proveedores/proveedor';
-import { ProveedoresService } from '../../catalogo/proveedores/proveedores.service';
 import { Solicitud } from '../../solicitudes/solicitud';
 import { Detalle_solicitud } from '../../solicitudes/detalle_solicitud';
 import { Compra } from '../../../administracion/modelos/compra';
@@ -192,7 +190,7 @@ export class SolicitudAdqViewComponent implements OnInit {
           this.detalle_compra.producto = detallesoli.producto;
           this.detalle_compra.cant_existente = detallesoli.cant_existente;
           this.detalle_compra.cant_solicitada = detallesoli.cant_solicitada;
-          this.detalle_compra.cant_autorizda = detallesoli.cant_autorizada;
+          this.detalle_compra.cant_autorizada = detallesoli.cant_autorizada;
           this.detalleCompraService.create(this.detalle_compra).subscribe(
             detalles =>{
               console.log(detalles);

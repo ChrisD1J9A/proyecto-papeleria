@@ -6,7 +6,7 @@ export class Detalle_compra{
   producto: Producto;
   cant_existente: number;
   cant_solicitada: number;
-  cant_autorizda: number;
+  cant_autorizada: number;
   cant_comprada: number;
   precio_unitario: number;
   precio_total: number;

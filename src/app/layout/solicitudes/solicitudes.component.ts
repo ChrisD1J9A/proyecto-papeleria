@@ -6,8 +6,9 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-solicitudes',
   templateUrl: './solicitudes.component.html',
-  styleUrls: ['./solicitudes.component.scss']
+  styleUrls: ['./solicitudes.component.scss'],
 })
+
 export class SolicitudesComponent implements OnInit {
   solicitud = new Solicitud();
   solicitudes: Solicitud[];

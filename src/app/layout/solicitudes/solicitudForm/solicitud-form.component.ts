@@ -45,9 +45,10 @@ export class SolicitudFormComponent implements OnInit {
     private solicitudesService: SolicitudesService,
     private router: Router,
     private detalleSolicitudService: DetalleSolicitudService,
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar,
+    private dateAdapter: DateAdapter<Date>) {
     const currentYear = new Date().getFullYear();
-    this.minDate = new Date(currentYear - 1, 0, 1);
+    this.minDate = new Date(currentYear - 1, 12, 31);
   }
 
   get detalles(): FormArray {
@@ -66,6 +67,7 @@ export class SolicitudFormComponent implements OnInit {
   })
 
   ngOnInit(): void {
+    this.dateAdapter.setLocale('es-MX');
     this.productosService.getProductos().subscribe(
       productos => {
         this.pds = productos.filter(p => p.estatus === 1);

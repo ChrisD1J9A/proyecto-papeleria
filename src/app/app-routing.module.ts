@@ -37,6 +37,8 @@ const routes: Routes = [
          { path: 'solicitudes-adquisiciones/detalle_solicitud/:id', component: SolicitudAdqViewComponent},
          { path: 'compras', component: ComprasComponent},
          { path: 'compras/detalle_compra/:id', component: CompraFViewComponent},
+         { path: 'compras/add/:id', component: CompraFViewComponent},
+         { path: 'compras/show/:id', component: CompraFViewComponent},
          { path: 'productos', component: ProductosComponent},
          { path: 'productos/producto-form', component: ProductoFormComponent},
          { path: 'productos/producto-form/:id', component: ProductoFormComponent},

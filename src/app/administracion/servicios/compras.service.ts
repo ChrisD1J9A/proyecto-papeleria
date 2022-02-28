@@ -3,6 +3,7 @@ import { Compra } from '../modelos/compra';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +36,20 @@ export class ComprasService {
     return this.http.get<Compra>(`${this.urlEndPoint}/${id}`);
   }
 
-  descargarTicket(nombreArchivo: String): Observable<any>
+  cargarTicket(archivo: File, id): Observable<Compra>
   {
-    return this.http.get(`${this.urlEndPoint}/show/archivo/${nombreArchivo}`, { headers: this.httpHeadersArchivo, responseType: 'blob' } )
+    let formData = new FormData();
+    formData.append("archivo", archivo);
+    formData.append("id", id);
+    return this.http.post(`${this.urlEndPoint}/add/file`, formData).pipe(
+      map((response: any) => response.compra as Compra)
+    );
   }
+
+  /*descargarTicket(nombreArchivo: String): Observable<Blob>
+  {
+    return this.http.get(`${this.urlEndPoint}/show/archivo/${nombreArchivo}`, { headers: this.httpHeadersArchivo, responseType: 'blob' })
+    .map((response: Response) => response.blob())
+    .catch(this.handle)
+  }*/
 }
