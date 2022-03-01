@@ -1,0 +1,51 @@
+.formato1
+{
+  position: relative;
+  width  : 1000px;
+  height : 600px;
+  margin-left: 40px;
+  //border: 2px solid #ccc;
+  //display: inline;
+  //text-align: center;
+}
+
+.formato2
+{
+  text-align: center;
+}
+
+textarea{
+  height: 100px;
+}
+
+mat-form-field.mat-form-field {
+  font-size: 16px;
+}
+
+table {
+  width: 100%;
+  margin: auto;
+}
+
+.inputs{
+  width: 70%;
+}
+
+.largeInput{
+  padding-right: 50px;
+}
+
+.botones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.espacio{
+  margin-right: 20px;
+}
+
+p{
+  display: inline;
+}

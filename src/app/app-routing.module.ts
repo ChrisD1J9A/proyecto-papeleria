@@ -10,6 +10,10 @@ import { SolicitudesAdquisicionesComponent } from './layout/solicitudes-adquisic
 import { SolicitudAdqViewComponent } from './layout/solicitudes-adquisiciones/solicitud/solicitud-adq-view.component';
 import { ComprasComponent } from './layout/compras/compras.component';
 import { CompraFViewComponent} from './layout/compras/compra/compra-fview.component';
+import { ComprasAdquisicionesComponent } from './layout/compras-adquisiciones/compras-adquisiciones.component';
+import { CompraAdqViewComponent } from './layout/compras-adquisiciones/compra/compra-adq-view.component';
+import { InventarioComponent } from './layout/inventario/inventario.component';
+import { InventarioViewComponent } from './layout/inventario/inventario/inventario-view.component';
 import { LoginComponent } from './login/login.component';
 import { UnidadComponent } from './layout/catalogo/configuraciones/unidad/unidad.component';
 import { ProductosComponent } from './layout/catalogo/productos/productos.component';
@@ -39,6 +43,10 @@ const routes: Routes = [
          { path: 'compras/detalle_compra/:id', component: CompraFViewComponent},
          { path: 'compras/add/:id', component: CompraFViewComponent},
          { path: 'compras/show/:id', component: CompraFViewComponent},
+         { path: 'compras-adquisiciones', component: ComprasAdquisicionesComponent},
+         { path: 'compras-adquisiciones/detalle_compra/:id', component: CompraAdqViewComponent},
+         { path: 'inventario', component: InventarioComponent},
+         { path: 'inventario/detalle_inventario/:id', component: InventarioViewComponent},
          { path: 'productos', component: ProductosComponent},
          { path: 'productos/producto-form', component: ProductoFormComponent},
          { path: 'productos/producto-form/:id', component: ProductoFormComponent},

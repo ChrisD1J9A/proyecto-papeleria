@@ -3,37 +3,28 @@
     <h1>
       <mat-icon>assignment</mat-icon> Compra {{compra.id_compra}}
     </h1>
-    <h2>Compra {{compra.estatus}} </h2>
+    <h2>Compra {{compra.estatus}}
+      <mat-icon style="color: green" *ngIf="compra.estatus==='Completada'">check_circle</mat-icon>
+      <mat-icon style="color: yellow" *ngIf="compra.estatus==='En proceso'">timer</mat-icon>
+    </h2>
   </div>
 
   <div>
-    <mat-form-field appearance="fill" class="largeInput" *ngIf="banderaEditar==false">
+    <mat-form-field appearance="fill" class="largeInput">
       <mat-label>Fecha de la compra</mat-label>
-      <input matInput [(ngModel)]="compra.fecha_creacion" type="date" name="fecha_compra" readonly="{{banderaEditar==false}}">
+      <input matInput [(ngModel)]="compra.fecha_creacion" type="date" name="fecha_compra" readonly>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="largeInput" *ngIf="banderaEditar==true">
-      <mat-label>Fecha de la compra</mat-label>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="compra.fecha_creacion" placeholder="{{today}}" [min]="minDate" [max]="today" required>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="fecha_compra.invalid">{{getErrorMessage()}}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="largeInput" *ngIf="banderaEditar==false">
+    <mat-form-field appearance="fill" class="largeInput" >
       <mat-label>Proveedor </mat-label>
-      <input matInput name="proveedor" value="{{nombreProveedor}}" readonly="{{banderaEditar==false}}">
+      <input matInput name="proveedor" value="{{nombreProveedor}}" readonly>
     </mat-form-field>
 
-    <mat-form-field *ngIf="banderaEditar==true">
-      <mat-select placeholder="Proveedor" [(ngModel)]="compra.proveedor" name="proveedor">
-        <mat-option *ngFor="let proveedor of proveedores" [value]="proveedor">
-          {{proveedor.nombre}}
-        </mat-option>
-      </mat-select>
+    <mat-form-field appearance="fill" class="largeInput" *ngIf="banderaEditar==false">
+      <mat-label> Usuario que registró la compra </mat-label>
+      <input matInput name="user" value="{{compra.solicitud.nombre_usuario}}" readonly>
     </mat-form-field>
   </div>
-
 
   <div>
     <mat-form-field appearance="standard" class="area-txt">
@@ -70,11 +61,7 @@
       <ng-container matColumnDef="cant_comprada">
         <th mat-header-cell *matHeaderCellDef> Cantidad comprada </th>
         <td mat-cell *matCellDef="let detalle_compra">
-          <mat-form-field appearance="fill">
-            <mat-label>Cantidad comprada</mat-label>
-            <input matInput [(ngModel)]="detalle_compra.cant_comprada" name="cant_comprada" readonly="{{banderaEditar==false}}" required>
-            <mat-error *ngIf="numericos.invalid">{{getErrorMessage2()}}</mat-error>
-          </mat-form-field>
+          {{detalle_compra.cant_comprada}}
         </td>
       </ng-container>
 
@@ -86,27 +73,17 @@
       </tr>
     </table>
   </div>
-  <br>
-
+  <br><br>
   <mat-form-field appearance="outline" class="largeInput">
     <mat-label>Gasto total </mat-label>
-    <input matInput [(ngModel)]="compra.gasto_total" type="number" name="gasto_total" readonly="{{banderaEditar==false}}" required>
-    <mat-error *ngIf="numericos.invalid">{{getErrorMessage2()}}</mat-error>
+    <input matInput [(ngModel)]="compra.gasto_total" type="number" name="gasto_total" readonly>
   </mat-form-field>
-
-  <button type="button" mat-raised-button (click)="fileInput.click()" color="primary" *ngIf="banderaEditar==true" class="espacio">Subir Ticket <mat-icon>attachment</mat-icon></button>
-    <p *ngIf="banderaEditar==true">{{mensajet}}</p>
-  <input hidden (change)="subirTicket($event)" #fileInput type="file" id="file">
-
 
   <button type="button" mat-raised-button (click)="descargarTicket()" color="primary" *ngIf="banderaEditar==false">Descargar Ticket <mat-icon>attachment</mat-icon></button>
   <br>
 
   <mat-form-field appearance="outline" class="inputs">
     <mat-label>Observaciones </mat-label>
-    <textarea matInput [(ngModel)]="compra.observaciones" name="observaciones" readonly="{{banderaEditar==false}}"></textarea>
+    <textarea matInput [(ngModel)]="compra.observaciones" name="observaciones" readonly></textarea>
   </mat-form-field>
-
-  <div class="botones">
-    <button type="button" mat-raised-button (click)="guardarCompra()" color="warn" *ngIf="banderaEditar==true">Guardar<mat-icon>save</mat-icon></button>
-  </div>
+</div>

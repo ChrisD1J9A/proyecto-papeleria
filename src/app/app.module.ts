@@ -59,6 +59,10 @@ import { SolicitudAdqViewComponent } from './layout/solicitudes-adquisiciones/so
 import { ComprasComponent } from './layout/compras/compras.component';
 import { CompraFViewComponent } from './layout/compras/compra/compra-fview.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ComprasAdquisicionesComponent } from './layout/compras-adquisiciones/compras-adquisiciones.component';
+import { CompraAdqViewComponent } from './layout/compras-adquisiciones/compra/compra-adq-view.component';
+import { InventarioComponent } from './layout/inventario/inventario.component';
+import { InventarioViewComponent } from './layout/inventario/inventario/inventario-view.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +85,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     SolicitudAdqViewComponent,
     ComprasComponent,
     CompraFViewComponent,
+    ComprasAdquisicionesComponent,
+    CompraAdqViewComponent,
+    InventarioComponent,
+    InventarioViewComponent,
   ],
   imports: [
     BrowserModule,

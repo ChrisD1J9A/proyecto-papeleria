@@ -4,9 +4,9 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
     constructor() {}
-    username: any 
+    username: any
     ngOnInit() {
-        this.username=JSON.parse(localStorage.getItem('currentUser')!).username;
+        //this.username=JSON.parse(localStorage.getItem('currentUser')!).username;
     }
-    
+
 }
