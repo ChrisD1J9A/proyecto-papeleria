@@ -4,9 +4,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Compra } from '../../../administracion/modelos/papeleria/compra';
 import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
 import { Proveedor } from '../../../administracion/modelos/papeleria/proveedor';
+import { Inventario } from '../../../administracion/modelos/papeleria/inventario';
+import { Detalle_inventario } from '../../../administracion/modelos/papeleria/detalle_inventario';
 import { ProveedoresService } from '../../../administracion/servicios/papeleria/proveedores.service';
 import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
+import { InventarioService } from '../../../administracion/servicios/papeleria/inventario.service';
+import { DetalleInventarioService } from '../../../administracion/servicios/papeleria/detalle-inventario.service'
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -36,6 +40,8 @@ export class CompraFViewComponent implements OnInit {
   constructor(private comprasService: ComprasService,
     private detalleCompraService: DetalleCompraService,
     private proveedoresService: ProveedoresService,
+    private inventarioService: InventarioService,
+    private detaInventarioService: DetalleInventarioService,
     private router: Router, private activatedRoute: ActivatedRoute)
     {
       const currentYear = new Date().getFullYear();
@@ -174,6 +180,12 @@ export class CompraFViewComponent implements OnInit {
     var nombreArchivo = this.compra.ticket;
     console.log(nombreArchivo);
     window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);
+  }
+
+  crearActualizarInventario()
+  {
+      var inventario: Inventario;
+      var detalle_inventario: Detalle_inventario; 
   }
 
 }
