@@ -1,1 +1,12 @@
-<p>inventario works!</p>
+<div class="area-txt">
+  <h1>Inventario</h1>
+  <br><br>
+  <h1>Tabla de productos</h1>
+  <mat-form-field appearance="standard">
+    <mat-label>Filtrar por </mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo broche" #input>
+  </mat-form-field>
+</div>
+
+
+<button mat-raised-button color="warn" [routerLink]="['layout/solicitud']"> <mat-icon>add_box</mat-icon> Nueva solicitud </button>

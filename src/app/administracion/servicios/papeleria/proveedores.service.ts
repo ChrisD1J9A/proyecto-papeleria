@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Proveedor} from './proveedor';
+import {Proveedor} from '../../modelos/papeleria/proveedor';
 import { Observable } from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map} from 'rxjs/operators';

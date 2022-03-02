@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Solicitud } from '../solicitud';
-import { Detalle_solicitud } from '../detalle_solicitud';
-import { SolicitudesService } from '../solicitudes.service';
-import { DetalleSolicitudService } from '../detalle-solicitud.service';
+import { Solicitud } from '../../../administracion/modelos/papeleria/solicitud';
+import { Detalle_solicitud } from '../../../administracion/modelos/papeleria/detalle_solicitud';
+import { SolicitudesService } from '../../../administracion/servicios/papeleria/solicitudes.service';
+import { DetalleSolicitudService } from '../../../administracion/servicios/papeleria/detalle-solicitud.service';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({

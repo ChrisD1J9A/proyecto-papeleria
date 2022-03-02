@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
-import { Compra } from '../../../administracion/modelos/compra';
-import { ComprasService } from '../../../administracion/servicios/compras.service';
-import { Detalle_compra } from '../../../administracion/modelos/detalle_compra';
-import { DetalleCompraService } from '../../../administracion/servicios/detalle-compra.service';
-import { Proveedor } from '../../catalogo/proveedores/proveedor';
+import { Compra } from '../../../administracion/modelos/papeleria/compra';
+import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
+import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
+import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
+import { Proveedor } from '../../../administracion/modelos/papeleria/proveedor';
 
 @Component({
   selector: 'app-compra-adq-view',

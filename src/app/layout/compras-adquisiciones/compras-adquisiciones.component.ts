@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Compra } from '../../administracion/modelos/compra';
-import { ComprasService } from '../../administracion/servicios/compras.service';
+import { Compra } from '../../administracion/modelos/papeleria/compra';
+import { ComprasService } from '../../administracion/servicios/papeleria/compras.service';
 
 @Component({
   selector: 'app-compras-adquisiciones',

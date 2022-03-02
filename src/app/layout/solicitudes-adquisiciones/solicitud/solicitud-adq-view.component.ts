@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Solicitud } from '../../solicitudes/solicitud';
-import { Detalle_solicitud } from '../../solicitudes/detalle_solicitud';
-import { Compra } from '../../../administracion/modelos/compra';
-import { Detalle_compra } from '../../../administracion/modelos/detalle_compra';
-import { SolicitudesService } from '../../solicitudes/solicitudes.service';
-import { DetalleSolicitudService } from '../../solicitudes/detalle-solicitud.service';
-import { ComprasService } from '../../../administracion/servicios/compras.service';
-import { DetalleCompraService } from '../../../administracion/servicios/detalle-compra.service';
+import { Solicitud } from '../../../administracion/modelos/papeleria/solicitud';
+import { Detalle_solicitud } from '../../../administracion/modelos/papeleria/detalle_solicitud';
+import { Compra } from '../../../administracion/modelos/papeleria/compra';
+import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
+import { SolicitudesService } from '../../../administracion/servicios/papeleria/solicitudes.service';
+import { DetalleSolicitudService } from '../../../administracion/servicios/papeleria/detalle-solicitud.service';
+import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
+import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 

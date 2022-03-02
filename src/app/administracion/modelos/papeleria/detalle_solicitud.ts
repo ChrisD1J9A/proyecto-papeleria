@@ -1,5 +1,5 @@
 import { Solicitud } from './solicitud';
-import { Producto } from '../catalogo/productos/producto';
+import { Producto } from './producto';
 
 export class Detalle_solicitud
 {

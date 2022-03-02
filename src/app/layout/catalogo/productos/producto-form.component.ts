@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Producto } from './producto';
-import { ProductosService } from './productos.service';
-import { Unidad } from 'src/app/layout/catalogo/configuraciones/unidad/unidad';
-import { UnidadService } from 'src/app/layout/catalogo/configuraciones/unidad/unidad.service';
+import { Producto } from 'src/app/administracion/modelos/papeleria/producto';
+import { ProductosService } from 'src/app/administracion/servicios/papeleria/productos.service';
+import { Unidad } from 'src/app/administracion/modelos/papeleria/unidad';
+import { UnidadService } from 'src/app/administracion/servicios/papeleria/unidad.service';
 import swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DecimalPipe } from '@angular/common';

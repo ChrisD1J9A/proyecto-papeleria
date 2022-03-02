@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Compra } from '../../../administracion/modelos/compra';
-import { Detalle_compra } from '../../../administracion/modelos/detalle_compra';
-import { Proveedor } from '../../catalogo/proveedores/proveedor';
-import { ProveedoresService } from '../../catalogo/proveedores/proveedores.service';
-import { ComprasService } from '../../../administracion/servicios/compras.service';
-import { DetalleCompraService } from '../../../administracion/servicios/detalle-compra.service';
+import { Compra } from '../../../administracion/modelos/papeleria/compra';
+import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
+import { Proveedor } from '../../../administracion/modelos/papeleria/proveedor';
+import { ProveedoresService } from '../../../administracion/servicios/papeleria/proveedores.service';
+import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
+import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -39,7 +39,7 @@ export class CompraFViewComponent implements OnInit {
     private router: Router, private activatedRoute: ActivatedRoute)
     {
       const currentYear = new Date().getFullYear();
-      this.minDate = new Date(currentYear - 1, 12, 31); 
+      this.minDate = new Date(currentYear - 1, 12, 31);
     }
 
   ngOnInit(): void {

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Proveedor } from './proveedor';
-import { ProveedoresService } from './proveedores.service';
-import { ActivatedRoute } from '@angular/router';
+import { Proveedor } from 'src/app/administracion/modelos/papeleria/proveedor';
+import { ProveedoresService } from 'src/app/administracion/servicios/papeleria/proveedores.service';
 import swal from 'sweetalert2';
 
 @Component({

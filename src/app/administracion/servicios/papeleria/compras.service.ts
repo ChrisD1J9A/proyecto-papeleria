@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Compra } from '../modelos/compra';
+import { Compra } from '../../modelos/papeleria/compra';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'

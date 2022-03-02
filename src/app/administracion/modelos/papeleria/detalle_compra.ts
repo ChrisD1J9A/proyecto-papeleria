@@ -1,5 +1,5 @@
 import { Compra } from './compra';
-import { Producto } from '../../layout/catalogo/productos/producto';
+import { Producto } from './producto';
 
 export class Detalle_compra{
   compra: Compra;

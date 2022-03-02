@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Detalle_compra } from '../../administracion/modelos/detalle_compra';
+import { Detalle_compra } from '../../modelos/papeleria/detalle_compra';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

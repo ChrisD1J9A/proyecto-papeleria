@@ -12,8 +12,8 @@ import { SidebarComponent } from './layout/components/sidebar/sidebar.component'
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 import { UnidadComponent} from './layout/catalogo/configuraciones/unidad/unidad.component';
-import {UnidadService} from './layout/catalogo/configuraciones/unidad/unidad.service';
-import {ProductosService} from './layout/catalogo/productos/productos.service';
+import {UnidadService} from './administracion/servicios/papeleria/unidad.service';
+import {ProductosService} from './administracion/servicios/papeleria/productos.service';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 import {MatCardModule} from '@angular/material/card';
@@ -49,7 +49,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ProductosComponent } from './layout/catalogo/productos/productos.component';
 import { ProductoFormComponent } from './layout/catalogo/productos/producto-form.component';
 import { ProveedoresComponent } from './layout/catalogo/proveedores/proveedores.component';
-import { ProveedoresService } from './layout/catalogo/proveedores/proveedores.service';
+import { ProveedoresService } from './administracion/servicios/papeleria/proveedores.service';
 import { ProveedorFormComponent } from './layout/catalogo/proveedores/proveedor-form.component';
 import { SolicitudesComponent } from './layout/solicitudes/solicitudes.component';
 import { SolicitudFormComponent } from './layout/solicitudes/solicitudForm/solicitud-form.component';

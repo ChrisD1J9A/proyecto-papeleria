@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Solicitud } from './solicitud';
+import { Solicitud } from '../../modelos/papeleria/solicitud';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';

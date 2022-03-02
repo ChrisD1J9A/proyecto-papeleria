@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Detalle_solicitud } from './detalle_solicitud';
+import { Detalle_solicitud } from '../../modelos/papeleria/detalle_solicitud';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

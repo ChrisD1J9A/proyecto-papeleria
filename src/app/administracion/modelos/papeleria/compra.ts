@@ -1,5 +1,5 @@
-import { Solicitud }  from '../../layout/solicitudes/solicitud';
-import { Proveedor } from '../../layout/catalogo/proveedores/proveedor';
+import { Solicitud }  from './solicitud';
+import { Proveedor } from './proveedor';
 
 export class Compra{
   id_compra: number;

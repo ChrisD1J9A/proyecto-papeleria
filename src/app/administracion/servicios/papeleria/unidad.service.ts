@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import {UNIDADES} from './unidad.json';
-import {Unidad} from './unidad';
+import {Unidad} from '../../modelos/papeleria/unidad';
 import { Observable } from 'rxjs';
-import { of } from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 

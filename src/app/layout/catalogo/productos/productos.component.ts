@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Producto } from './producto';
-import { ProductosService } from './productos.service';
+import { Producto } from 'src/app/administracion/modelos/papeleria/producto';
+import { ProductosService } from 'src/app/administracion/servicios/papeleria/productos.service';
 import { ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
 

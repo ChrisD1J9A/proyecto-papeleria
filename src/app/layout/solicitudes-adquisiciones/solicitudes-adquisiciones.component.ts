@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Solicitud } from '../solicitudes/solicitud';
-import { SolicitudesService } from '../solicitudes/solicitudes.service';
+import { Solicitud } from '../../administracion/modelos/papeleria/solicitud';
+import { SolicitudesService } from '../../administracion/servicios/papeleria/solicitudes.service';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({

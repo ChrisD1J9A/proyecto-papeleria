@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormBuilder, FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Validators, FormBuilder, FormArray} from '@angular/forms';
 import swal from 'sweetalert2';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Solicitud } from '../solicitud';
-import { SolicitudesService } from '../solicitudes.service';
-import { DetalleSolicitudService } from '../detalle-solicitud.service';
-import { Detalle_solicitud } from '../detalle_solicitud';
-import { ProductosService } from 'src/app/layout/catalogo/productos/productos.service';
-import { Producto } from 'src/app/layout/catalogo/productos/producto';
+import { Router} from '@angular/router';
+import { Solicitud } from 'src/app/administracion/modelos/papeleria/solicitud';
+import { SolicitudesService } from 'src/app/administracion/servicios/papeleria/solicitudes.service';
+import { DetalleSolicitudService } from 'src/app/administracion/servicios/papeleria/detalle-solicitud.service';
+import { Detalle_solicitud } from 'src/app/administracion/modelos/papeleria/detalle_solicitud';
+import { ProductosService } from 'src/app/administracion/servicios/papeleria/productos.service';
+import { Producto } from 'src/app/administracion/modelos/papeleria/producto';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import {

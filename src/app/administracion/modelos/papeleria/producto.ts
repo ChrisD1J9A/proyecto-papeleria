@@ -1,4 +1,4 @@
-import {Unidad} from '../configuraciones/unidad/unidad';
+import {Unidad} from './unidad';
 
 export class Producto {
     id_producto: number;

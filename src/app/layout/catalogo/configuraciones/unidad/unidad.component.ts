@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Unidad } from './unidad';
+import { Unidad } from 'src/app/administracion/modelos/papeleria/unidad';
 import { MatTableDataSource } from '@angular/material/table';
-import { UnidadService } from './unidad.service';
+import { UnidadService } from 'src/app/administracion/servicios/papeleria/unidad.service';
 import { FormControl, Validators } from '@angular/forms';
 import swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
