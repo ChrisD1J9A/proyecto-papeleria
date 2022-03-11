@@ -4,13 +4,20 @@ import { Inventario } from '../../administracion/modelos/papeleria/inventario';
 import { Detalle_inventario } from '../../administracion/modelos/papeleria/detalle_inventario';
 import { InventarioService } from '../../administracion/servicios/papeleria/inventario.service';
 import { DetalleInventarioService } from '../../administracion/servicios/papeleria/detalle-inventario.service';
+import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 
 
 @Component({
   selector: 'app-inventario',
   templateUrl: './inventario.component.html',
-  styleUrls: ['./inventario.component.scss']
+  styleUrls: ['./inventario.component.scss'],
+  providers: [
+    { provide: DateAdapter, useClass: AppDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
+  ]
 })
+
 export class InventarioComponent implements OnInit {
   inventario = new Inventario();
   detalle_inventario = new Detalle_inventario();
@@ -44,6 +51,7 @@ export class InventarioComponent implements OnInit {
     this.inventarioService.getInventario(1).subscribe(
       inventario => {
         this.inventario = inventario;
+        console.log(inventario.fecha_ultima_actualizacion);
       });
     this.detalleInvenarioService.getDetallesInventario(1).subscribe(
       detas => {

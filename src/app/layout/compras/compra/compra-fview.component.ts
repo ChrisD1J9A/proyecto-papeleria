@@ -4,12 +4,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Compra } from '../../../administracion/modelos/papeleria/compra';
 import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
 import { Proveedor } from '../../../administracion/modelos/papeleria/proveedor';
+import { Detalle_solicitud } from '../../../administracion/modelos/papeleria/detalle_solicitud';
 import { Inventario } from '../../../administracion/modelos/papeleria/inventario';
 import { Detalle_inventario } from '../../../administracion/modelos/papeleria/detalle_inventario';
 import { ProveedoresService } from '../../../administracion/servicios/papeleria/proveedores.service';
 import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
 import { InventarioService } from '../../../administracion/servicios/papeleria/inventario.service';
+import { DetalleSolicitudService  } from '../../../administracion/servicios/papeleria/detalle-solicitud.service';
 import { DetalleInventarioService } from '../../../administracion/servicios/papeleria/detalle-inventario.service'
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
@@ -24,6 +26,7 @@ export class CompraFViewComponent implements OnInit {
   compra = new Compra();
   detalle_compra = new Detalle_compra();
   detalles_compra = new Array();
+  detalles_inventario: Detalle_inventario[];
   proveedor = new Proveedor();
   proveedores: Proveedor[];
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];
@@ -42,6 +45,7 @@ export class CompraFViewComponent implements OnInit {
     private proveedoresService: ProveedoresService,
     private inventarioService: InventarioService,
     private detaInventarioService: DetalleInventarioService,
+    private detaSolicitudService: DetalleSolicitudService,
     private router: Router, private activatedRoute: ActivatedRoute)
     {
       const currentYear = new Date().getFullYear();
@@ -184,8 +188,11 @@ export class CompraFViewComponent implements OnInit {
 
   crearActualizarInventario()
   {
-      var inventario: Inventario;
-      var detalle_inventario: Detalle_inventario; 
+      this.detalleCompraService.getDetallesCompra(this.compra.id_compra).subscribe(
+        detasss => {
+          console.log(detasss[0]);
+        }
+      )
   }
 
 }
