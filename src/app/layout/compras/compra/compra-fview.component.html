@@ -35,7 +35,19 @@
 
     <mat-form-field appearance="fill" class="largeInput" *ngIf="banderaEditar==false">
       <mat-label> Solicitud </mat-label>
-      <input matInput name="solicitud" value="{{compra.solicitud.id_solicitud}}" readonly="{{banderaEditar==false}}">
+      <a [routerLink]="['/layout/solicitudes/detalle_solicitud', compra.solicitud.id_solicitud]"><input matInput name="solicitud" value="{{compra.solicitud.id_solicitud}}" readonly="{{banderaEditar==false}}"></a>
+    </mat-form-field>
+
+    <br>
+
+    <mat-form-field appearance="fill" class="largeInput" *ngIf="banderaEditar==false">
+      <mat-label> Solicitante </mat-label>
+      <input matInput name="solicitud" value="{{compra.solicitud.nombre_usuario}}" readonly="{{banderaEditar==false}}">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="largeInput" *ngIf="banderaEditar==false">
+      <mat-label> Sucursal </mat-label>
+      <input matInput name="solicitud" value="{{compra.solicitud.id_sucursal}}" readonly="{{banderaEditar==false}}">
     </mat-form-field>
   </div>
 
@@ -77,7 +89,7 @@
         <td mat-cell *matCellDef="let detalle_compra">
           <mat-form-field appearance="fill">
             <mat-label>Cantidad comprada</mat-label>
-            <input matInput [(ngModel)]="detalle_compra.cant_comprada" name="cant_comprada" readonly="{{banderaEditar==false}}" required>
+            <input matInput [(ngModel)]="detalle_compra.cant_comprada" name="cant_comprada" readonly="{{banderaEditar==false}}" max="{{detalle_compra.cant_autorizada}}" min="1" type="number" required>
             <mat-error *ngIf="numericos.invalid">{{getErrorMessage2()}}</mat-error>
           </mat-form-field>
         </td>
@@ -93,14 +105,17 @@
   </div>
   <br>
 
-  <mat-form-field appearance="outline" class="largeInput">
+  <mat-form-field appearance="fill" class="largeInput">
     <mat-label>Gasto total </mat-label>
-    <input matInput [(ngModel)]="compra.gasto_total" type="number" name="gasto_total" readonly="{{banderaEditar==false}}" required>
+    <input matInput [(ngModel)]="compra.gasto_total" type="number" name="gasto_total" readonly="{{banderaEditar==false}}" (input)="total_input($event.target.value)" required>
+    <span matPrefix>$&nbsp;</span>
+    <span matSuffix *ngIf="bandera==false">pesos</span>
+    <span matSuffix *ngIf="bandera==true">.00 pesos</span>
     <mat-error *ngIf="numericos.invalid">{{getErrorMessage2()}}</mat-error>
   </mat-form-field>
 
   <button type="button" mat-raised-button (click)="fileInput.click()" color="primary" *ngIf="banderaEditar==true" class="espacio">Subir Ticket <mat-icon>attachment</mat-icon></button>
-    <p *ngIf="banderaEditar==true">{{mensajet}}</p>
+  <p *ngIf="banderaEditar==true">{{mensajet}}</p>
   <input hidden (change)="subirTicket($event)" #fileInput type="file" id="file">
 
 
@@ -114,5 +129,6 @@
 
   <div class="botones">
     <button type="button" mat-raised-button (click)="guardarCompra()" color="warn" *ngIf="banderaEditar==true">Guardar<mat-icon>save</mat-icon></button>
-    <button type="button" mat-raised-button (click)="crearActualizarInventario()" color="warn" > tst </button>
+    <button type="button" mat-raised-button (click)="crearActualizarInventario()" color="warn"> tst </button>
   </div>
+</div>

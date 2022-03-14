@@ -29,7 +29,6 @@ export class SolicitudAdqViewComponent implements OnInit {
   observacion_aprobacion_rechazo = new FormControl('', [Validators.required]);
   cant_autorizada = new FormControl('', [Validators.required]);
 
-
   constructor(private solicitudesService: SolicitudesService,
     private detalleSolicitudService: DetalleSolicitudService,
     private router: Router, private activatedRoute: ActivatedRoute,
@@ -65,7 +64,7 @@ export class SolicitudAdqViewComponent implements OnInit {
             } else {
               this.flag = true;
             }
-          })
+          });
         this.detalleSolicitudService.getDetallesSolicitud(id).subscribe(
           deta_solicitudes => {
             this.dataSource = new MatTableDataSource(deta_solicitudes);

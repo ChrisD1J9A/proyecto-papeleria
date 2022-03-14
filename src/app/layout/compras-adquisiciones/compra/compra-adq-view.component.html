@@ -24,6 +24,21 @@
       <mat-label> Usuario que registró la compra </mat-label>
       <input matInput name="user" value="{{compra.solicitud.nombre_usuario}}" readonly>
     </mat-form-field>
+
+    <mat-form-field appearance="fill" class="largeInput">
+      <mat-label> Solicitud </mat-label>
+      <a [routerLink]="['/layout/solicitudes-adquisiciones/detalle_solicitud', solicitud.id_solicitud]"><input matInput name="solicitud_" value="{{solicitud.id_solicitud}}" readonly></a>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="largeInput">
+      <mat-label> Solicitante </mat-label>
+      <input matInput name="solicitud" value="{{solicitud.nombre_usuario}}" readonly>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="largeInput" >
+      <mat-label> Sucursal </mat-label>
+      <input matInput name="solicitud" value="{{solicitud.id_sucursal}}" readonly>
+    </mat-form-field>
   </div>
 
   <div>
@@ -74,11 +89,15 @@
     </table>
   </div>
   <br><br>
-  <mat-form-field appearance="outline" class="largeInput">
+  <mat-form-field appearance="fill" class="largeInput">
     <mat-label>Gasto total </mat-label>
+    <span matPrefix>$&nbsp;</span>
     <input matInput [(ngModel)]="compra.gasto_total" type="number" name="gasto_total" readonly>
+    <span matSuffix *ngIf="bandera==false">pesos</span>
+    <span matSuffix *ngIf="bandera==true">.00 pesos</span>
   </mat-form-field>
 
+  <button type="button" mat-raised-button (click)="openDialog()" color="primary" *ngIf="banderaEditar==false">Ver Ticket <mat-icon>remove_red_eye</mat-icon></button>
   <button type="button" mat-raised-button (click)="descargarTicket()" color="primary" *ngIf="banderaEditar==false">Descargar Ticket <mat-icon>attachment</mat-icon></button>
   <br>
 

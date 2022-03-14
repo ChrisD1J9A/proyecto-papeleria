@@ -39,6 +39,7 @@ export class CompraFViewComponent implements OnInit {
   mensajet = "Ticket no seleccionado";
   today = new Date();
   minDate: Date;
+  bandera = true;
 
   constructor(private comprasService: ComprasService,
     private detalleCompraService: DetalleCompraService,
@@ -70,7 +71,20 @@ export class CompraFViewComponent implements OnInit {
   }
 
   getErrorMessage2() {
-    return this.numericos.hasError('required') ? 'Rellene el campo con un valor mayor a cero' : '';
+    return this.numericos.hasError('required') ? 'Ingrese un valor menor/igual a la cantidad autorizada y mayor a 0' : '';
+  }
+
+  total_input(n: any)
+  {
+    if (n % 1 == 0) {
+        this.bandera =  true;
+        console.log(n);
+        console.log(this.bandera);
+    } else {
+        this.bandera = false;
+        console.log(n);
+        console.log(this.bandera);
+    }
   }
 
   cargarCompra(): void {
@@ -105,6 +119,11 @@ export class CompraFViewComponent implements OnInit {
 
   subirTicket(event) {
     this.ticket = event.target.files[0];
+    if(this.ticket.type.indexOf('pdf') < 0 && this.ticket.type.indexOf('image') < 0)
+    {
+      swal.fire('Error seleccionar un formato válido: ', 'El archivo debe ser del tipo imagen o pdf', 'error');
+      this.ticket = null;
+    }
     if(this.ticket)
     {
       this.mensajet = this.ticket.name;
