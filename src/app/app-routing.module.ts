@@ -20,7 +20,8 @@ import { ProductosComponent } from './layout/catalogo/productos/productos.compon
 import { ProductoFormComponent } from './layout/catalogo/productos/producto-form.component';
 import { ProveedoresComponent } from './layout/catalogo/proveedores/proveedores.component';
 import { ProveedorFormComponent } from './layout/catalogo/proveedores/proveedor-form.component';
-
+import { MaxMinDeStockComponent } from './layout/catalogo/configuraciones/maxMinDeStock/max-min-de-stock/max-min-de-stock.component';
+import { MaxMinDeExistenciaComponent } from './layout/catalogo/configuraciones/maxMinDeStock/max-min-de-existencia/max-min-de-existencia.component';
 import { RolGuard } from './_guards';
 import { AuthGuard } from './_guards/auth.guard';
 
@@ -54,6 +55,8 @@ const routes: Routes = [
          { path: 'proveedores/proveedor-form', component: ProveedorFormComponent},
          { path: 'proveedores/proveedor-form/:id', component: ProveedorFormComponent},
          { path: 'unidades', component: UnidadComponent},
+         { path: 'maxMinStock', component: MaxMinDeStockComponent},
+         { path: 'maxMinExistencia', component: MaxMinDeExistenciaComponent},
         ]
       },
     ]

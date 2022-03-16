@@ -63,6 +63,8 @@ import { ComprasAdquisicionesComponent } from './layout/compras-adquisiciones/co
 import { CompraAdqViewComponent } from './layout/compras-adquisiciones/compra/compra-adq-view.component';
 import { InventarioComponent } from './layout/inventario/inventario.component';
 import { InventarioViewComponent } from './layout/inventario/inventario/inventario-view.component';
+import { MaxMinDeStockComponent } from './layout/catalogo/configuraciones/maxMinDeStock/max-min-de-stock/max-min-de-stock.component';
+import { MaxMinDeExistenciaComponent } from './layout/catalogo/configuraciones/maxMinDeStock/max-min-de-existencia/max-min-de-existencia.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +91,8 @@ import { InventarioViewComponent } from './layout/inventario/inventario/inventar
     CompraAdqViewComponent,
     InventarioComponent,
     InventarioViewComponent,
+    MaxMinDeStockComponent,
+    MaxMinDeExistenciaComponent,
   ],
   imports: [
     BrowserModule,
