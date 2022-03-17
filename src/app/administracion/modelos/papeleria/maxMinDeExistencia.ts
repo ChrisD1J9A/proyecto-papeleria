@@ -1,10 +1,10 @@
 export class MaxMinDeExistencia
 {
   id_maxMinDeExistencia: number;
-  id_sucursal: number;
+  sucursal: string;
   usuario_modifico: string;
-  max_stock: number;
-  min_stock: number;
+  max_existencia: number;
+  min_existencia: number;
   estatus: string;
   fecha_creacion: Date;
   fecha_actualizacion: Date;

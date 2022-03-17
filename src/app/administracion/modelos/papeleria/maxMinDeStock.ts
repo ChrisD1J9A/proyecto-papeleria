@@ -1,7 +1,7 @@
 export class MaxMinDeStock
 {
   id_maxMinDeStock: number;
-  id_sucursal: number;
+  sucursal: string;
   usuario_modifico: string;
   max_stock: number;
   min_stock: number;

@@ -1,1 +1,103 @@
-<p>max-min-de-existencia works!</p>
+<div class="formulario">
+  <form>
+    <h1>{{ titulo }}
+    </h1>
+    <p *ngIf="banderaEditar==false"  class="inLine">Sucursal: {{maxMinDeExistencia.sucursal}} </p>
+    <mat-checkbox [(ngModel)]="banderaEditar" *ngIf="editCheckB==true" name="banderaEdit">Editar</mat-checkbox>
+    <br>
+    <mat-form-field appearance="fill" class="espaciado" *ngIf="banderaEditar==true">
+        <mat-label>Sucursal</mat-label>
+        <mat-select placeholder="Sucursal" name="sucursal" [(ngModel)]="sucursal" required>
+            <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal">
+              {{sucursal.nombreSucursal }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="espaciado">
+      <mat-label>Máximo de existencia</mat-label>
+      <input matInput type="number" [(ngModel)]="maxMinDeExistencia.max_existencia" name="max_existencia">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="espaciado">
+      <mat-label>Mínimo de existencia</mat-label>
+      <input matInput type="number" [(ngModel)]="maxMinDeExistencia.min_existencia" name="min_existencia">
+    </mat-form-field>
+    <br>
+    <button mat-raised-button (click)="create()" color="primary" *ngIf="!maxMinDeExistencia.id_maxMinDeExistencia">Guardar</button> &nbsp;
+    <button mat-raised-button (click)="update()" color="primary" *ngIf="maxMinDeExistencia.id_maxMinDeExistencia"> Actualizar </button> &nbsp;
+    <button mat-raised-button (click)="limpiar()" color="warn" [disabled]="!maxMinDeExistencia.max_existencia && !maxMinDeExistencia.min_existencia && !sucursal.nombreSucursal"> Cancelar </button>
+  </form>
+</div>
+
+<div class="tablaareatexto">
+  <br>
+  <br>
+  <h1>Tabla de maximos y  minimos</h1>
+  <mat-form-field appearance="standard">
+    <mat-label>Filtrar por </mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo maximo 1" #input>
+  </mat-form-field>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="id_config_max_min">
+    <th mat-header-cell *matHeaderCellDef> Id </th>
+    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.id_maxMinDeExistencia}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="sucursal">
+    <th mat-header-cell *matHeaderCellDef> Sucursal </th>
+    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.sucursal}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="usuario_modifico">
+    <th mat-header-cell *matHeaderCellDef> Usuario quien modifico </th>
+    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.usuario_modifico}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="max_existencia">
+    <th mat-header-cell *matHeaderCellDef> Máximo de existencia </th>
+    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.max_existencia}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="min_existencia">
+    <th mat-header-cell *matHeaderCellDef> Mínimo de existencia </th>
+    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.min_existencia}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fecha_creacion">
+    <th mat-header-cell *matHeaderCellDef> fecha_creacion </th>
+    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.fecha_creacion}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="fecha_act">
+    <th mat-header-cell *matHeaderCellDef> fecha_actualizacion </th>
+    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.fecha_actualizacion}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <div class="btns">
+      <td mat-cell *matCellDef="let maxMinDeExistencia">
+        <button class="btn1" mat-mini-fab color="primary" (click)="cargarMaxMins(maxMinDeExistencia.id_maxMinDeExistencia)">
+          <mat-icon>create</mat-icon>
+        </button>
+        <button mat-mini-fab *ngIf="maxMinDeExistencia.estatus == 1" color="warn">
+          <mat-icon>clear</mat-icon>
+        </button>
+        <button mat-mini-fab *ngIf="maxMinDeExistencia.estatus == 0" color="white">
+          <mat-icon style="color: green">done</mat-icon>
+        </button>
+      </td>
+    </div>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
+  </tr>
+</table>
