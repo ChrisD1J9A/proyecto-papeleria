@@ -35,6 +35,11 @@ export class ComprasService {
     return this.http.get<Compra>(`${this.urlEndPoint}/${id}`);
   }
 
+  getCompraBySucursal(id): Observable<Compra>
+  {
+    return this.http.get<Compra>(`${this.urlEndPoint}/sucursal/${id}`);
+  }
+
   cargarTicket(archivo: File, id): Observable<Compra>
   {
     let formData = new FormData();

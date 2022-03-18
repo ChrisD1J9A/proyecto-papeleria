@@ -62,9 +62,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ComprasAdquisicionesComponent } from './layout/compras-adquisiciones/compras-adquisiciones.component';
 import { CompraAdqViewComponent } from './layout/compras-adquisiciones/compra/compra-adq-view.component';
 import { InventarioComponent } from './layout/inventario/inventario.component';
-import { InventarioViewComponent } from './layout/inventario/inventario/inventario-view.component';
 import { MaxMinDeStockComponent } from './layout/catalogo/configuraciones/maxMinDeStock/max-min-de-stock/max-min-de-stock.component';
 import { MaxMinDeExistenciaComponent } from './layout/catalogo/configuraciones/maxMinDeStock/max-min-de-existencia/max-min-de-existencia.component';
+import { InventariosAdquisicionesComponent } from './layout/inventarios-adquisiciones/inventarios-adquisiciones.component';
 
 @NgModule({
   declarations: [
@@ -90,9 +90,9 @@ import { MaxMinDeExistenciaComponent } from './layout/catalogo/configuraciones/m
     ComprasAdquisicionesComponent,
     CompraAdqViewComponent,
     InventarioComponent,
-    InventarioViewComponent,
     MaxMinDeStockComponent,
     MaxMinDeExistenciaComponent,
+    InventariosAdquisicionesComponent,
   ],
   imports: [
     BrowserModule,
@@ -150,5 +150,5 @@ import { MaxMinDeExistenciaComponent } from './layout/catalogo/configuraciones/m
     DecimalPipe,
   ],
   bootstrap: [AppComponent]
-})
+}) 
 export class AppModule { }

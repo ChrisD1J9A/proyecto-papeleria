@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Compra } from '../../administracion/modelos/papeleria/compra';
 import { ComprasService } from '../../administracion/servicios/papeleria/compras.service';
+import { Sucursal } from 'src/app/administracion/modelos/sucursal';
+import { SucursalService } from 'src/app/administracion/servicios';
 
 @Component({
   selector: 'app-compras-adquisiciones',
@@ -9,6 +11,8 @@ import { ComprasService } from '../../administracion/servicios/papeleria/compras
   styleUrls: ['./compras-adquisiciones.component.scss']
 })
 export class ComprasAdquisicionesComponent implements OnInit {
+  sucursales: Sucursal[];
+  sucursal = new Sucursal();
   compra = new Compra();
   compras: Compra[];
   enProceso: Compra[];
@@ -19,10 +23,15 @@ export class ComprasAdquisicionesComponent implements OnInit {
   dataSource3 = new MatTableDataSource();
 
 
-  constructor(private comprasService: ComprasService) { }
+  constructor(private sucursalService: SucursalService,
+              private comprasService: ComprasService) { }
 
   ngOnInit(): void
   {
+    this.sucursalService.getSucursales().subscribe(val => {
+      this.sucursales = val;
+    });
+    
     this.comprasService.getCompras().subscribe(
       compras => {
         this.compras = compras;

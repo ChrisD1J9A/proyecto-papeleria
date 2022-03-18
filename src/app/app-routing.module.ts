@@ -13,7 +13,7 @@ import { CompraFViewComponent} from './layout/compras/compra/compra-fview.compon
 import { ComprasAdquisicionesComponent } from './layout/compras-adquisiciones/compras-adquisiciones.component';
 import { CompraAdqViewComponent } from './layout/compras-adquisiciones/compra/compra-adq-view.component';
 import { InventarioComponent } from './layout/inventario/inventario.component';
-import { InventarioViewComponent } from './layout/inventario/inventario/inventario-view.component';
+import { InventariosAdquisicionesComponent } from './layout/inventarios-adquisiciones/inventarios-adquisiciones.component';
 import { LoginComponent } from './login/login.component';
 import { UnidadComponent } from './layout/catalogo/configuraciones/unidad/unidad.component';
 import { ProductosComponent } from './layout/catalogo/productos/productos.component';
@@ -47,7 +47,7 @@ const routes: Routes = [
          { path: 'compras-adquisiciones', component: ComprasAdquisicionesComponent},
          { path: 'compras-adquisiciones/detalle_compra/:id', component: CompraAdqViewComponent},
          { path: 'inventario', component: InventarioComponent},
-         { path: 'inventario/detalle_inventario/:id', component: InventarioViewComponent},
+         { path: 'inventarios-adquisiciones', component: InventariosAdquisicionesComponent},
          { path: 'productos', component: ProductosComponent},
          { path: 'productos/producto-form', component: ProductoFormComponent},
          { path: 'productos/producto-form/:id', component: ProductoFormComponent},

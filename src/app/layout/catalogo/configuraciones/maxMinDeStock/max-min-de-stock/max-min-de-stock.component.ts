@@ -20,7 +20,7 @@ export class MaxMinDeStockComponent implements OnInit {
   displayedColumns: string[] = ['id_config_max_min', 'sucursal', 'usuario_modifico', 'max_stock', 'min_stock', 'fecha_creacion', 'fecha_act', 'action'];
   dataSource = new MatTableDataSource();
   maxMinFR = new FormControl('', [Validators.required]);
-  sucursales!: Sucursal[];
+  sucursales: Sucursal[];
   sucursal = new Sucursal();
   banderaEditar = true;
   editCheckB = false;

@@ -33,4 +33,9 @@ export class InventarioService {
   {
     return this.http.get<Inventario>(`${this.urlEndPoint}/${id}`);
   }
+
+  getInventarioBySucursal(id): Observable<Inventario>
+  {
+    return this.http.get<Inventario>(`${this.urlEndPoint}/Sucursal/${id}`);
+  }
 }

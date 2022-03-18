@@ -179,7 +179,7 @@ export class SolicitudAdqViewComponent implements OnInit {
   crearCompra()
   {
     var detallesoli = new Detalle_solicitud();
-    this.compra.usuario = 1;
+    this.compra.usuario = "Cristofher Diego (cambiar)";
     this.compra.solicitud = this.solicitud;
     this.compra.estatus = 'En proceso';
     this.comprasService.create(this.compra).subscribe(
