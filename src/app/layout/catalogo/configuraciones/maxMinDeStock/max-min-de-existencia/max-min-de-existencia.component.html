@@ -68,12 +68,12 @@
 
   <ng-container matColumnDef="fecha_creacion">
     <th mat-header-cell *matHeaderCellDef> fecha_creacion </th>
-    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.fecha_creacion}} </td>
+    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.fecha_creacion | date: 'dd/MM/yyyy'}} </td>
   </ng-container>
 
   <ng-container matColumnDef="fecha_act">
     <th mat-header-cell *matHeaderCellDef> fecha_actualizacion </th>
-    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.fecha_actualizacion}} </td>
+    <td mat-cell *matCellDef="let maxMinDeExistencia"> {{maxMinDeExistencia.fecha_actualizacion | date: 'dd/MM/yyyy'}} </td>
   </ng-container>
 
   <ng-container matColumnDef="action">

@@ -182,6 +182,7 @@ export class SolicitudAdqViewComponent implements OnInit {
     this.compra.usuario = "Cristofher Diego (cambiar)";
     this.compra.solicitud = this.solicitud;
     this.compra.estatus = 'En proceso';
+    this.compra.id_sucursal = this.solicitud.id_sucursal;
     this.comprasService.create(this.compra).subscribe(
       compra => {
         for (detallesoli of this.detalles_solicitud){
