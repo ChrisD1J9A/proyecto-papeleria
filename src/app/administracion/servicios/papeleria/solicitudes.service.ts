@@ -37,6 +37,11 @@ export class SolicitudesService {
     );
   }
 
+  getSolicitudesBySucursal(id): Observable<Solicitud[]>
+  {
+    return this.http.get<Solicitud[]>(`${this.urlEndPoint}/sucursal/${id}`);
+  }
+
   getSolicitud(id): Observable<Solicitud>
   {
     return this.http.get<Solicitud>(`${this.urlEndPoint}/${id}`);

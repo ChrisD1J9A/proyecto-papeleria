@@ -29,7 +29,7 @@ permisosUsuario=false//125
   perfil: any;
   idRegion: any
   idSucursal: any
-  //username= '';
+  username= '';
   idEmpleado: any;
   flag = false;
   @ViewChild("page")
@@ -65,7 +65,7 @@ permisosUsuario=false//125
       this.showMenu = '';
       this.pushRightClass = 'push-right';
 
-      //this.permisos()
+      this.permisos()
 
 
   }

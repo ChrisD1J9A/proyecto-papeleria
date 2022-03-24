@@ -17,7 +17,7 @@ export class SolicitudesAdquisicionesComponent implements OnInit {
   displayedColumns: string[] = ['id_solicitud',  'fecha_solicitud', 'nombre_usuario', 'estatus', 'action'];
   dataSource1 = new MatTableDataSource();
   dataSource2 = new MatTableDataSource();
-  dataSource3 = new MatTableDataSource();
+  dataSource3 = new MatTableDataSource();;
 
   constructor(private solicitudService: SolicitudesService) { }
 

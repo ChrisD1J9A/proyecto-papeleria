@@ -39,6 +39,9 @@ export class SolicitudFormComponent implements OnInit {
   pds = new Array();
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!);
+  idSucursal: any;
+  nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!)
 
   constructor(private productosService: ProductosService,
     private formBuilder: FormBuilder,
@@ -56,8 +59,8 @@ export class SolicitudFormComponent implements OnInit {
   }
 
   solicitudForm = this.formBuilder.group({
-    nombre_usuario: [''],
-    id_sucursal: [''],
+    nombre_usuario: [this.nombre_usuario],
+    id_sucursal: [this.nombreSucursal],
     fecha_solicitud: [this.date],
     observacion_solicitud: [''],
   });
@@ -73,6 +76,8 @@ export class SolicitudFormComponent implements OnInit {
         this.pds = productos.filter(p => p.estatus === 1);
         this.dataSource = new MatTableDataSource(this.pds);
       });
+      this.idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
+      console.log(this.idSucursal);
   }
 
   applyFilter(event: Event) {
@@ -84,6 +89,8 @@ export class SolicitudFormComponent implements OnInit {
     if (this.productosSeleccionados.size > 0) {
       this.solicitud = this.solicitudForm.value;
       this.solicitud.estatus = "Pendiente";
+      this.solicitud.id_sucursal = this.idSucursal;
+      this.solicitud.sucursal = this.nombreSucursal;
       console.log(this.solicitud);
 
       //this.deta = this.fuga;
@@ -234,5 +241,7 @@ export class SolicitudFormComponent implements OnInit {
   removerDetalles(indice: number) {
     this.detalles.removeAt(indice);
   }
+
+
 
 }

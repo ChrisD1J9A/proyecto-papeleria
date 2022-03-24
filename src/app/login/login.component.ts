@@ -41,18 +41,19 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
       this.loading = true;
-      
+
       this.authenticationService.login(this.usuario,this.sucursal)
           .pipe(first())
           .subscribe(
               data => {
                 let roles = JSON.parse(localStorage.getItem('roles')!);
-                
+
                 let bandera = false;
                 for(let i= 0;i<roles.roles.length;i++){
-                   
-                    if(roles.roles[i].idSistema==2){
+
+                    if(roles.roles[i].idSistema==9){
                         localStorage.setItem('sucursalIngresa',JSON.stringify(roles.roles[i].sucursalIngresa))
+                        localStorage.setItem('idSucursal', JSON.stringify(roles.roles[i].idSucursal))
                         bandera = true;
                     }
                 }
@@ -64,8 +65,8 @@ export class LoginComponent implements OnInit {
                     this.loading = false;
                     localStorage.clear();
                 }
-               
-                 
+
+
               },
               error => {
                   Swal.fire('Atencion',"¡No tienes permisos en esta sucursal!\nPonte en contacto con TI.","warning")

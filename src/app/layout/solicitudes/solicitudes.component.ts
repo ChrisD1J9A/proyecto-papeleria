@@ -19,11 +19,12 @@ export class SolicitudesComponent implements OnInit {
   dataSource1 = new MatTableDataSource();
   dataSource2 = new MatTableDataSource();
   dataSource3 = new MatTableDataSource();
+  idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
 
   constructor(private solicitudService: SolicitudesService) { }
 
   ngOnInit(): void {
-    this.solicitudService.getSolicitudes().subscribe(
+    this.solicitudService.getSolicitudesBySucursal(this.idSucursal).subscribe(
       solicitudes => {
         this.solicitudes = solicitudes
         this.aceptadas = this.filtrarAceptadas(solicitudes);

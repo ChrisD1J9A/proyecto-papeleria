@@ -13,11 +13,12 @@ export class ComprasComponent implements OnInit {
   compras: Compra[];
   displayedColumns: string[] = ['id_compra', 'fecha_compra', 'gasto_total', 'estatus', 'action'];
   dataSource = new MatTableDataSource();
+  idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
 
   constructor(private comprasService: ComprasService) { }
 
   ngOnInit(): void {
-    this.comprasService.getCompras().subscribe(
+    this.comprasService.getCompraBySucursal(this.idSucursal).subscribe(
       compras => {
         this.compras = compras;
         this.dataSource = new MatTableDataSource(this.compras);

@@ -1,25 +1,21 @@
 <mat-toolbar>
     <mat-toolbar-row class="justify-content-between">
-      <!-- <button mat-icon-button (click)="toggleSidebar()">
+      <button mat-icon-button (click)="toggleSidebar()">
         <mat-icon class="color-white">menu</mat-icon>
-      </button> -->
+      </button>
     <h3 class="color-white">  ADMINISTRACIÓN</h3>
       <div class="row mr-3 ml-auto">
         <ul class="row m-0 align-items-center">
           <li>
-            <button
-              mat-button
+            <button mat-button
               [matMenuTriggerFor]="menu" *ngIf="usuario != ''"
-              class=""
-            > <!-- class= "user mt-2 d-flex align-items-center"-->
-              <!-- <img src="./assets/user.jpg" alt="" class="user-image mr-1 p-2" /> -->
-              <mat-icon class="user-image-icon ml-1 color-white"
-              >person_icon</mat-icon>
-              <!--<strong class="color-white">{{usuario.username}}</strong>-->
-              <mat-icon class="user-image-icon ml-1"
-                >keyboard_arrow_down</mat-icon>
-
+              class= "user mt-2 d-flex align-items-center">
+              <!--<img src="./assets/user.jpg" alt="" class="user-image mr-1 p-2" />-->
+              <mat-icon class="user-image-icon ml-1 color-white"> person_icon </mat-icon>
+              <strong class="color-white"> {{usuario.username}} </strong>
+              <mat-icon class="user-image-icon ml-1"> keyboard_arrow_down </mat-icon>
             </button>
+
             <button mat-icon-button class="color-white" (click)="toggleSidebar()">
               <mat-icon class="color-white">menu</mat-icon>
             </button>

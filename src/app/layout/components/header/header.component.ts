@@ -14,8 +14,8 @@ export class HeaderComponent implements OnInit {
 
     constructor(public router: Router) { }
       ngOnInit(): void {
-      //this.usuario= JSON.parse(localStorage.getItem('currentUser')!);
-      //console.log(this.usuario.username);
+      this.usuario= JSON.parse(localStorage.getItem('currentUser')!);
+      console.log(this.usuario.username);
 
      }
     toggleSidebar() {
@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
     }
     cerrarSesion(){
       Swal.fire("cerrando sesion")
-      // Swal.close();
+      Swal.close();
        localStorage.setItem("sucursalIngresa","");
        localStorage.setItem("roles","");
        localStorage.setItem("currentUser","");
