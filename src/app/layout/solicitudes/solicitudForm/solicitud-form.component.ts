@@ -42,6 +42,7 @@ export class SolicitudFormComponent implements OnInit {
   nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!);
   idSucursal: any;
   nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
+  banderaReadOnly: Boolean;
 
   constructor(private productosService: ProductosService,
     private formBuilder: FormBuilder,
@@ -91,9 +92,6 @@ export class SolicitudFormComponent implements OnInit {
       this.solicitud.estatus = "Pendiente";
       this.solicitud.id_sucursal = this.idSucursal;
       this.solicitud.nombre_sucursal = this.nombreSucursal;
-      console.log(this.solicitud);
-
-      //this.deta = this.fuga;
       swal.fire({
         title: '¿Desea hacer una nueva solicitud? ',
         showDenyButton: true,
@@ -107,10 +105,9 @@ export class SolicitudFormComponent implements OnInit {
               for (var i = 0; i < this.detalles.getRawValue().length; i++) {
                 this.deta = this.detalles.value.pop();
                 this.deta.solicitud = solicitud;
-                console.log(this.deta);
                 this.detalleSolicitudService.create(this.deta).subscribe(
                   detalle => {
-                    console.log(detalle);
+                    console.log("done");
                   }
                 )
                 console.log(this.deta);
@@ -207,9 +204,18 @@ export class SolicitudFormComponent implements OnInit {
       })
     } else {
       this.snackBarSuccess();
+      this.banderaReadOnly = true;
       this.productosSeleccionados.add(producto);
       this.agregarDetalles(producto);
     }
+  }
+
+  agregarProductoFueraDelCatalogo()
+  {
+    var producto = new Producto();
+    producto.id_producto = 1;
+    this.banderaReadOnly = false;
+    this.agregarDetalles(producto);
   }
 
   eliminarProducto(index: number) {
@@ -229,19 +235,14 @@ export class SolicitudFormComponent implements OnInit {
   agregarDetalles(p: Producto) {
     const detalleFormC = this.formBuilder.group({
       producto: [p],
-      producto_: [{ value: p.descripcion, disabled: true }],
+      producto_: [{ value: p.descripcion, disabled: this.banderaReadOnly }],
       cant_existente: ['0', { validators: [Validators.required] }],
       cant_solicitada: ['0', { validators: [Validators.required] }]
     });
-
     this.detalles.push(detalleFormC);
-
   }
 
   removerDetalles(indice: number) {
     this.detalles.removeAt(indice);
   }
-
-
-
 }

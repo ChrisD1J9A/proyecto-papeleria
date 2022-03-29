@@ -19,7 +19,7 @@
   </mat-form-field>
 
 
-  <h3>En la tabla de abajo podrá elejir los productos que desee solicitar</h3>
+  <h3>En la tabla de productos podrá elegir los productos que desee solicitar</h3>
 
   <div FormArrayName="detalles">
     <button class="btn1" mat-raised-button color="warn" *ngIf="productosSeleccionados.size>=1" (click)="eliminarTodo()">
@@ -46,6 +46,10 @@
         </button>
       </div>
     </div>
+    <label for="productoDesconocido">Agregar un producto fuera del catalogo  del productos </label>
+    <button mat-mini-fab color="warn" class="btn1" name="productoDesconocido" (click)="agregarProductoFueraDelCatalogo()">
+      <mat-icon>add_circle</mat-icon>
+    </button>
   </div>
 
   <mat-form-field appearance="outline" class="full-width">
