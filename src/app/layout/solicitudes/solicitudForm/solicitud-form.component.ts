@@ -41,7 +41,7 @@ export class SolicitudFormComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!);
   idSucursal: any;
-  nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!)
+  nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
 
   constructor(private productosService: ProductosService,
     private formBuilder: FormBuilder,
@@ -90,7 +90,7 @@ export class SolicitudFormComponent implements OnInit {
       this.solicitud = this.solicitudForm.value;
       this.solicitud.estatus = "Pendiente";
       this.solicitud.id_sucursal = this.idSucursal;
-      this.solicitud.sucursal = this.nombreSucursal;
+      this.solicitud.nombre_sucursal = this.nombreSucursal;
       console.log(this.solicitud);
 
       //this.deta = this.fuga;

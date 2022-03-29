@@ -3,9 +3,10 @@ import { Proveedor } from './proveedor';
 
 export class Compra{
   id_compra: number;
-  id_sucursal: number;
   solicitud: Solicitud;
   proveedor: Proveedor;
+  id_sucursal: number;
+  nombre_sucursal: String;
   usuario: String;
   fecha_creacion: Date;
   gasto_total: number;

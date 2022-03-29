@@ -28,6 +28,7 @@ export class SolicitudAdqViewComponent implements OnInit {
   flag: boolean;
   observacion_aprobacion_rechazo = new FormControl('', [Validators.required]);
   cant_autorizada = new FormControl('', [Validators.required]);
+  nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
 
   constructor(private solicitudesService: SolicitudesService,
     private detalleSolicitudService: DetalleSolicitudService,
@@ -183,8 +184,10 @@ export class SolicitudAdqViewComponent implements OnInit {
     this.compra.solicitud = this.solicitud;
     this.compra.estatus = 'En proceso';
     this.compra.id_sucursal = this.solicitud.id_sucursal;
+    this.compra.nombre_sucursal = this.solicitud.nombre_sucursal;
     this.comprasService.create(this.compra).subscribe(
       compra => {
+        console.log(compra);
         for (detallesoli of this.detalles_solicitud){
           this.detalle_compra.compra = compra;
           this.detalle_compra.producto = detallesoli.producto;

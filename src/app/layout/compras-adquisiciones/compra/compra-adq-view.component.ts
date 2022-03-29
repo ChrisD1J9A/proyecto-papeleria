@@ -58,6 +58,7 @@ export class CompraAdqViewComponent implements OnInit {
               this.nombreProveedor = "";
             }
             console.log(this.proveedor);
+            console.log(compra);
             if (compra.estatus == 'Completada') {
               this.banderaEditar = false;
             } else {
