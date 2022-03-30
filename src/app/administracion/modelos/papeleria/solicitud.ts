@@ -1,6 +1,6 @@
 export class Solicitud{
   id_solicitud: number;
-  id_usuario_aprob: number;
+  usuario_aprob: string;
   id_sucursal: number;
   nombre_sucursal: String;
   nombre_usuario: string;

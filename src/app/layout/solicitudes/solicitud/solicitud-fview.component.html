@@ -3,7 +3,8 @@
     <h1> <mat-icon>assignment</mat-icon> Solicitud {{solicitud.id_solicitud}}</h1>
     <h2>Solicitud {{solicitud.estatus}} <mat-icon style="color: green" *ngIf="solicitud.estatus==='Aceptada'">check_circle</mat-icon>
                                         <mat-icon style="color: red" *ngIf="solicitud.estatus==='Rechazada'">cancel</mat-icon>
-                                        <mat-icon style="color: yellow" *ngIf="solicitud.estatus==='Pendiente'">timer</mat-icon></h2>
+                                        <mat-icon style="color: yellow" *ngIf="solicitud.estatus==='Pendiente'">timer</mat-icon>
+                                        <mat-icon style="color: red" *ngIf="solicitud.estatus==='Cancelada'">report_off</mat-icon></h2>
   </div>
 
   <div>
@@ -11,6 +12,18 @@
       <mat-label>Fecha de la solicitud: </mat-label>
       <input matInput [(ngModel)]="solicitud.fecha_solicitud" name="fecha_solicitud" readonly type="date">
     </mat-form-field>
+
+    <mat-form-field appearance="outline" *ngIf="solicitud.estatus==='Rechazada' || solicitud.estatus==='Aceptada'">
+      <mat-label>Fecha de la revision: </mat-label>
+      <input matInput [(ngModel)]="solicitud.fecha_rechazo" name="fecha_rev" readonly type="date" *ngIf="solicitud.estatus==='Rechazada'">
+      <input matInput [(ngModel)]="solicitud.fecha_aprobacion" name="fecha_rev" readonly type="date" *ngIf="solicitud.estatus==='Aceptada'">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" *ngIf="solicitud.estatus==='Cancelada'">
+      <mat-label>Fecha de la cancelacion: </mat-label>
+      <input matInput [(ngModel)]="solicitud.fecha_cancelacion" name="fecha_cance" readonly type="date">
+    </mat-form-field>
+
     <br>
     <mat-form-field appearance="outline" class="largeInput">
       <mat-label>Comentarios del solicitante: </mat-label>
@@ -55,6 +68,10 @@
       <mat-label>Comentarios de adquisiciones: </mat-label>
       <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo" readonly></textarea>
     </mat-form-field>
+  </div>
+
+  <div *ngIf="solicitud.estatus==='Pendiente'">
+    <button mat-raised-button color="warn" (click)="cancelarSolicitud()"> Cancelar Solicitud <mat-icon>report_off</mat-icon></button>
   </div>
 
 </div>

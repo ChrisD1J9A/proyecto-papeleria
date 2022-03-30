@@ -5,7 +5,7 @@ import { MaxMinExistenciaService } from 'src/app/administracion/servicios/papele
 import { FormControl, Validators } from '@angular/forms';
 import swal from 'sweetalert2';
 import { Sucursal } from 'src/app/administracion/modelos/sucursal';
-import { SucursalService} from 'src/app/administracion/servicios';
+import { SucursalService } from 'src/app/administracion/servicios';
 
 @Component({
   selector: 'app-max-min-de-existencia',
@@ -23,19 +23,21 @@ export class MaxMinDeExistenciaComponent implements OnInit {
   sucursal = new Sucursal();
   banderaEditar = true;
   editCheckB = false;
+  controlMax = new FormControl();
+
   constructor(private maxMinS: MaxMinExistenciaService,
-              private sucursalService:SucursalService) { }
+    private sucursalService: SucursalService) { }
 
   ngOnInit(): void {
     this.maxMinS.getMaxMinDeExistenciaA().subscribe(
       maxMinss => {
         this.MaxMins = maxMinss;
-          this.dataSource = new MatTableDataSource(maxMinss);
+        this.dataSource = new MatTableDataSource(maxMinss);
       });
-      this.sucursalService.getSucursales().subscribe(val=>{
-          this.sucursales=val;
-      });
-      this.limpiar();
+    this.sucursalService.getSucursales().subscribe(val => {
+      this.sucursales = val;
+    });
+    this.limpiar();
   }
 
   applyFilter(event: Event) {
@@ -50,8 +52,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
     this.editCheckB = false;
   }
 
-  cargarMaxMins(id_maxMinDeExistencia)
-  {
+  cargarMaxMins(id_maxMinDeExistencia) {
     swal.fire({
       title: '¿Desea editar este elemento?',
       showDenyButton: true,
@@ -74,37 +75,43 @@ export class MaxMinDeExistenciaComponent implements OnInit {
   }
 
   public create(): void {
-    if (this.maxMinDeExistencia.max_existencia) {
-      swal.fire({
-        title: '¿Desea guardar este nuevo elemento?',
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: 'Si',
-        denyButtonText: `No guardar`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.maxMinDeExistencia.sucursal = this.sucursal.nombreSucursal;
-          this.maxMinDeExistencia.estatus = "Activo";
-          this.maxMinDeExistencia.fecha_creacion = new Date();
-          this.maxMinDeExistencia.fecha_actualizacion =  new Date();
-          this.maxMinDeExistencia.usuario_modifico = "Cristofher Diego (cambiar esto xD)";
-          this.maxMinS.create(this.maxMinDeExistencia).subscribe(
-            maxMiin => {
-              //window.location.reload();
-              this.ngOnInit();
-            })
-          swal.fire('Guardado', `La configuracion fue guardada con éxito!`, 'success')
-        } else if (result.isDenied) {
-          swal.fire('El elemento no fue guardado', '', 'info')
-        }
-      })
-      //this.ngOnInit();
-    } else {
-      swal.fire({
-        icon: 'warning',
-        title: 'Oops...',
-        text: 'Ingrese algún dato para continuar',
-      })
+    var config = this.consultaConfigPorSucurasl(this.maxMinDeExistencia);
+
+    if(config == null ){
+      if (this.maxMinDeExistencia.max_existencia) {
+        swal.fire({
+          title: '¿Desea guardar este nuevo elemento?',
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: 'Si',
+          denyButtonText: `No guardar`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.maxMinDeExistencia.sucursal = this.sucursal.nombreSucursal;
+            this.maxMinDeExistencia.estatus = "Activo";
+            this.maxMinDeExistencia.fecha_creacion = new Date();
+            this.maxMinDeExistencia.fecha_actualizacion = new Date();
+            this.maxMinDeExistencia.usuario_modifico = JSON.parse(localStorage.getItem('nombreCUsuario')!);;
+            this.maxMinS.create(this.maxMinDeExistencia).subscribe(
+              maxMiin => {
+                //window.location.reload();
+                this.ngOnInit();
+              })
+            swal.fire('Guardado', `La configuracion fue guardada con éxito!`, 'success')
+          } else if (result.isDenied) {
+            swal.fire('El elemento no fue guardado', '', 'info')
+          }
+        })
+        //this.ngOnInit();
+      } else {
+        swal.fire({
+          icon: 'warning',
+          title: 'Oops...',
+          text: 'Ingrese algún dato para continuar',
+        })
+      }
+    }else{
+      swal.fire('Ya existe una configuracion para esa sucursal', '', 'error');
     }
   }
 
@@ -138,6 +145,24 @@ export class MaxMinDeExistenciaComponent implements OnInit {
         text: 'Ingrese algún dato para continuar',
       })
     }
+  }
+
+  validarMaxMin(n: number) {
+    this.controlMax = new FormControl(n, Validators.max(n - 1));
+  }
+
+  getErrorMessage() {
+    return this.controlMax.hasError('max') ? 'El mínimo de existencia no puede ser mayor al máximo' : '';
+  }
+
+  consultaConfigPorSucurasl(maxMin: MaxMinDeExistencia): MaxMinDeExistencia {
+    var nombreSucursal: string = maxMin.sucursal;
+    var configuracion: MaxMinDeExistencia;
+    this.maxMinS.getMaxMinDeExistenciaBySucursal(nombreSucursal).subscribe(
+      maxMinCnfg => {
+        configuracion = maxMinCnfg;
+      });
+    return configuracion;
   }
 
 }

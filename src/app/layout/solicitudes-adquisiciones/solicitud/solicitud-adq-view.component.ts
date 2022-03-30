@@ -104,7 +104,7 @@ export class SolicitudAdqViewComponent implements OnInit {
             this.detalles_solicitud = this.dataSource.data;
             this.solicitud.estatus = "Aceptada";
             this.solicitud.fecha_aprobacion = new Date();
-            this.solicitud.id_usuario_aprob = 1;
+            this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);;
             this.solicitudesService.update(this.solicitud).subscribe(
               solicitud => {
                 this.detalleSolicitudService.update(this.detalles_solicitud, solicitud.id_solicitud).subscribe(
@@ -140,8 +140,8 @@ export class SolicitudAdqViewComponent implements OnInit {
 
     if (this.solicitud.observacion_aprobacion_rechazo) {
       this.solicitud.estatus = "Rechazada";
-      this.solicitud.fecha_aprobacion = new Date();
-      this.solicitud.id_usuario_aprob = 1;
+      this.solicitud.fecha_rechazo = new Date();
+      this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);;
 
       swal.fire({
         title: '¿Está seguro de rechazar esta solicitud? ',
@@ -180,7 +180,7 @@ export class SolicitudAdqViewComponent implements OnInit {
   crearCompra()
   {
     var detallesoli = new Detalle_solicitud();
-    this.compra.usuario = "Cristofher Diego (cambiar)";
+    //this.compra.usuario = "Cristofher Diego (cambiar)";
     this.compra.solicitud = this.solicitud;
     this.compra.estatus = 'En proceso';
     this.compra.id_sucursal = this.solicitud.id_sucursal;

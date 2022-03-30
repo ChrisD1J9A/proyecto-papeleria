@@ -29,6 +29,11 @@ export class MaxMinExistenciaService {
     return this.http.get<MaxMinDeExistencia>(`${this.urlEndPoint}/${id}`);
   }
 
+  public getMaxMinDeExistenciaBySucursal(sucursal: string): Observable<MaxMinDeExistencia>
+  {
+    return this.http.get<MaxMinDeExistencia>(`${this.urlEndPoint}S/${sucursal}`);
+  }
+
   public update(maxMin: MaxMinDeExistencia): Observable<MaxMinDeExistencia>
   {
     return this.http.put<MaxMinDeExistencia>(`${this.urlEndPoint}/${maxMin.id_maxMinDeExistencia}`, maxMin, {headers: this.httpHeaders});

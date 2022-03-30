@@ -23,6 +23,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
   dataSource = new MatTableDataSource();
   dataSource2 = new MatTableDataSource();
   BanderaMostrar = false;
+  nombreSucursalInventarioActual: string;
 
   constructor(private sucursalService: SucursalService,
     private inventarioService: InventarioService,
@@ -49,6 +50,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
       this.inventarioService.getInventarioBySucursal(this.sucursal.idSucursal).subscribe(
         inventario => {
           this.inventario = inventario;
+          this.nombreSucursalInventarioActual = this.sucursal.nombreSucursal;
           console.log(inventario);
           if (inventario == null) {
             this.BanderaMostrar = false;

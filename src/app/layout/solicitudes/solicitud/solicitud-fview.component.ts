@@ -47,4 +47,29 @@ export class SolicitudFViewComponent implements OnInit {
     })
   }
 
+  cancelarSolicitud()
+  {
+    swal.fire({
+      title: '¿Está seguro de cancelar esta solicitud? ',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Si',
+      denyButtonText: `No, seguir viendo`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.solicitud.estatus = "Cancelada";
+        this.solicitud.fecha_cancelacion = new Date();
+      //  this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);;
+        this.solicitudesService.update(this.solicitud).subscribe(
+          solicitud => {
+            swal.fire(`La solicitud:  ${solicitud.id_solicitud} fue cancelada con éxito`, '', 'success');
+            this.router.navigate(['/layout/solicitudes'])
+          })
+      } else if (result.isDenied) {
+        swal.fire('La solicitud no fue guardada', '', 'info');
+      }
+    })
+
+  }
+
 }

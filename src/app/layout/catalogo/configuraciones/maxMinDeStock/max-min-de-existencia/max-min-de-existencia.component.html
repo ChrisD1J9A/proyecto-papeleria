@@ -15,13 +15,15 @@
 
     <mat-form-field appearance="fill" class="espaciado">
       <mat-label>Máximo de existencia</mat-label>
-      <input matInput type="number" [(ngModel)]="maxMinDeExistencia.max_existencia" name="max_existencia">
+      <input matInput type="number" [(ngModel)]="maxMinDeExistencia.max_existencia" name="max_existencia" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="espaciado">
       <mat-label>Mínimo de existencia</mat-label>
-      <input matInput type="number" [(ngModel)]="maxMinDeExistencia.min_existencia" name="min_existencia">
+      <input matInput type="number" [(ngModel)]="maxMinDeExistencia.min_existencia" name="min_existencia" max="{{maxMinDeExistencia.max_existencia}}" (input)="validarMaxMin($event.target.value)">
+      <mat-error *ngIf="controlMax.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
+
     <br>
     <button mat-raised-button (click)="create()" color="primary" *ngIf="!maxMinDeExistencia.id_maxMinDeExistencia">Guardar</button> &nbsp;
     <button mat-raised-button (click)="update()" color="primary" *ngIf="maxMinDeExistencia.id_maxMinDeExistencia"> Actualizar </button> &nbsp;

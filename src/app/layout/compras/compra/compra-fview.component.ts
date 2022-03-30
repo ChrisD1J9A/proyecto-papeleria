@@ -158,6 +158,7 @@ export class CompraFViewComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             this.compra.estatus = "Completada";
+            this.compra.usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
             //this.detalles_compra = this.dataSource.data;
             this.comprasService.update(this.compra).subscribe(
               compra => {

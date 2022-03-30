@@ -15,10 +15,12 @@ export class SolicitudesComponent implements OnInit {
   aceptadas: Solicitud[];
   rechazadas: Solicitud[];
   pendientes: Solicitud[];
-  displayedColumns: string[] = ['id_solicitud', 'fecha_solicitud', 'estatus', 'action'];
+  canceladas: Solicitud[];
+  displayedColumns: string[] = ['id_solicitud', 'fecha_solicitud', 'fecha_revision', 'estatus', 'action'];
   dataSource1 = new MatTableDataSource();
   dataSource2 = new MatTableDataSource();
   dataSource3 = new MatTableDataSource();
+  dataSource4 = new MatTableDataSource();
   idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
 
   constructor(private solicitudService: SolicitudesService) { }
@@ -30,9 +32,11 @@ export class SolicitudesComponent implements OnInit {
         this.aceptadas = this.filtrarAceptadas(solicitudes);
         this.rechazadas = this.filtrarRechazadas(solicitudes);
         this.pendientes = this.filtrarPendientes(solicitudes);
+        this.canceladas = this.filtrarCanceladas(solicitudes);
         this.dataSource1 = new MatTableDataSource(this.aceptadas);
         this.dataSource2 = new MatTableDataSource(this.rechazadas);
         this.dataSource3 = new MatTableDataSource(this.pendientes);
+        this.dataSource4 = new MatTableDataSource(this.canceladas);
       });
   }
 
@@ -51,6 +55,11 @@ export class SolicitudesComponent implements OnInit {
     this.dataSource3.filter = filterValue.trim().toLowerCase();
   }
 
+  applyFilter4(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource4.filter = filterValue.trim().toLowerCase();
+  }
+
   filtrarAceptadas(solicitudes: Solicitud[]): Solicitud[] {
     const aceptadas = solicitudes.filter(solicitud => solicitud.estatus === "Aceptada");
     return aceptadas;
@@ -65,5 +74,11 @@ export class SolicitudesComponent implements OnInit {
     const pendientes = solicitudes.filter(solicitud => solicitud.estatus === "Pendiente");
     return pendientes;
   }
+
+  filtrarCanceladas(solicitudes: Solicitud[]): Solicitud[] {
+    const pendientes = solicitudes.filter(solicitud => solicitud.estatus === "Cancelada");
+    return pendientes;
+  }
+
 
 }

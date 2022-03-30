@@ -21,9 +21,20 @@
       <input matInput [(ngModel)]="solicitud.fecha_solicitud" name="fecha_solicitud" readonly type="date">
     </mat-form-field>
 
+    <mat-form-field appearance="outline" *ngIf="solicitud.estatus==='Rechazada' || solicitud.estatus==='Aceptada'">
+      <mat-label>Fecha de revision: </mat-label>
+      <input matInput [(ngModel)]="solicitud.fecha_rechazo" name="fecha_solicitud" readonly type="date" *ngIf="solicitud.estatus==='Rechazada'">
+      <input matInput [(ngModel)]="solicitud.fecha_aprobacion" name="fecha_solicitud" readonly type="date" *ngIf="solicitud.estatus==='Aceptada'">
+    </mat-form-field>
+
     <mat-form-field appearance="outline" class="largeInput">
       <mat-label>Nombre del solicitante: </mat-label>
       <input matInput [(ngModel)]="solicitud.nombre_usuario" name="solicitante" readonly>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="largeInput" *ngIf="solicitud.estatus==='Rechazada' || solicitud.estatus==='Aceptada'">
+      <mat-label>Nombre del revisor de la solicitud: </mat-label>
+      <input matInput [(ngModel)]="solicitud.usuario_aprob" name="solicitante" readonly>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="largeInput">
