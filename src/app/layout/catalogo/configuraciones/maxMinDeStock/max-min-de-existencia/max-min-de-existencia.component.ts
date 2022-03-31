@@ -31,8 +31,8 @@ export class MaxMinDeExistenciaComponent implements OnInit {
   ngOnInit(): void {
     this.maxMinS.getMaxMinDeExistenciaA().subscribe(
       maxMinss => {
-        this.MaxMins = maxMinss;
-        this.dataSource = new MatTableDataSource(maxMinss);
+        this.MaxMins = this.filtarSoloActivos(maxMinss);
+        this.dataSource = new MatTableDataSource(this.MaxMins);
       });
     this.sucursalService.getSucursales().subscribe(val => {
       this.sucursales = val;
@@ -74,44 +74,55 @@ export class MaxMinDeExistenciaComponent implements OnInit {
     })
   }
 
-  public create(): void {
-    var config = this.consultaConfigPorSucurasl(this.maxMinDeExistencia);
+  filtarSoloActivos(mmds: MaxMinDeExistencia[]): MaxMinDeExistencia[] {
+    const activos = mmds.filter(config => config.estatus === 1);
+    return activos;
+  }
 
-    if(config == null ){
-      if (this.maxMinDeExistencia.max_existencia) {
-        swal.fire({
-          title: '¿Desea guardar este nuevo elemento?',
-          showDenyButton: true,
-          showCancelButton: false,
-          confirmButtonText: 'Si',
-          denyButtonText: `No guardar`,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.maxMinDeExistencia.sucursal = this.sucursal.nombreSucursal;
-            this.maxMinDeExistencia.estatus = "Activo";
-            this.maxMinDeExistencia.fecha_creacion = new Date();
-            this.maxMinDeExistencia.fecha_actualizacion = new Date();
-            this.maxMinDeExistencia.usuario_modifico = JSON.parse(localStorage.getItem('nombreCUsuario')!);;
-            this.maxMinS.create(this.maxMinDeExistencia).subscribe(
-              maxMiin => {
-                //window.location.reload();
-                this.ngOnInit();
-              })
-            swal.fire('Guardado', `La configuracion fue guardada con éxito!`, 'success')
-          } else if (result.isDenied) {
-            swal.fire('El elemento no fue guardado', '', 'info')
-          }
-        })
-        //this.ngOnInit();
-      } else {
+  public create(): void {
+    if (this.maxMinDeExistencia.max_existencia && this.maxMinDeExistencia.min_existencia && this.sucursal.nombreSucursal) {
+      if (this.comprabarConfigExistente() == true) {
         swal.fire({
           icon: 'warning',
           title: 'Oops...',
-          text: 'Ingrese algún dato para continuar',
-        })
+          text: 'Ya existe una configuracion para esa sucursal',
+        });
+      } else {
+        if (this.maxMinDeExistencia.min_existencia > this.maxMinDeExistencia.max_existencia) {
+          swal.fire('', 'El mínimo de existencia no puede ser mayor al máximo', 'info');
+        } else {
+          swal.fire({
+            title: '¿Desea guardar este nuevo elemento?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Si',
+            denyButtonText: `No guardar`,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.maxMinDeExistencia.sucursal = this.sucursal.nombreSucursal;
+              this.maxMinDeExistencia.estatus = 1;
+              this.maxMinDeExistencia.fecha_creacion = new Date();
+              this.maxMinDeExistencia.fecha_actualizacion = new Date();
+              this.maxMinDeExistencia.usuario_modifico = JSON.parse(localStorage.getItem('nombreCUsuario')!);
+              this.maxMinS.create(this.maxMinDeExistencia).subscribe(
+                maxMiin => {
+                  //window.location.reload();
+                  this.ngOnInit();
+                });
+              swal.fire('Guardado', `La configuracion fue guardada con éxito!`, 'success');
+            } else if (result.isDenied) {
+              swal.fire('El elemento no fue guardado', '', 'info');
+            }
+          });
+        }
       }
-    }else{
-      swal.fire('Ya existe una configuracion para esa sucursal', '', 'error');
+      //this.ngOnInit();
+    } else {
+      swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Ingrese todos los datos para continuar',
+      })
     }
   }
 
@@ -147,6 +158,45 @@ export class MaxMinDeExistenciaComponent implements OnInit {
     }
   }
 
+  baja(maxMinSt: MaxMinDeExistencia): void {
+    swal
+      .fire({
+        title: '¿Está seguro de dar de baja esta configuracion?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si',
+        cancelButtonText: 'Cancelar',
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          maxMinSt.estatus = 0;
+          this.maxMinS.update(maxMinSt).subscribe(
+            (response) => {
+              if (response) {
+                swal.fire(
+                  'Mensaje',
+                  `La configuracion de la sucursal:  ${response.sucursal} fue dada de baja con éxito`,
+                  'success'
+                );
+                this.ngOnInit();
+              } else {
+                swal.fire(
+                  'Mensaje',
+                  `Error al dar de baja la configuracion`,
+                  'error'
+                );
+              }
+            },
+            (error) => {
+              swal.fire('Error', `Error al dar de baja`, 'error');
+            }
+          );
+        }
+      });
+  }
+
   validarMaxMin(n: number) {
     this.controlMax = new FormControl(n, Validators.max(n - 1));
   }
@@ -155,14 +205,17 @@ export class MaxMinDeExistenciaComponent implements OnInit {
     return this.controlMax.hasError('max') ? 'El mínimo de existencia no puede ser mayor al máximo' : '';
   }
 
-  consultaConfigPorSucurasl(maxMin: MaxMinDeExistencia): MaxMinDeExistencia {
-    var nombreSucursal: string = maxMin.sucursal;
-    var configuracion: MaxMinDeExistencia;
-    this.maxMinS.getMaxMinDeExistenciaBySucursal(nombreSucursal).subscribe(
-      maxMinCnfg => {
-        configuracion = maxMinCnfg;
-      });
-    return configuracion;
+  comprabarConfigExistente(): Boolean {
+    var bandera: boolean;
+    for (let i = 0; i < this.MaxMins.length; i++) {
+      if (this.MaxMins[i].sucursal === this.sucursal.nombreSucursal) {
+        bandera = true;
+        break;
+      } else {
+        bandera = false;
+      }
+    }
+    return bandera;
   }
 
 }

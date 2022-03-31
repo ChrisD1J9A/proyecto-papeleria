@@ -5,7 +5,7 @@ export class MaxMinDeStock
   usuario_modifico: string;
   max_stock: number;
   min_stock: number;
-  estatus: string;
+  estatus: number;
   fecha_creacion: Date;
   fecha_actualizacion: Date;
 }
