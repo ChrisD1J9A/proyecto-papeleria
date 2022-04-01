@@ -46,11 +46,35 @@
         </button>
       </div>
     </div>
-    <label for="productoDesconocido">Agregar un producto fuera del catalogo  del productos </label>
-    <button mat-mini-fab color="warn" class="btn1" name="productoDesconocido" (click)="agregarProductoFueraDelCatalogo()">
-      <mat-icon>add_circle</mat-icon>
-    </button>
   </div>
+
+  <div FormArrayName="detalles2">
+    <div *ngFor="let detalle2 of detalles2.controls; let i = index;" class="areaProductosSeleccionados">
+      <div [formGroup]="detalle2">
+        <mat-form-field appearance="outline" class="inputW">
+          <mat-label>Producto</mat-label>
+          <input matInput formControlName="nombreProducto" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Cantidad existente</mat-label>
+          <input matInput type="number" formControlName="cant_existente" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Cantidad solicitada</mat-label>
+          <input matInput type="number" formControlName="cant_solicitada" required>
+        </mat-form-field>
+        <button class="btn1" mat-mini-fab color="warn" (click)="removerDetalles2(i)">
+          <mat-icon>remove_circle_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <label for="productoDesconocido">Agregar un producto fuera del catalogo  del productos -> </label>
+  <button mat-mini-fab color="warn" class="btn1" name="productoDesconocido" (click)="agregarProductoFueraDelCatalogo()">
+    <mat-icon>add_circle</mat-icon>
+  </button>
+  <br>
 
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Comentarios </mat-label>

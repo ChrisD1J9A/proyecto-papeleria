@@ -7,6 +7,8 @@ import { Solicitud } from 'src/app/administracion/modelos/papeleria/solicitud';
 import { SolicitudesService } from 'src/app/administracion/servicios/papeleria/solicitudes.service';
 import { DetalleSolicitudService } from 'src/app/administracion/servicios/papeleria/detalle-solicitud.service';
 import { Detalle_solicitud } from 'src/app/administracion/modelos/papeleria/detalle_solicitud';
+import { DetalleSolicitudPFDCService } from 'src/app/administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
+import { Detalle_solicitud_PFDC } from 'src/app/administracion/modelos/papeleria/detalle_solicitud_PFDC';
 import { ProductosService } from 'src/app/administracion/servicios/papeleria/productos.service';
 import { Producto } from 'src/app/administracion/modelos/papeleria/producto';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
@@ -33,6 +35,7 @@ export class SolicitudFormComponent implements OnInit {
   minDate: Date;
   displayedColumns: string[] = ['id_producto', 'unidad', 'descripcion', 'action'];
   deta: Detalle_solicitud;
+  deta2: Detalle_solicitud_PFDC;
   dataSource = new MatTableDataSource();
   productosSeleccionados = new Set<Producto>();
   producto = new Producto();
@@ -42,13 +45,13 @@ export class SolicitudFormComponent implements OnInit {
   nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!);
   idSucursal: any;
   nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
-  banderaReadOnly: Boolean;
 
   constructor(private productosService: ProductosService,
     private formBuilder: FormBuilder,
     private solicitudesService: SolicitudesService,
     private router: Router,
     private detalleSolicitudService: DetalleSolicitudService,
+    private detalleSolicitudPFDCService:  DetalleSolicitudPFDCService,
     private _snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>) {
     const currentYear = new Date().getFullYear();
@@ -57,6 +60,10 @@ export class SolicitudFormComponent implements OnInit {
 
   get detalles(): FormArray {
     return this.detalleSForm.get('detalles') as FormArray;
+  }
+
+  get detalles2(): FormArray {
+    return this.detalleSPFDCForm.get('detalles2') as FormArray;
   }
 
   solicitudForm = this.formBuilder.group({
@@ -68,6 +75,10 @@ export class SolicitudFormComponent implements OnInit {
 
   detalleSForm = this.formBuilder.group({
     detalles: this.formBuilder.array([])
+  })
+
+  detalleSPFDCForm = this.formBuilder.group({
+    detalles2: this.formBuilder.array([])
   })
 
   ngOnInit(): void {
@@ -87,6 +98,7 @@ export class SolicitudFormComponent implements OnInit {
   }
 
   submit(): void {
+    console.log(this.detalles2.getRawValue().length)
     if (this.productosSeleccionados.size > 0) {
       this.solicitud = this.solicitudForm.value;
       this.solicitud.estatus = "Pendiente";
@@ -108,10 +120,23 @@ export class SolicitudFormComponent implements OnInit {
                 this.detalleSolicitudService.create(this.deta).subscribe(
                   detalle => {
                     console.log("done");
-                  }
-                )
+                  });
                 console.log(this.deta);
               }
+              if(this.detalles2.getRawValue().length >= 1)
+               {
+                 for (var i = 0; i < this.detalles2.getRawValue().length; i++) {
+                   this.deta2 = this.detalles2.value.pop();
+                   this.deta2.solicitud = solicitud;
+                   this.detalleSolicitudPFDCService.create(this.deta2).subscribe(
+                     detalle2 => {
+                       console.log("done");
+                     });
+                     console.log(this.deta2);
+              }
+               }
+
+
               if (solicitud.id_solicitud) {
                 swal.fire(
                   'Mensaje',
@@ -204,7 +229,6 @@ export class SolicitudFormComponent implements OnInit {
       })
     } else {
       this.snackBarSuccess();
-      this.banderaReadOnly = true;
       this.productosSeleccionados.add(producto);
       this.agregarDetalles(producto);
     }
@@ -212,10 +236,7 @@ export class SolicitudFormComponent implements OnInit {
 
   agregarProductoFueraDelCatalogo()
   {
-    var producto = new Producto();
-    producto.id_producto = 1;
-    this.banderaReadOnly = false;
-    this.agregarDetalles(producto);
+    this.agregarDetallesPFDC();
   }
 
   eliminarProducto(index: number) {
@@ -235,14 +256,27 @@ export class SolicitudFormComponent implements OnInit {
   agregarDetalles(p: Producto) {
     const detalleFormC = this.formBuilder.group({
       producto: [p],
-      producto_: [{ value: p.descripcion, disabled: this.banderaReadOnly }],
+      producto_: [{ value: p.descripcion, disabled: true }],
       cant_existente: ['0', { validators: [Validators.required] }],
       cant_solicitada: ['0', { validators: [Validators.required] }]
     });
     this.detalles.push(detalleFormC);
   }
 
+  agregarDetallesPFDC(){
+    const detallePFDCFormC = this.formBuilder.group({
+      nombreProducto: ['', {validators: [Validators.required]}],
+      cant_existente: ['0', { validators: [Validators.required] }],
+      cant_solicitada: ['0', { validators: [Validators.required] }]
+    });
+    this.detalles2.push(detallePFDCFormC);
+  }
+
   removerDetalles(indice: number) {
     this.detalles.removeAt(indice);
+  }
+
+  removerDetalles2(indice: number) {
+    this.detalles2.removeAt(indice);
   }
 }

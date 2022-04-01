@@ -5,6 +5,8 @@ import { Solicitud } from '../../../administracion/modelos/papeleria/solicitud';
 import { Detalle_solicitud } from '../../../administracion/modelos/papeleria/detalle_solicitud';
 import { SolicitudesService } from '../../../administracion/servicios/papeleria/solicitudes.service';
 import { DetalleSolicitudService } from '../../../administracion/servicios/papeleria/detalle-solicitud.service';
+import { Detalle_solicitud_PFDC } from '../../../administracion/modelos/papeleria/detalle_solicitud_PFDC';
+import { DetalleSolicitudPFDCService } from '../../../administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -16,10 +18,16 @@ export class SolicitudFViewComponent implements OnInit {
   solicitud = new Solicitud();
   detalle_solicitud = new Detalle_solicitud();
   detalles_solicitud: Detalle_solicitud[];
+  detalle_solicitud_PFDC = new Detalle_solicitud_PFDC();
+  detalles_solicitud_PFDC: Detalle_solicitud_PFDC[];
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];
   dataSource = new MatTableDataSource();
+  dataSource2 = new MatTableDataSource();
 
-  constructor(private solicitudesService: SolicitudesService, private detalleSolicitudService: DetalleSolicitudService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private solicitudesService: SolicitudesService,
+              private detalleSolicitudService: DetalleSolicitudService,
+              private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,
+              private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.cargarSolicitud();
@@ -28,6 +36,11 @@ export class SolicitudFViewComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  applyFilter2(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource2.filter = filterValue.trim().toLowerCase();
   }
 
   cargarSolicitud(): void {
@@ -42,6 +55,10 @@ export class SolicitudFViewComponent implements OnInit {
           deta_solicitudes => {
             this.dataSource = new MatTableDataSource(deta_solicitudes);
             console.log(id);
+          });
+        this.detalleSolicitudPFDCService.getDetallesSolicitud_PFDC(id).subscribe(
+          detalles_solicitudesPFDC => {
+            this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC);
           });
       }
     })
