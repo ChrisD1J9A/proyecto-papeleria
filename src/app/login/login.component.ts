@@ -52,8 +52,10 @@ export class LoginComponent implements OnInit {
                 for(let i= 0;i<roles.roles.length;i++){
 
                     if(roles.roles[i].idSistema==9){
-                        localStorage.setItem('sucursalIngresa',JSON.stringify(roles.roles[i].sucursalIngresa))
-                        localStorage.setItem('idSucursal', JSON.stringify(roles.roles[i].idSucursal))
+                        localStorage.setItem('sucursalIngresa',JSON.stringify(roles.roles[i].sucursalIngresa));
+                        localStorage.setItem('sucursalesPermitidas', JSON.stringify(roles.roles[i].sucursales));
+                        localStorage.setItem('idSucursal', JSON.stringify(roles.roles[i].idSucursal));
+                        localStorage.setItem('permisos', JSON.stringify(roles.roles[i].hijos));
                         bandera = true;
                     }
                 }

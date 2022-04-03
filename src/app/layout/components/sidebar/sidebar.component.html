@@ -9,44 +9,46 @@
     <mat-icon>dashboard</mat-icon> Dashboard
   </a>
 
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="solicitudes">
+  <a *ngIf="tienePermiso('SOLICITUDES')" mat-list-item routerLinkActive="list-item-active" routerLink="solicitudes">
     <mat-icon>assignment</mat-icon> Solicitudes
   </a>
 
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="solicitudes-adquisiciones">
-    <mat-icon>assignment</mat-icon> Solicitudes Adquisiciones
+  <a *ngIf="tienePermiso('SOLICITUDES ADQUISICIONES')" mat-list-item routerLinkActive="list-item-active" routerLink="solicitudes-adquisiciones">
+    <mat-icon>assignment</mat-icon> Solicitudes
   </a>
 
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="compras">
+  <a *ngIf="tienePermiso('COMPRAS')" mat-list-item routerLinkActive="list-item-active" routerLink="compras">
     <mat-icon>shopping_cart</mat-icon> Compras
   </a>
 
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="compras-adquisiciones">
-    <mat-icon>shopping_cart</mat-icon> Compras Adquisiciones
+  <a *ngIf="tienePermiso('COMPRAS ADQUISICIONES')"mat-list-item routerLinkActive="list-item-active" routerLink="compras-adquisiciones">
+    <mat-icon>shopping_cart</mat-icon> Compras
   </a>
 
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="inventario">
+  <a *ngIf="tienePermiso('INVENTARIO')" mat-list-item routerLinkActive="list-item-active" routerLink="inventario">
     <mat-icon>description</mat-icon> Inventario
   </a>
 
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="inventarios-adquisiciones">
+  <a *ngIf="tienePermiso('INVENTARIO ADQUISICIONES')" mat-list-item routerLinkActive="list-item-active" routerLink="inventarios-adquisiciones">
     <mat-icon>description</mat-icon> Inventarios
   </a>
 
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="productos">
+  <a *ngIf="tienePermiso('PRODUCTOS')" mat-list-item routerLinkActive="list-item-active" routerLink="productos">
     <mat-icon>store</mat-icon> Productos
   </a>
 
-  <a mat-list-item routerLinkActive="list-item-active" routerLink="proveedores">
+  <a *ngIf="tienePermiso('PROVEEDORES')" mat-list-item routerLinkActive="list-item-active" routerLink="proveedores">
     <mat-icon>local_shipping</mat-icon> Proveedores
   </a>
 
+<div *ngIf="tienePermiso('UNIDAD')">
   <a mat-list-item routerLinkActive="list-item-active" (click)="showSubmenu = !showSubmenu">
     <mat-icon mat-list-icon>settings</mat-icon> Configuraciones
     <mat-icon class="menu-button" style="margin-left: 10px;" [ngClass]="{'rotated' : showSubmenu}"
       *ngIf="isExpanded || isShowing">expand_more
     </mat-icon>
   </a>
+
 
   <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
     <a mat-list-item routerLinkActive="list-item-active" routerLink="unidades">
@@ -59,4 +61,5 @@
       <mat-icon mat-list-icon>perm_data_setting</mat-icon>Máximos y minimos de existencia
     </a>
     </div>
+  </div>
 </mat-nav-list>

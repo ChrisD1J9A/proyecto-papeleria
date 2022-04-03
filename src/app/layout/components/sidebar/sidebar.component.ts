@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
 permisosUsuario=false//125
 
 
-
+  permisosU :any;
   perfil: any;
   idRegion: any
   idSucursal: any
@@ -64,7 +64,7 @@ permisosUsuario=false//125
       this.collapsed = false;
       this.showMenu = '';
       this.pushRightClass = 'push-right';
-
+      this.permisosU = JSON.parse(localStorage.getItem('permisos'));
       this.permisos()
 
 
@@ -202,6 +202,15 @@ this.permisosAreas=true//130
   mouseleave() {
     if (!this.isExpanded) {
       this.isShowing = false;
+    }
+  }
+
+  tienePermiso(permiso: string){
+    let a = this.permisosU.find(perm => perm.nombre == permiso);
+    if(a != null){
+      return true;
+    }else{
+      return false;
     }
   }
 }
