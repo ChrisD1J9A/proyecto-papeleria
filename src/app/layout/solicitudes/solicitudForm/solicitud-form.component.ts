@@ -104,6 +104,12 @@ export class SolicitudFormComponent implements OnInit {
       this.solicitud.estatus = "Pendiente";
       this.solicitud.id_sucursal = this.idSucursal;
       this.solicitud.nombre_sucursal = this.nombreSucursal;
+      if(this.detalles2.getRawValue().length >= 1)
+       {
+         this.solicitud.pfdc = true;
+       }else{
+         this.solicitud.pfdc = false;
+       }
       swal.fire({
         title: '¿Desea hacer una nueva solicitud? ',
         showDenyButton: true,

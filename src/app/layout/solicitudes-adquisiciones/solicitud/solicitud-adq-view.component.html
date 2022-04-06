@@ -80,6 +80,45 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  <br>
+
+  <div *ngIf="solicitud.pfdc===true">
+    <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
+      <ng-container matColumnDef="tipo_unidad">
+        <th mat-header-cell *matHeaderCellDef> Unidad </th>
+        <td mat-cell *matCellDef="let detalle_solicitud"> -- </td>
+      </ng-container>
+
+      <ng-container matColumnDef="descripcion_producto">
+        <th mat-header-cell *matHeaderCellDef> Productos </th>
+        <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.nombreProducto}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cant_existente">
+        <th mat-header-cell *matHeaderCellDef> Cantidad existente </th>
+        <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.cant_existente}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cant_solicitada">
+        <th mat-header-cell *matHeaderCellDef> Cantidad solicitada </th>
+        <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.cant_solicitada}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cant_autorizada">
+        <th mat-header-cell *matHeaderCellDef> Cantidad autorizada </th>
+        <td mat-cell *matCellDef="let detalle_solicitud_PFDC">
+          <mat-form-field appearance="fill" floatLabel="always">
+            <mat-label>Cantidad autorizada</mat-label>
+            <input matInput name="cant_autorizada" type="number" placeholder=" " [(ngModel)]="detalle_solicitud_PFDC.cant_autorizada" readonly={{flag}} required>
+            <mat-error *ngIf="cant_autorizada.invalid">{{getErrorMessage2()}}</mat-error>
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
   <br><br>
 
   <h2 *ngIf="solicitud.estatus==='Pendiente'">Deje sus comentarios al solicitante:</h2>

@@ -169,6 +169,7 @@ export class CompraFViewComponent implements OnInit {
                 this.detalleCompraService.update(this.detalles_compra, compra.id_compra).subscribe(
                   detalles => {
                     if (detalles) {
+                      this.crearActualizarInventario(detalles);
                       swal.fire(
                         'Mensaje',
                         `La compra:  ${compra.id_compra} fue guardada con éxito`,
@@ -206,13 +207,46 @@ export class CompraFViewComponent implements OnInit {
     window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);
   }
 
-  crearActualizarInventario()
+  crearActualizarInventario(detalles_c: Detalle_compra[])
   {
-      this.detalleCompraService.getDetallesCompra(this.compra.id_compra).subscribe(
+    this.inventarioService.getInventarioBySucursal(this.compra.id_sucursal).subscribe(
+      inventarioConsulta => {
+         if(inventarioConsulta===null)
+         {
+           console.log("No hay inventario");
+           var deta_compra  = new Detalle_compra()
+           var deta_invent  = new Detalle_inventario();
+           var invent = new Inventario();
+           invent.nombre_sucursal = this.compra.nombre_sucursal;
+           invent.id_sucursal = this.compra.id_sucursal;
+           invent.fecha_ultima_actualizacion = new Date();
+           this.inventarioService.create(invent).subscribe(
+             inventarionuevo => {
+               for(deta_compra of detalles_c)
+               {
+                 deta_invent.inventario = inventarionuevo;
+                 deta_invent.producto = deta_compra.producto;
+                 deta_invent.cant_existente = deta_compra.cant_existente + deta_compra.cant_comprada;
+                 deta_invent.fecha_ultima_actualizacion = new Date();
+                 this.detaInventarioService.create(deta_invent).subscribe(
+                   deta_i =>{
+                     console.log("done " + deta_i.producto.descripcion + " " + deta_i.inventario.id_inventario);
+                   })
+               }
+             });
+         }else{
+           console.log("Si hay inventario");
+         }
+      });
+
+
+
+
+
+      /*this.detalleCompraService.getDetallesCompra(this.compra.id_compra).subscribe(
         detasss => {
           console.log(detasss[0]);
-        }
-      )
+        });*/
   }
 
 }

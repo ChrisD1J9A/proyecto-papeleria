@@ -7,6 +7,8 @@ import { Compra } from '../../../administracion/modelos/papeleria/compra';
 import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
 import { SolicitudesService } from '../../../administracion/servicios/papeleria/solicitudes.service';
 import { DetalleSolicitudService } from '../../../administracion/servicios/papeleria/detalle-solicitud.service';
+import { Detalle_solicitud_PFDC } from '../../../administracion/modelos/papeleria/detalle_solicitud_PFDC';
+import { DetalleSolicitudPFDCService } from '../../../administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
 import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,6 +23,8 @@ export class SolicitudAdqViewComponent implements OnInit {
   solicitud = new Solicitud();
   detalle_solicitud = new Detalle_solicitud();
   detalles_solicitud = new Array();
+  detalle_solicitud_PFDC = new Detalle_solicitud_PFDC();
+  detalles_solicitud_PFDC = new Array();
   compra = new Compra();
   detalle_compra = new Detalle_compra();
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];
@@ -29,12 +33,15 @@ export class SolicitudAdqViewComponent implements OnInit {
   observacion_aprobacion_rechazo = new FormControl('', [Validators.required]);
   cant_autorizada = new FormControl('', [Validators.required]);
   nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
+  dataSource2 = new MatTableDataSource();
 
   constructor(private solicitudesService: SolicitudesService,
-    private detalleSolicitudService: DetalleSolicitudService,
-    private router: Router, private activatedRoute: ActivatedRoute,
-    private comprasService: ComprasService,
-    private detalleCompraService: DetalleCompraService) { }
+              private detalleSolicitudService: DetalleSolicitudService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
+              private comprasService: ComprasService,
+              private detalleCompraService: DetalleCompraService,
+              private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,) { }
 
   ngOnInit(): void {
     this.cargarSolicitud();
@@ -70,11 +77,13 @@ export class SolicitudAdqViewComponent implements OnInit {
           deta_solicitudes => {
             this.dataSource = new MatTableDataSource(deta_solicitudes);
             this.detalles_solicitud = deta_solicitudes;
-            console.log(id);
-            console.log(this.dataSource.data);
           });
+        this.detalleSolicitudPFDCService.getDetallesSolicitud_PFDC(id).subscribe(
+            detalles_solicitudesPFDC => {
+              this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC);
+        });
       }
-    })
+    });
   }
 
   validarDetalles(): boolean {
@@ -107,6 +116,11 @@ export class SolicitudAdqViewComponent implements OnInit {
             this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);;
             this.solicitudesService.update(this.solicitud).subscribe(
               solicitud => {
+                if(this.solicitud.pfdc===true){
+                  this.detalles_solicitud_PFDC = this.dataSource2.data;
+                  this.detalleSolicitudPFDCService.update(this.detalles_solicitud_PFDC, solicitud.id_solicitud).subscribe(detas_pfdc =>{}); 
+                }
+
                 this.detalleSolicitudService.update(this.detalles_solicitud, solicitud.id_solicitud).subscribe(
                   detalles => {
                     if (detalles) {

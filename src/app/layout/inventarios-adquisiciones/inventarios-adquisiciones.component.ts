@@ -20,9 +20,11 @@ export class InventariosAdquisicionesComponent implements OnInit {
   detalle_inventario = new Detalle_inventario();
   inventarioBajo = new Array();
   displayedColumns: string[] = ['id_producto', 'unidad', 'descripcion', 'cant_existente'];
+  displayedColumns2: string[] = ['sucursal', 'id_inventario', 'id_producto', 'cant_existente'];
   dataSource = new MatTableDataSource();
   dataSource2 = new MatTableDataSource();
   BanderaMostrar = false;
+  mostrarTodos = false;
   nombreSucursalInventarioActual: string;
 
   constructor(private sucursalService: SucursalService,
@@ -76,8 +78,22 @@ export class InventariosAdquisicionesComponent implements OnInit {
         icon: 'warning',
         title: 'Oops...',
         text: 'Seleccione alguna sucursal para continuar',
-      })
+      });
     }
+  }
+
+  cargarTodosInventarios()
+  {
+    this.detalleInvenarioService.getTodosInventarios().subscribe(
+      todos => {
+        console.log(todos);
+        this.BanderaMostrar = false;
+        this.mostrarTodos = true;
+        this.dataSource = new MatTableDataSource(todos);
+        this.inventarioBajo = todos.filter(invent => invent.cant_existente <= 5);
+        this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
+      }
+    )
   }
 
 }

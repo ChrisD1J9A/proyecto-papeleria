@@ -11,5 +11,6 @@ export class Solicitud{
   fecha_cancelacion: Date;
   observacion_solicitud: string;
   observacion_aprobacion_rechazo: string;
+  pfdc: boolean;
   estatus: string;
 }

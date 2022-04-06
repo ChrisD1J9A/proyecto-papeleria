@@ -14,7 +14,7 @@ export class SolicitudesAdquisicionesComponent implements OnInit {
   aceptadas: Solicitud[];
   rechazadas: Solicitud[];
   pendientes: Solicitud[];
-  displayedColumns: string[] = ['id_solicitud',  'fecha_solicitud', 'nombre_usuario', 'estatus', 'action'];
+  displayedColumns: string[] = ['id_solicitud',  'fecha_solicitud', 'fecha_revision', 'nombre_usuario', 'estatus', 'action'];
   dataSource1 = new MatTableDataSource();
   dataSource2 = new MatTableDataSource();
   dataSource3 = new MatTableDataSource();;

@@ -48,17 +48,17 @@ export class InventarioComponent implements OnInit {
 
   cargarInventario()
   {
-    this.inventarioService.getInventario(1).subscribe(
+    var idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
+    this.inventarioService.getInventarioBySucursal(idSucursal).subscribe(
       inventario => {
         this.inventario = inventario;
-        console.log(inventario.fecha_ultima_actualizacion);
-      });
-    this.detalleInvenarioService.getDetallesInventario(1).subscribe(
-      detas => {
-        this.dataSource = new MatTableDataSource(detas);
-        this.inventarioBajo = detas.filter(invent => invent.cant_existente <= 5);
-        this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
-        //console.log(this.inventarioBajo);
+        this.detalleInvenarioService.getDetallesInventario(inventario.id_inventario).subscribe(
+          detas => {
+            this.dataSource = new MatTableDataSource(detas);
+            this.inventarioBajo = detas.filter(invent => invent.cant_existente <= 5);
+            this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
+            //console.log(this.inventarioBajo);
+          });
       });
   }
 

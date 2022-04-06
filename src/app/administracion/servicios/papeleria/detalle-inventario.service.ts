@@ -22,8 +22,13 @@ export class DetalleInventarioService {
     return this.http.put<Detalle_inventario[]>(`${this.urlEndPoint}/${id_inventario}`, detalle_inventario, {headers: this.httpHeaders})
   }
 
-  public getDetallesInventario(id): Observable<Detalle_inventario[]>
+  public getDetallesInventario(id_i: number): Observable<Detalle_inventario[]>
   {
-    return this.http.get<Detalle_inventario[]>(`${this.urlEndPoint}/${id}`);
+    return this.http.get<Detalle_inventario[]>(`${this.urlEndPoint}/${id_i}`);
+  }
+
+  public getTodosInventarios(): Observable<any[]>
+  {
+    return this.http.get<any[]>(`${this.urlEndPoint}/todos`);
   }
 }

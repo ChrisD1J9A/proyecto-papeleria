@@ -61,7 +61,7 @@ export class SolicitudFViewComponent implements OnInit {
             this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC);
           });
       }
-    })
+    });
   }
 
   cancelarSolicitud()

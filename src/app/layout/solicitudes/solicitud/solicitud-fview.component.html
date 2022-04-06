@@ -1,10 +1,14 @@
 <div class="formato1">
   <div class="formato2">
-    <h1> <mat-icon>assignment</mat-icon> Solicitud {{solicitud.id_solicitud}}</h1>
-    <h2>Solicitud {{solicitud.estatus}} <mat-icon style="color: green" *ngIf="solicitud.estatus==='Aceptada'">check_circle</mat-icon>
-                                        <mat-icon style="color: red" *ngIf="solicitud.estatus==='Rechazada'">cancel</mat-icon>
-                                        <mat-icon style="color: yellow" *ngIf="solicitud.estatus==='Pendiente'">timer</mat-icon>
-                                        <mat-icon style="color: red" *ngIf="solicitud.estatus==='Cancelada'">report_off</mat-icon></h2>
+    <h1>
+      <mat-icon>assignment</mat-icon> Solicitud {{solicitud.id_solicitud}}
+    </h1>
+    <h2>Solicitud {{solicitud.estatus}}
+      <mat-icon style="color: green" *ngIf="solicitud.estatus==='Aceptada'">check_circle</mat-icon>
+      <mat-icon style="color: red" *ngIf="solicitud.estatus==='Rechazada'">cancel</mat-icon>
+      <mat-icon style="color: yellow" *ngIf="solicitud.estatus==='Pendiente'">timer</mat-icon>
+      <mat-icon style="color: red" *ngIf="solicitud.estatus==='Cancelada'">report_off</mat-icon>
+    </h2>
   </div>
 
   <div>
@@ -61,48 +65,51 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
   <br>
 
-  <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
-    <ng-container matColumnDef="tipo_unidad">
-      <th mat-header-cell *matHeaderCellDef> Unidad </th>
-      <td mat-cell *matCellDef="let detalle_solicitud"> -- </td>
-    </ng-container>
+  <div *ngIf="solicitud.pfdc===true">
+    <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
+      <ng-container matColumnDef="tipo_unidad">
+        <th mat-header-cell *matHeaderCellDef> Unidad </th>
+        <td mat-cell *matCellDef="let detalle_solicitud"> -- </td>
+      </ng-container>
 
-    <ng-container matColumnDef="descripcion_producto">
-      <th mat-header-cell *matHeaderCellDef> Productos </th>
-      <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.nombreProducto}} </td>
-    </ng-container>
+      <ng-container matColumnDef="descripcion_producto">
+        <th mat-header-cell *matHeaderCellDef> Productos </th>
+        <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.nombreProducto}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="cant_existente">
-      <th mat-header-cell *matHeaderCellDef> Cantidad existente </th>
-      <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.cant_existente}} </td>
-    </ng-container>
+      <ng-container matColumnDef="cant_existente">
+        <th mat-header-cell *matHeaderCellDef> Cantidad existente </th>
+        <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.cant_existente}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="cant_solicitada">
-      <th mat-header-cell *matHeaderCellDef> Cantidad solicitada </th>
-      <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.cant_solicitada}} </td>
-    </ng-container>
+      <ng-container matColumnDef="cant_solicitada">
+        <th mat-header-cell *matHeaderCellDef> Cantidad solicitada </th>
+        <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.cant_solicitada}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="cant_autorizada">
-      <th mat-header-cell *matHeaderCellDef> Cantidad autorizada </th>
-      <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.cant_autorizada}} </td>
-    </ng-container>
+      <ng-container matColumnDef="cant_autorizada">
+        <th mat-header-cell *matHeaderCellDef> Cantidad autorizada </th>
+        <td mat-cell *matCellDef="let detalle_solicitud_PFDC"> {{detalle_solicitud_PFDC.cant_autorizada}} </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  <br>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <br>
 
-  <div>
-    <mat-form-field appearance="outline" class="largeInput">
-      <mat-label>Comentarios de adquisiciones: </mat-label>
-      <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo" readonly></textarea>
-    </mat-form-field>
-  </div>
+    <div>
+      <mat-form-field appearance="outline" class="largeInput">
+        <mat-label>Comentarios de adquisiciones: </mat-label>
+        <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo" readonly></textarea>
+      </mat-form-field>
+    </div>
 
-  <div *ngIf="solicitud.estatus==='Pendiente'">
-    <button mat-raised-button color="warn" (click)="cancelarSolicitud()"> Cancelar Solicitud <mat-icon>report_off</mat-icon></button>
+    <div *ngIf="solicitud.estatus==='Pendiente'">
+      <button mat-raised-button color="warn" (click)="cancelarSolicitud()"> Cancelar Solicitud <mat-icon>report_off</mat-icon></button>
+    </div>
   </div>
 
 </div>
