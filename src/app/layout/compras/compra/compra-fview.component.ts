@@ -29,6 +29,7 @@ export class CompraFViewComponent implements OnInit {
   detalles_inventario: Detalle_inventario[];
   proveedor = new Proveedor();
   proveedores: Proveedor[];
+  inventario: Inventario;
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];
   dataSource = new MatTableDataSource();
   nombreProveedor: String;
@@ -209,12 +210,13 @@ export class CompraFViewComponent implements OnInit {
 
   crearActualizarInventario(detalles_c: Detalle_compra[])
   {
+    var deta_compra  = new Detalle_compra()
     this.inventarioService.getInventarioBySucursal(this.compra.id_sucursal).subscribe(
       inventarioConsulta => {
          if(inventarioConsulta===null)
          {
            console.log("No hay inventario");
-           var deta_compra  = new Detalle_compra()
+
            var deta_invent  = new Detalle_inventario();
            var invent = new Inventario();
            invent.nombre_sucursal = this.compra.nombre_sucursal;
@@ -236,6 +238,22 @@ export class CompraFViewComponent implements OnInit {
              });
          }else{
            console.log("Si hay inventario");
+           inventarioConsulta.fecha_ultima_actualizacion = new Date();
+           this.inventarioService.update(inventarioConsulta).subscribe(
+            inventarioActualizado => {
+                  var deta_i = new Detalle_inventario();
+                  deta_i.inventario = inventarioActualizado;
+                  for(deta_compra of detalles_c)
+                  {
+                      deta_i.producto = deta_compra.producto;
+                      deta_i.fecha_ultima_actualizacion = new Date();
+                      deta_i.cant_existente = deta_compra.cant_existente + deta_compra.cant_comprada;
+                      this.detaInventarioService.create(deta_i).subscribe(
+                        det =>{
+                          console.log("actualizado/creado");
+                        });
+                  }
+                });
          }
       });
 

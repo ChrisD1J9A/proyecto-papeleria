@@ -20,7 +20,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
   detalle_inventario = new Detalle_inventario();
   inventarioBajo = new Array();
   displayedColumns: string[] = ['id_producto', 'unidad', 'descripcion', 'cant_existente'];
-  displayedColumns2: string[] = ['sucursal', 'id_inventario', 'id_producto', 'cant_existente'];
+  displayedColumns2: string[] = ['id_inventario', 'sucursal', 'productos', 'cant_existente'];
   dataSource = new MatTableDataSource();
   dataSource2 = new MatTableDataSource();
   BanderaMostrar = false;
@@ -48,6 +48,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
   }
 
   cargarInventario() {
+    this.limpiar();
     if (this.sucursal.idSucursal){
       this.inventarioService.getInventarioBySucursal(this.sucursal.idSucursal).subscribe(
         inventario => {
@@ -56,6 +57,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
           console.log(inventario);
           if (inventario == null) {
             this.BanderaMostrar = false;
+            this.mostrarTodos = false;
             this.sucursal = new Sucursal();
             swal.fire({
               icon: 'warning',
@@ -64,12 +66,17 @@ export class InventariosAdquisicionesComponent implements OnInit {
             })
           }else{
             this.BanderaMostrar = true;
-            console.log("llegue hasta aquí");
-            this.detalleInvenarioService.getDetallesInventario(this.sucursal.idSucursal).subscribe(
+            this.mostrarTodos = false;
+            this.detalleInvenarioService.getDetallesInventario(this.inventario.id_inventario).subscribe(
               detas => {
                 this.dataSource = new MatTableDataSource(detas);
                 this.inventarioBajo = detas.filter(invent => invent.cant_existente <= 5);
                 this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
+                swal.fire({
+                  icon: 'success',
+                  title: '¡Hecho!',
+                  text: 'Inventario cargado',
+                });
               });
           }
         });
@@ -84,6 +91,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
 
   cargarTodosInventarios()
   {
+    this.limpiar();
     this.detalleInvenarioService.getTodosInventarios().subscribe(
       todos => {
         console.log(todos);
@@ -92,8 +100,19 @@ export class InventariosAdquisicionesComponent implements OnInit {
         this.dataSource = new MatTableDataSource(todos);
         this.inventarioBajo = todos.filter(invent => invent.cant_existente <= 5);
         this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
+        swal.fire({
+          icon: 'success',
+          title: '¡Hecho!',
+          text: 'Inventarios cargados',
+        });
       }
     )
+  }
+
+  limpiar()
+  {
+    this.dataSource = new MatTableDataSource();
+    this.dataSource2 = new MatTableDataSource();
   }
 
 }

@@ -14,9 +14,8 @@
     <mat-icon>search</mat-icon>
   </button>
 
-  <button  color="warn" (click)="cargarTodosInventarios()">
-    <mat-icon>search</mat-icon>
-    todos
+  <button mat-raised-button color="warn" (click)="cargarTodosInventarios()">
+    Ver todos los inventarios
   </button>
 
   <div *ngIf="BanderaMostrar==true">
@@ -143,17 +142,18 @@
 
         <div class="area-tabla-p">
           <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matTableExporter #exporter="matTableExporter">
-            <ng-container matColumnDef="sucursal">
-              <th mat-header-cell *matHeaderCellDef> Sucursal </th>
-              <td mat-cell *matCellDef="let detalle_inventario"> {{detalle_inventario[0]}} </td>
-            </ng-container>
 
             <ng-container matColumnDef="id_inventario">
               <th mat-header-cell *matHeaderCellDef> id_inventario </th>
+              <td mat-cell *matCellDef="let detalle_inventario"> {{detalle_inventario[0]}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="sucursal">
+              <th mat-header-cell *matHeaderCellDef> Sucursal </th>
               <td mat-cell *matCellDef="let detalle_inventario"> {{detalle_inventario[1]}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="id_producto">
+            <ng-container matColumnDef="productos">
               <th mat-header-cell *matHeaderCellDef> Id_producto </th>
               <td mat-cell *matCellDef="let detalle_inventario"> {{detalle_inventario[2]}} </td>
             </ng-container>
