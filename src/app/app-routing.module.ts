@@ -24,6 +24,8 @@ import { MaxMinDeStockComponent } from './layout/catalogo/configuraciones/maxMin
 import { MaxMinDeExistenciaComponent } from './layout/catalogo/configuraciones/maxMinDeStock/max-min-de-existencia/max-min-de-existencia.component';
 import { RolGuard } from './_guards';
 import { AuthGuard } from './_guards/auth.guard';
+import {PermisosGuard} from './_guards/permisos.guard';
+import { Permisos } from './administracion/servicios/permisos';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -32,7 +34,7 @@ const routes: Routes = [
     path: 'layout',
      children: [
       {
-        path: '',  component: LayoutComponent ,
+        path: '',  component: LayoutComponent , canActivate: [AuthGuard], canActivateChild:[PermisosGuard],
         children: [
          { path: '', component: HomeComponent },
          { path: 'solicitudes', component: SolicitudesComponent },
@@ -48,7 +50,7 @@ const routes: Routes = [
          { path: 'compras-adquisiciones/detalle_compra/:id', component: CompraAdqViewComponent},
          { path: 'inventario', component: InventarioComponent},
          { path: 'inventarios-adquisiciones', component: InventariosAdquisicionesComponent},
-         { path: 'productos', component: ProductosComponent},
+         { path: 'productos', component: ProductosComponent, data:{permiso:Permisos.PRODUCTOS}},
          { path: 'productos/producto-form', component: ProductoFormComponent},
          { path: 'productos/producto-form/:id', component: ProductoFormComponent},
          { path: 'proveedores', component: ProveedoresComponent},
