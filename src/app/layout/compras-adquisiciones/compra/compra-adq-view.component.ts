@@ -29,6 +29,7 @@ export class CompraAdqViewComponent implements OnInit {
   nombreProveedor: String;
   solicitud = new Solicitud();
   bandera : Boolean;
+  enlaceTicket = "http://localhost:8080/api/compras/show/archivo/";
 
   constructor(private compraService: ComprasService,
     private detalleCompraService: DetalleCompraService,
@@ -52,6 +53,7 @@ export class CompraAdqViewComponent implements OnInit {
           (compra) => {
             this.compra = compra;
             this.proveedor = this.compra.proveedor;
+            console.log(this.enlaceTicket = this.enlaceTicket + compra.ticket);
             if (this.proveedor) {
               this.nombreProveedor = this.proveedor.nombre;
             } else {

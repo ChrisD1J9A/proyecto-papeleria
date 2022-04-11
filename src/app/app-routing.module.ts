@@ -10,6 +10,7 @@ import { SolicitudesAdquisicionesComponent } from './layout/solicitudes-adquisic
 import { SolicitudAdqViewComponent } from './layout/solicitudes-adquisiciones/solicitud/solicitud-adq-view.component';
 import { ComprasComponent } from './layout/compras/compras.component';
 import { CompraFViewComponent} from './layout/compras/compra/compra-fview.component';
+import { TicketViewComponent } from './layout/compras-adquisiciones/compra/ticket/ticket-view.component';
 import { ComprasAdquisicionesComponent } from './layout/compras-adquisiciones/compras-adquisiciones.component';
 import { CompraAdqViewComponent } from './layout/compras-adquisiciones/compra/compra-adq-view.component';
 import { InventarioComponent } from './layout/inventario/inventario.component';
@@ -34,7 +35,7 @@ const routes: Routes = [
     path: 'layout',
      children: [
       {
-        path: '',  component: LayoutComponent, canActivate: [AuthGuard], canActivateChild:[PermisosGuard],
+        path: '',  component: LayoutComponent , canActivate: [AuthGuard], canActivateChild:[PermisosGuard],
         children: [
          { path: '', component: HomeComponent },
          { path: 'solicitudes', component: SolicitudesComponent, data:{permiso:Permisos.SOLICITUDES}},
@@ -48,6 +49,7 @@ const routes: Routes = [
          { path: 'compras/show/:id', component: CompraFViewComponent},
          { path: 'compras-adquisiciones', component: ComprasAdquisicionesComponent, data:{permiso:Permisos.COMPRASADQUISICIONES}},
          { path: 'compras-adquisiciones/detalle_compra/:id', component: CompraAdqViewComponent},
+         { path: 'compras-adquisiciones/detalle_compra/:id/ticket', component: TicketViewComponent},
          { path: 'inventario', component: InventarioComponent, data:{permiso:Permisos.INVENTARIO}},
          { path: 'inventarios-adquisiciones', component: InventariosAdquisicionesComponent, data:{permiso:Permisos.INVENTARIOSADQUISICIONES}},
          { path: 'productos', component: ProductosComponent, data:{permiso:Permisos.PRODUCTOS}},
@@ -56,7 +58,7 @@ const routes: Routes = [
          { path: 'proveedores', component: ProveedoresComponent, data:{permiso:Permisos.PROVEEDORES}},
          { path: 'proveedores/proveedor-form', component: ProveedorFormComponent},
          { path: 'proveedores/proveedor-form/:id', component: ProveedorFormComponent},
-         { path: 'unidades', component: UnidadComponent, data:{permiso:Permisos.UNIDADES}},
+         { path: 'unidades', component: UnidadComponent, data:{permiso:Permisos.UNIDAD}},
          { path: 'maxMinStock', component: MaxMinDeStockComponent, data:{permiso:Permisos.MAXMINSTOCK}},
          { path: 'maxMinExistencia', component: MaxMinDeExistenciaComponent, data:{permiso:Permisos.MAXMINEXISTENCIA}},
         ]

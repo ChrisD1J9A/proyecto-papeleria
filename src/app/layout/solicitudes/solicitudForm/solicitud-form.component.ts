@@ -203,6 +203,8 @@ export class SolicitudFormComponent implements OnInit {
       if (result.isConfirmed) {
         this.productosSeleccionados.clear();
         this.detalles.clear();
+        this.detalles2.clear();
+        this.ngOnInit();
       }
     })
 
@@ -227,17 +229,13 @@ export class SolicitudFormComponent implements OnInit {
   }
 
   agregarProducto(producto: Producto) {
-    if (this.productosSeleccionados.has(producto)) {
-      swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Ya haz seleccionado este producto',
-      })
-    } else {
+    var indice = this.pds.findIndex(p => p === producto); //Aquí se obtiene el indice del producto seleccioado
+    this.pds.splice(indice, 1); //se elimiina de la lista el producto seleccionado
+    this.dataSource = new MatTableDataSource(this.pds); //y se vuelve a cargar ala tabla.
       this.snackBarSuccess();
-      this.productosSeleccionados.add(producto);
-      this.agregarDetalles(producto);
-    }
+      this.productosSeleccionados.add(producto); // añade el producto seleccionado a una lista auxiliar
+      this.agregarDetalles(producto); //agregar el formulario para el producto que se selecciono
+    //}
   }
 
   agregarProductoFueraDelCatalogo()
@@ -254,9 +252,12 @@ export class SolicitudFormComponent implements OnInit {
       }
       i++;
     }
+    this.pds.push(this.producto);
+    this.pds.sort((a,b) => a.id_producto - b.id_producto);
+    this.dataSource = new MatTableDataSource(this.pds);
     this.productosSeleccionados.delete(this.producto);
     this.removerDetalles(index);
-    this.snackBarDelete()
+    this.snackBarDelete();
   }
 
   agregarDetalles(p: Producto) {
