@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { Solicitud } from '../../../administracion/modelos/papeleria/solicitud'
@@ -7,11 +7,8 @@ import { ComprasService } from '../../../administracion/servicios/papeleria/comp
 import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
 import { Proveedor } from '../../../administracion/modelos/papeleria/proveedor';
-import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
-export interface DialogData {
-  ticket: string;
-}
+import { TicketViewComponent } from './ticket/ticket-view.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-compra-adq-view',
@@ -92,22 +89,11 @@ export class CompraAdqViewComponent implements OnInit {
 
   openDialog() {
     var ubicacionArchivo = "http://localhost:8080/api/compras/show/archivo/" + this.compra.ticket;
-    this.dialog.open(PdfTicket, {
+    this.dialog.open(TicketViewComponent, {
       width: "1000px",
       data: {
         ticket: ubicacionArchivo,
       },
     });
-  }
-}
-
-
-@Component({
-  selector: 'pdf-ticket',
-  templateUrl: 'pdf-ticket.html',
-})
-export class PdfTicket{
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData){
-    console.log(data.ticket)
   }
 }

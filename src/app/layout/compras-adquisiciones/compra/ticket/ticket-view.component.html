@@ -1,3 +1,7 @@
-<!-- <div class="container" >
-        <pdf-viewer [src]="verArchivo()" [original-size]="false"></pdf-viewer>
-</div>-->
+<div class="container" *ngIf="esPdf===true" >
+        <pdf-viewer [src]="data.ticket" [original-size]="false"></pdf-viewer>
+</div>
+
+<div  *ngIf="esPdf===false">
+  <img src="{{data.ticket}}" alt="">
+</div>

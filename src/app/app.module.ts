@@ -15,6 +15,7 @@ import { UnidadComponent} from './layout/catalogo/configuraciones/unidad/unidad.
 import {UnidadService} from './administracion/servicios/papeleria/unidad.service';
 import {ProductosService} from './administracion/servicios/papeleria/productos.service';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
@@ -141,7 +142,8 @@ import { TicketViewComponent } from './layout/compras-adquisiciones/compra/ticke
     MatDialogModule,
     MatCheckboxModule,
     MatTabsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    PdfViewerModule
   ],
   providers: [
     MatDatepickerModule,
@@ -152,5 +154,5 @@ import { TicketViewComponent } from './layout/compras-adquisiciones/compra/ticke
     DecimalPipe,
   ],
   bootstrap: [AppComponent]
-}) 
+})
 export class AppModule { }

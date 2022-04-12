@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
+import { Component, OnInit, Inject } from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
+export interface DialogData {
+  ticket: string;
+}
 
 @Component({
   selector: 'app-ticket-view',
@@ -7,13 +11,23 @@ import { pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
   styleUrls: ['./ticket-view.component.scss']
 })
 export class TicketViewComponent implements OnInit {
-  tittle = 'sampleapp'
-  public page = 2;
-  public pageLabel!: string;
+  ticket: string;
+  esPdf: boolean;
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<TicketViewComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData
+            ) { this.tipoArchivo();}
 
   ngOnInit(): void {
   }
 
+  tipoArchivo()
+  {
+    if(this.data.ticket.endsWith(".pdf")===true)
+    {
+      this.esPdf = true;
+    }else{
+      this.esPdf = false;
+    }
+  }
 }
