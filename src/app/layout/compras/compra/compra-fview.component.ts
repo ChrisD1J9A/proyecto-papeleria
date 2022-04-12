@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Compra } from '../../../administracion/modelos/papeleria/compra';
 import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
 import { Proveedor } from '../../../administracion/modelos/papeleria/proveedor';
-import { Detalle_solicitud } from '../../../administracion/modelos/papeleria/detalle_solicitud';
 import { Inventario } from '../../../administracion/modelos/papeleria/inventario';
 import { Detalle_inventario } from '../../../administracion/modelos/papeleria/detalle_inventario';
 import { ProveedoresService } from '../../../administracion/servicios/papeleria/proveedores.service';
@@ -12,6 +11,8 @@ import { ComprasService } from '../../../administracion/servicios/papeleria/comp
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
 import { InventarioService } from '../../../administracion/servicios/papeleria/inventario.service';
 import { DetalleSolicitudService  } from '../../../administracion/servicios/papeleria/detalle-solicitud.service';
+import { Detalle_solicitud_PFDC } from '../../../administracion/modelos/papeleria/detalle_solicitud_PFDC';
+import { DetalleSolicitudPFDCService } from '../../../administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
 import { DetalleInventarioService } from '../../../administracion/servicios/papeleria/detalle-inventario.service'
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
@@ -27,11 +28,14 @@ export class CompraFViewComponent implements OnInit {
   detalle_compra = new Detalle_compra();
   detalles_compra = new Array();
   detalles_inventario: Detalle_inventario[];
+  detalle_solicitud_PFDC = new Detalle_solicitud_PFDC();
+  detalles_solicitud_PFDC = new Array();
   proveedor = new Proveedor();
   proveedores: Proveedor[];
   inventario: Inventario;
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];
   dataSource = new MatTableDataSource();
+  dataSource2 = new MatTableDataSource();
   nombreProveedor: String;
   banderaEditar: Boolean;
   private ticket: File;
@@ -41,13 +45,14 @@ export class CompraFViewComponent implements OnInit {
   today = new Date();
   minDate: Date;
   bandera = true;
+  pfdcFlag: boolean;
 
   constructor(private comprasService: ComprasService,
     private detalleCompraService: DetalleCompraService,
     private proveedoresService: ProveedoresService,
     private inventarioService: InventarioService,
     private detaInventarioService: DetalleInventarioService,
-    private detaSolicitudService: DetalleSolicitudService,
+    private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,
     private router: Router, private activatedRoute: ActivatedRoute)
     {
       const currentYear = new Date().getFullYear();
@@ -65,6 +70,11 @@ export class CompraFViewComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  applyFilter2(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource2.filter = filterValue.trim().toLowerCase();
   }
 
   getErrorMessage() {
@@ -108,14 +118,24 @@ export class CompraFViewComponent implements OnInit {
               this.banderaEditar = true;
             }
             console.log(this.banderaEditar);
-          })
+
+            if(compra.solicitud.pfdc){
+              this.detalleSolicitudPFDCService.getDetallesSolicitud_PFDC(compra.solicitud.id_solicitud).subscribe(
+                detalles_solicitudesPFDC => {
+                  console.log(detalles_solicitudesPFDC);
+                  this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC);
+                  this.pfdcFlag = true;
+              });
+            }else{
+              this.pfdcFlag = false;
+            }
+          });
         this.detalleCompraService.getDetallesCompra(id).subscribe(
           deta_compra => {
             this.dataSource = new MatTableDataSource(deta_compra);
-            console.log(deta_compra);
           });
       }
-    })
+    });
   }
 
   subirTicket(event) {
@@ -166,6 +186,10 @@ export class CompraFViewComponent implements OnInit {
                 this.comprasService.cargarTicket(this.ticket, compra.id_compra).
                   subscribe(compra => {
                     console.log(compra);
+                    if(compra.solicitud.pfdc===true){
+                      this.detalles_solicitud_PFDC = this.dataSource2.data;
+                      this.detalleSolicitudPFDCService.update(this.detalles_solicitud_PFDC, compra.solicitud.id_solicitud).subscribe(detas_pfdc =>{});
+                    }
                   });
                 this.detalleCompraService.update(this.detalles_compra, compra.id_compra).subscribe(
                   detalles => {
