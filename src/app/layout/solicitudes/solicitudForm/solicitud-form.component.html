@@ -31,7 +31,7 @@
       <div [formGroup]="detalle">
         <mat-form-field appearance="outline" class="inputW">
           <mat-label>Producto</mat-label>
-          <input matInput formControlName="producto_">
+          <input matInput formControlName="producto_" readonly>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Cantidad existente</mat-label>
@@ -41,7 +41,7 @@
           <mat-label>Cantidad solicitada</mat-label>
           <input matInput type="number" formControlName="cant_solicitada">
         </mat-form-field>
-        <button class="btn1" mat-mini-fab color="warn" (click)="eliminarProducto(i)">
+        <button  mat-mini-fab color="warn" (click)="eliminarProducto(i)">
           <mat-icon>remove_circle_outline</mat-icon>
         </button>
       </div>
@@ -70,7 +70,7 @@
     </div>
   </div>
 
-  <label for="productoDesconocido">Agregar un producto fuera del catalogo  del productos -> </label>
+  <label for="productoDesconocido">Agregar un producto fuera del catalogo de productos </label>
   <button mat-mini-fab color="warn" class="btn1" name="productoDesconocido" (click)="agregarProductoFueraDelCatalogo()">
     <mat-icon>add_circle</mat-icon>
   </button>

@@ -10,9 +10,8 @@ import { ProveedoresService } from '../../../administracion/servicios/papeleria/
 import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
 import { InventarioService } from '../../../administracion/servicios/papeleria/inventario.service';
-import { DetalleSolicitudService  } from '../../../administracion/servicios/papeleria/detalle-solicitud.service';
-import { Detalle_solicitud_PFDC } from '../../../administracion/modelos/papeleria/detalle_solicitud_PFDC';
-import { DetalleSolicitudPFDCService } from '../../../administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
+import { Detalle_compra_PFDC } from '../../../administracion/modelos/papeleria/detalle_compra_PFDC';
+import { DetalleCompraPFDCService } from '../../../administracion/servicios/papeleria/detalle-compra-pfdc.service';
 import { DetalleInventarioService } from '../../../administracion/servicios/papeleria/detalle-inventario.service'
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
@@ -28,8 +27,8 @@ export class CompraFViewComponent implements OnInit {
   detalle_compra = new Detalle_compra();
   detalles_compra = new Array();
   detalles_inventario: Detalle_inventario[];
-  detalle_solicitud_PFDC = new Detalle_solicitud_PFDC();
-  detalles_solicitud_PFDC = new Array();
+  detalle_compra_PFDC = new Detalle_compra_PFDC();
+  detalles_compra_PFDC = new Array();
   proveedor = new Proveedor();
   proveedores: Proveedor[];
   inventario: Inventario;
@@ -52,7 +51,7 @@ export class CompraFViewComponent implements OnInit {
     private proveedoresService: ProveedoresService,
     private inventarioService: InventarioService,
     private detaInventarioService: DetalleInventarioService,
-    private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,
+    private detalleCompraPFDCService: DetalleCompraPFDCService,
     private router: Router, private activatedRoute: ActivatedRoute)
     {
       const currentYear = new Date().getFullYear();
@@ -120,10 +119,10 @@ export class CompraFViewComponent implements OnInit {
             console.log(this.banderaEditar);
 
             if(compra.solicitud.pfdc){
-              this.detalleSolicitudPFDCService.getDetallesSolicitud_PFDC(compra.solicitud.id_solicitud).subscribe(
-                detalles_solicitudesPFDC => {
-                  console.log(detalles_solicitudesPFDC);
-                  this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC);
+              this.detalleCompraPFDCService.getDetallesCompra_PFDC(compra.id_compra).subscribe(
+                detalles_ComprasPFDC => {
+                  console.log(detalles_ComprasPFDC);
+                  this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);
                   this.pfdcFlag = true;
               });
             }else{
@@ -149,7 +148,7 @@ export class CompraFViewComponent implements OnInit {
     {
       this.mensajet = this.ticket.name;
     }else{
-      this.mensajet = "Ticket no seleccionado";
+      this.mensajet = "Ticket no seleccionado*";
     }
   }
 
@@ -187,8 +186,8 @@ export class CompraFViewComponent implements OnInit {
                   subscribe(compra => {
                     console.log(compra);
                     if(compra.solicitud.pfdc===true){
-                      this.detalles_solicitud_PFDC = this.dataSource2.data;
-                      this.detalleSolicitudPFDCService.update(this.detalles_solicitud_PFDC, compra.solicitud.id_solicitud).subscribe(detas_pfdc =>{});
+                      this.detalles_compra_PFDC = this.dataSource2.data;
+                      this.detalleCompraPFDCService.update(this.detalles_compra_PFDC, compra.id_compra).subscribe(detas_pfdc =>{});
                     }
                   });
                 this.detalleCompraService.update(this.detalles_compra, compra.id_compra).subscribe(
@@ -280,15 +279,6 @@ export class CompraFViewComponent implements OnInit {
                 });
          }
       });
-
-
-
-
-
-      /*this.detalleCompraService.getDetallesCompra(this.compra.id_compra).subscribe(
-        detasss => {
-          console.log(detasss[0]);
-        });*/
   }
 
 }

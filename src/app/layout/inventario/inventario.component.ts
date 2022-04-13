@@ -28,11 +28,9 @@ export class InventarioComponent implements OnInit {
 
 
   constructor(private inventarioService: InventarioService,
-              private detalleInvenarioService: DetalleInventarioService)
-              { }
+    private detalleInvenarioService: DetalleInventarioService) { }
 
-  ngOnInit(): void
-  {
+  ngOnInit(): void {
     this.cargarInventario();
   }
 
@@ -46,19 +44,20 @@ export class InventarioComponent implements OnInit {
     this.dataSource2.filter = filterValue.trim().toLowerCase();
   }
 
-  cargarInventario()
-  {
+  cargarInventario() {
     var idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
     this.inventarioService.getInventarioBySucursal(idSucursal).subscribe(
       inventario => {
         this.inventario = inventario;
-        this.detalleInvenarioService.getDetallesInventario(inventario.id_inventario).subscribe(
-          detas => {
-            this.dataSource = new MatTableDataSource(detas);
-            this.inventarioBajo = detas.filter(invent => invent.cant_existente <= 5);
-            this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
-            //console.log(this.inventarioBajo);
-          });
+        if (this.inventario) {
+          this.detalleInvenarioService.getDetallesInventario(inventario.id_inventario).subscribe(
+            detas => {
+              this.dataSource = new MatTableDataSource(detas);
+              this.inventarioBajo = detas.filter(invent => invent.cant_existente <= 5);
+              this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
+              //console.log(this.inventarioBajo);
+            });
+        }
       });
   }
 

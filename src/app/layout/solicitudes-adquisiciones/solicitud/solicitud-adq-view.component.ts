@@ -9,6 +9,8 @@ import { SolicitudesService } from '../../../administracion/servicios/papeleria/
 import { DetalleSolicitudService } from '../../../administracion/servicios/papeleria/detalle-solicitud.service';
 import { Detalle_solicitud_PFDC } from '../../../administracion/modelos/papeleria/detalle_solicitud_PFDC';
 import { DetalleSolicitudPFDCService } from '../../../administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
+import { DetalleCompraPFDCService } from '../../../administracion/servicios/papeleria/detalle-compra-pfdc.service';
+import { Detalle_compra_PFDC } from '../../../administracion/modelos/papeleria/detalle_compra_PFDC';
 import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -23,8 +25,9 @@ export class SolicitudAdqViewComponent implements OnInit {
   solicitud = new Solicitud();
   detalle_solicitud = new Detalle_solicitud();
   detalles_solicitud = new Array();
+  detalles_solicitud_pfdc = new Array();
   detalle_solicitud_PFDC = new Detalle_solicitud_PFDC();
-  detalles_solicitud_PFDC = new Array();
+  detalle_compra_pfdc = new Detalle_compra_PFDC();
   compra = new Compra();
   detalle_compra = new Detalle_compra();
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];
@@ -41,7 +44,8 @@ export class SolicitudAdqViewComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private comprasService: ComprasService,
               private detalleCompraService: DetalleCompraService,
-              private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,) { }
+              private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,
+              private detalleCompraPFDCService: DetalleCompraPFDCService) { }
 
   ngOnInit(): void {
     this.cargarSolicitud();
@@ -81,6 +85,7 @@ export class SolicitudAdqViewComponent implements OnInit {
         this.detalleSolicitudPFDCService.getDetallesSolicitud_PFDC(id).subscribe(
             detalles_solicitudesPFDC => {
               this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC);
+              this.detalles_solicitud_pfdc = detalles_solicitudesPFDC;
         });
       }
     });
@@ -117,8 +122,8 @@ export class SolicitudAdqViewComponent implements OnInit {
             this.solicitudesService.update(this.solicitud).subscribe(
               solicitud => {
                 if(this.solicitud.pfdc===true){
-                  this.detalles_solicitud_PFDC = this.dataSource2.data;
-                  this.detalleSolicitudPFDCService.update(this.detalles_solicitud_PFDC, solicitud.id_solicitud).subscribe(detas_pfdc =>{}); 
+                  this.detalles_solicitud_pfdc = this.dataSource2.data;
+                  this.detalleSolicitudPFDCService.update(this.detalles_solicitud_pfdc, solicitud.id_solicitud).subscribe(detas_pfdc =>{});
                 }
 
                 this.detalleSolicitudService.update(this.detalles_solicitud, solicitud.id_solicitud).subscribe(
@@ -194,7 +199,6 @@ export class SolicitudAdqViewComponent implements OnInit {
   crearCompra()
   {
     var detallesoli = new Detalle_solicitud();
-    //this.compra.usuario = "Cristofher Diego (cambiar)";
     this.compra.solicitud = this.solicitud;
     this.compra.estatus = 'En proceso';
     this.compra.id_sucursal = this.solicitud.id_sucursal;
@@ -211,8 +215,22 @@ export class SolicitudAdqViewComponent implements OnInit {
           this.detalleCompraService.create(this.detalle_compra).subscribe(
             detalles =>{
               console.log(detalles);
-            })
+            });
         }
-      })
+        if(this.solicitud.pfdc===true){
+          var detaSoliPFDC = new Detalle_solicitud_PFDC();
+          for(detaSoliPFDC of this.detalles_solicitud_pfdc){
+            this.detalle_compra_pfdc.compra = compra;
+            this.detalle_compra_pfdc.nombreProducto = detaSoliPFDC.nombreProducto;
+            this.detalle_compra_pfdc.cant_existente = detaSoliPFDC.cant_existente;
+            this.detalle_compra_pfdc.cant_solicitada = detaSoliPFDC.cant_solicitada;
+            this.detalle_compra_pfdc.cant_autorizada = detaSoliPFDC.cant_autorizada;
+            this.detalleCompraPFDCService.create(this.detalle_compra_pfdc).subscribe(
+              detaCompraPFDC => {
+                console.log(detaCompraPFDC);
+              });
+          }
+        }
+      });
   }
 }

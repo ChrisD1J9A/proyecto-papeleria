@@ -88,7 +88,47 @@
       </tr>
     </table>
   </div>
-  <br><br>
+  <br>
+  <div *ngIf="pfdcFlag===true">
+    <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
+      <ng-container matColumnDef="tipo_unidad">
+        <th mat-header-cell *matHeaderCellDef> Unidad </th>
+        <td mat-cell *matCellDef="let detalle_pfdc"> -- </td>
+      </ng-container>
+
+      <ng-container matColumnDef="descripcion_producto">
+        <th mat-header-cell *matHeaderCellDef> Productos </th>
+        <td mat-cell *matCellDef="let detalle_pfdc"> {{detalle_pfdc.nombreProducto}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cant_existente">
+        <th mat-header-cell *matHeaderCellDef> Cantidad existente </th>
+        <td mat-cell *matCellDef="let detalle_pfdc"> {{detalle_pfdc.cant_existente}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cant_solicitada">
+        <th mat-header-cell *matHeaderCellDef> Cantidad solicitada </th>
+        <td mat-cell *matCellDef="let detalle_pfdc"> {{detalle_pfdc.cant_solicitada}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cant_autorizada">
+        <th mat-header-cell *matHeaderCellDef> Cantidad autorizada </th>
+        <td mat-cell *matCellDef="let detalle_pfdc"> {{detalle_pfdc.cant_autorizada}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cant_comprada">
+        <th mat-header-cell *matHeaderCellDef> Cantidad comprada </th>
+        <td mat-cell *matCellDef="let detalle_pfdc">
+            {{detalle_pfdc.cant_comprada}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <br>
+  <br>
   <mat-form-field appearance="fill" class="largeInput">
     <mat-label>Gasto total </mat-label>
     <span matPrefix>$&nbsp;</span>

@@ -263,7 +263,7 @@ export class SolicitudFormComponent implements OnInit {
   agregarDetalles(p: Producto) {
     const detalleFormC = this.formBuilder.group({
       producto: [p],
-      producto_: [{ value: p.descripcion, disabled: true }],
+      producto_: [p.descripcion],
       cant_existente: ['0', { validators: [Validators.required] }],
       cant_solicitada: ['0', { validators: [Validators.required] }]
     });

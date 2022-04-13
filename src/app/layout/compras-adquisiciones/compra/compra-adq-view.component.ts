@@ -6,6 +6,8 @@ import { Compra } from '../../../administracion/modelos/papeleria/compra';
 import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
 import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
+import { Detalle_compra_PFDC } from '../../../administracion/modelos/papeleria/detalle_compra_PFDC';
+import { DetalleCompraPFDCService } from '../../../administracion/servicios/papeleria/detalle-compra-pfdc.service';
 import { Proveedor } from '../../../administracion/modelos/papeleria/proveedor';
 import { TicketViewComponent } from './ticket/ticket-view.component';
 import {MatDialog} from '@angular/material/dialog';
@@ -20,17 +22,22 @@ export class CompraAdqViewComponent implements OnInit {
   proveedor = new Proveedor();
   compras: Compra[];
   detalles_compra: Detalle_compra[];
+  detalle_compra_PFDC = new Detalle_compra_PFDC();
+  detalles_compra_PFDC = new Array();
   dataSource = new MatTableDataSource();
+  dataSource2 = new MatTableDataSource();
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];
   banderaEditar: Boolean;
   nombreProveedor: String;
   solicitud = new Solicitud();
   bandera : Boolean;
   enlaceTicket = "http://localhost:8080/api/compras/show/archivo/";
+  pfdcFlag: boolean;
 
   constructor(private compraService: ComprasService,
     private detalleCompraService: DetalleCompraService,
     private activatedRoute: ActivatedRoute,
+    private detalleCompraPFDCService: DetalleCompraPFDCService,
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -70,6 +77,17 @@ export class CompraAdqViewComponent implements OnInit {
             } else {
                 this.bandera = false;
                 console.log(this.bandera);
+            }
+
+            if(compra.solicitud.pfdc){
+              this.detalleCompraPFDCService.getDetallesCompra_PFDC(compra.id_compra).subscribe(
+                detalles_ComprasPFDC => {
+                  console.log(detalles_ComprasPFDC);
+                  this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);
+                  this.pfdcFlag = true;
+              });
+            }else{
+              this.pfdcFlag = false;
             }
           });
         this.detalleCompraService.getDetallesCompra(id).subscribe(
