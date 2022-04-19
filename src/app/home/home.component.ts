@@ -18,6 +18,9 @@ export class HomeComponent implements OnInit {
         console.log(this.idSuc);
     }
 
+    /*Metodo obtenerNombreUsuario
+    Sirve para obtener el nombre complete del usuario que se logeo  y almacenar el mismo en un localStorage
+    con el identificador nombreCUsuario*/
     obtenerNombreUsuario(): void
     {
       var username = JSON.parse(localStorage.getItem('currentUser')!).username;

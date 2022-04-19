@@ -30,6 +30,11 @@ export class MaxMinStockService {
     return this.http.get<MaxMinDeStock>(`${this.urlEndPoint}/${id}`);
   }
 
+  public getMaxMinDeStockBySucursal(sucursal: string): Observable<MaxMinDeStock>
+  {
+    return this.http.get<MaxMinDeStock>(`${this.urlEndPoint}S/${sucursal}`);
+  }
+
   public update(maxMin: MaxMinDeStock): Observable<MaxMinDeStock>
   {
     return this.http.put<MaxMinDeStock>(`${this.urlEndPoint}/${maxMin.id_maxMinDeStock}`, maxMin, {headers: this.httpHeaders});
