@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormArray} from '@angular/forms';
+import { Validators, FormBuilder, FormArray } from '@angular/forms';
 import swal from 'sweetalert2';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { Solicitud } from 'src/app/administracion/modelos/papeleria/solicitud';
 import { SolicitudesService } from 'src/app/administracion/servicios/papeleria/solicitudes.service';
 import { DetalleSolicitudService } from 'src/app/administracion/servicios/papeleria/detalle-solicitud.service';
@@ -45,19 +45,25 @@ export class SolicitudFormComponent implements OnInit {
   nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!);
   idSucursal: any;
   nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
+  maxStock = JSON.parse(localStorage.getItem('maxStock')!);
+  minStock = JSON.parse(localStorage.getItem('minStock')!);
+  maxExistencia = JSON.parse(localStorage.getItem('maxExistencia')!);
+  minExistencia = JSON.parse(localStorage.getItem('minExistencia')!);
+
 
   constructor(private productosService: ProductosService,
     private formBuilder: FormBuilder,
     private solicitudesService: SolicitudesService,
     private router: Router,
     private detalleSolicitudService: DetalleSolicitudService,
-    private detalleSolicitudPFDCService:  DetalleSolicitudPFDCService,
+    private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,
     private _snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>) {
     const currentYear = new Date().getFullYear();
     this.minDate = new Date(currentYear - 1, 12, 31);
   }
 
+  //Formularios reactivos
   get detalles(): FormArray {
     return this.detalleSForm.get('detalles') as FormArray;
   }
@@ -81,15 +87,15 @@ export class SolicitudFormComponent implements OnInit {
     detalles2: this.formBuilder.array([])
   })
 
+  /*Al iniciar este componente se cargaran al dataSource (para la tabla de productos)
+  los productos activos (1) para mostrarlos en el formulario*/
   ngOnInit(): void {
-    this.dateAdapter.setLocale('es-MX');
     this.productosService.getProductos().subscribe(
       productos => {
         this.pds = productos.filter(p => p.estatus === 1);
         this.dataSource = new MatTableDataSource(this.pds);
       });
-      this.idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
-      console.log(this.idSucursal);
+    this.idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
   }
 
   applyFilter(event: Event) {
@@ -97,78 +103,86 @@ export class SolicitudFormComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  /*Método en dónde una vez que se decida envíar una solicitud,validará los datos y si no hay
+  inconvenientes se guarda la solicitud*/
   submit(): void {
     console.log(this.detalles2.getRawValue().length)
     if (this.productosSeleccionados.size > 0) {
-      this.solicitud = this.solicitudForm.value;
-      this.solicitud.estatus = "Pendiente";
-      this.solicitud.id_sucursal = this.idSucursal;
-      this.solicitud.nombre_sucursal = this.nombreSucursal;
-      if(this.detalles2.getRawValue().length >= 1)
-       {
-         this.solicitud.pfdc = true;
-       }else{
-         this.solicitud.pfdc = false;
-       }
-      swal.fire({
-        title: '¿Desea hacer una nueva solicitud? ',
-        showDenyButton: true,
-        showCancelButton: false,
-        confirmButtonText: 'Si',
-        denyButtonText: `No guardar`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.solicitudesService.create(this.solicitud).subscribe(
-            solicitud => {
-              for (var i = 0; i < this.detalles.getRawValue().length; i++) {
-                this.deta = this.detalles.value.pop();
-                this.deta.solicitud = solicitud;
-                this.detalleSolicitudService.create(this.deta).subscribe(
-                  detalle => {
-                    console.log("done");
-                  });
-                console.log(this.deta);
-              }
-              if(this.detalles2.getRawValue().length >= 1)
-               {
-                 for (var i = 0; i < this.detalles2.getRawValue().length; i++) {
-                   this.deta2 = this.detalles2.value.pop();
-                   this.deta2.solicitud = solicitud;
-                   this.detalleSolicitudPFDCService.create(this.deta2).subscribe(
-                     detalle2 => {
-                       console.log("done");
-                     });
-                     console.log(this.deta2);
-              }
-               }
-
-
-              if (solicitud.id_solicitud) {
-                swal.fire(
-                  'Mensaje',
-                  `La solicitud fue enviada con éxito y queda como ${solicitud.estatus}`,
-                  'success'
-                );
-                this.router.navigate(['/layout/solicitudes'])
-              } else {
-                swal.fire(
-                  'Mensaje',
-                  `Error al envíar la solicitud`,
-                  'error'
-                );
-              }
-            })
-
-        } else if (result.isDenied) {
-          swal.fire('La solicitud no fue guardada', '', 'info')
+      if (this.detalles.valid) {
+        this.solicitud = this.solicitudForm.value;
+        this.solicitud.estatus = "Pendiente";
+        this.solicitud.id_sucursal = this.idSucursal;
+        this.solicitud.nombre_sucursal = this.nombreSucursal;
+        if (this.detalles2.getRawValue().length >= 1) {
+          this.solicitud.pfdc = true;
+        } else {
+          this.solicitud.pfdc = false;
         }
-      })
-    } else {
+        swal.fire({
+          title: '¿Desea hacer una nueva solicitud? ',
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: 'Si',
+          denyButtonText: `No guardar`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.solicitudesService.create(this.solicitud).subscribe(
+              solicitud => {
+                for (var i = 0; i < this.detalles.getRawValue().length; i++) {
+                  this.deta = this.detalles.value.pop();
+                  this.deta.solicitud = solicitud;
+                  this.detalleSolicitudService.create(this.deta).subscribe(
+                    detalle => {
+                      console.log("done");
+                    });
+                  console.log(this.deta);
+                }
+                if (this.detalles2.getRawValue().length >= 1) {
+                  for (var i = 0; i < this.detalles2.getRawValue().length; i++) {
+                    this.deta2 = this.detalles2.value.pop();
+                    this.deta2.solicitud = solicitud;
+                    this.detalleSolicitudPFDCService.create(this.deta2).subscribe(
+                      detalle2 => {
+                        console.log("done");
+                      });
+                    console.log(this.deta2);
+                  }
+                }
+
+
+                if (solicitud.id_solicitud) {
+                  swal.fire(
+                    'Mensaje',
+                    `La solicitud fue enviada con éxito y queda como ${solicitud.estatus}`,
+                    'success'
+                  );
+                  this.router.navigate(['/layout/solicitudes'])
+                } else {
+                  swal.fire(
+                    'Mensaje',
+                    `Error al envíar la solicitud`,
+                    'error'
+                  );
+                }
+              })
+
+          } else if (result.isDenied) {
+            swal.fire('La solicitud no fue guardada', '', 'info');
+          }
+        })
+      }else{
+        swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Hay datos inválidos en el formulario',
+        });
+      }
+    }else {
       swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'Debe de elegir al menos un producto!',
-      })
+      });
     }
   }
 
@@ -232,14 +246,13 @@ export class SolicitudFormComponent implements OnInit {
     var indice = this.pds.findIndex(p => p === producto); //Aquí se obtiene el indice del producto seleccioado
     this.pds.splice(indice, 1); //se elimiina de la lista el producto seleccionado
     this.dataSource = new MatTableDataSource(this.pds); //y se vuelve a cargar ala tabla.
-      this.snackBarSuccess();
-      this.productosSeleccionados.add(producto); // añade el producto seleccionado a una lista auxiliar
-      this.agregarDetalles(producto); //agregar el formulario para el producto que se selecciono
+    this.snackBarSuccess();
+    this.productosSeleccionados.add(producto); // añade el producto seleccionado a una lista auxiliar
+    this.agregarDetalles(producto); //agregar el formulario para el producto que se selecciono
     //}
   }
 
-  agregarProductoFueraDelCatalogo()
-  {
+  agregarProductoFueraDelCatalogo() {
     this.agregarDetallesPFDC();
   }
 
@@ -253,7 +266,7 @@ export class SolicitudFormComponent implements OnInit {
       i++;
     }
     this.pds.push(this.producto);
-    this.pds.sort((a,b) => a.id_producto - b.id_producto);
+    this.pds.sort((a, b) => a.id_producto - b.id_producto);
     this.dataSource = new MatTableDataSource(this.pds);
     this.productosSeleccionados.delete(this.producto);
     this.removerDetalles(index);
@@ -264,15 +277,15 @@ export class SolicitudFormComponent implements OnInit {
     const detalleFormC = this.formBuilder.group({
       producto: [p],
       producto_: [p.descripcion],
-      cant_existente: ['0', { validators: [Validators.required] }],
-      cant_solicitada: ['0', { validators: [Validators.required] }]
+      cant_existente: ['0', { validators: [Validators.required, Validators.min(0), Validators.max(this.minExistencia)] }],
+      cant_solicitada: ['0', { validators: [Validators.required, Validators.min(1), Validators.max(this.maxExistencia)] }]
     });
     this.detalles.push(detalleFormC);
   }
 
-  agregarDetallesPFDC(){
+  agregarDetallesPFDC() {
     const detallePFDCFormC = this.formBuilder.group({
-      nombreProducto: ['', {validators: [Validators.required]}],
+      nombreProducto: ['', { validators: [Validators.required] }],
       cant_existente: ['0', { validators: [Validators.required] }],
       cant_solicitada: ['0', { validators: [Validators.required] }]
     });
