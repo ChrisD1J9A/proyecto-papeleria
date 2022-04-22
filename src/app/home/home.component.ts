@@ -47,20 +47,31 @@ export class HomeComponent implements OnInit {
     }
 
     /*Método que sirve para obtener la configuracion de maximos y minimos de la sucursal
-    donde se esta logeando y se almacenan dichas configuraciones en el localStorage*/
+    donde se esta logeando y se almacenan dichas configuraciones en el localStorage
+    En dado caso de no existir una configuracion para la sucursal se colocarán valores por default*/
     obtenerMaximosMinimosDeLaSucursal()
     {
       var nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!);
       this.maxMinStockService.getMaxMinDeStockBySucursal(nombreSucursal).subscribe(
         maxMinStockSucursal => {
-          localStorage.setItem('maxStock', JSON.stringify(maxMinStockSucursal.max_stock));
-          localStorage.setItem('minStock', JSON.stringify(maxMinStockSucursal.min_stock));
+          if(maxMinStockSucursal === null){
+            localStorage.setItem('maxStock', JSON.stringify(50));
+            localStorage.setItem('minStock', JSON.stringify(5));
+          }else{
+            localStorage.setItem('maxStock', JSON.stringify(maxMinStockSucursal.max_stock));
+            localStorage.setItem('minStock', JSON.stringify(maxMinStockSucursal.min_stock));
+          }
         });
 
       this.maxMinExistenciaService.getMaxMinDeExistenciaBySucursal(nombreSucursal).subscribe(
         maxMinExistenciaSucursal => {
-          localStorage.setItem('maxExistencia', JSON.stringify(maxMinExistenciaSucursal.max_existencia));
-          localStorage.setItem('minExistencia', JSON.stringify(maxMinExistenciaSucursal.min_existencia));
+          if(maxMinExistenciaSucursal === null){
+            localStorage.setItem('maxExistencia', JSON.stringify(50));
+            localStorage.setItem('minExistencia', JSON.stringify(5));
+          }else{
+            localStorage.setItem('maxExistencia', JSON.stringify(maxMinExistenciaSucursal.max_existencia));
+            localStorage.setItem('minExistencia', JSON.stringify(maxMinExistenciaSucursal.min_existencia));
+          }
         });
     }
 }

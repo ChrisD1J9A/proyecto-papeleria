@@ -15,6 +15,8 @@ import { DetalleCompraPFDCService } from '../../../administracion/servicios/pape
 import { DetalleInventarioService } from '../../../administracion/servicios/papeleria/detalle-inventario.service'
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
+import { TicketViewComponent } from '../../compras-adquisiciones/compra/ticket/ticket-view.component';
+import {MatDialog} from '@angular/material/dialog';
 
 
 @Component({
@@ -52,7 +54,8 @@ export class CompraFViewComponent implements OnInit {
     private inventarioService: InventarioService,
     private detaInventarioService: DetalleInventarioService,
     private detalleCompraPFDCService: DetalleCompraPFDCService,
-    private router: Router, private activatedRoute: ActivatedRoute)
+    private router: Router, private activatedRoute: ActivatedRoute,
+    private dialog: MatDialog)
     {
       const currentYear = new Date().getFullYear();
       this.minDate = new Date(currentYear - 1, 12, 31);
@@ -281,4 +284,13 @@ export class CompraFViewComponent implements OnInit {
       });
   }
 
+  openDialog() {
+    var ubicacionArchivo = "http://localhost:8080/api/compras/show/archivo/" + this.compra.ticket;
+    this.dialog.open(TicketViewComponent, {
+      width: "1000px",
+      data: {
+        ticket: ubicacionArchivo,
+      },
+    });
+  }
 }

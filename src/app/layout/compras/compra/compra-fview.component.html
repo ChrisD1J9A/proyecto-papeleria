@@ -160,7 +160,7 @@
   <p *ngIf="banderaEditar==true">{{mensajet}}</p>
   <input hidden (change)="subirTicket($event)" #fileInput type="file" id="file">
 
-
+  <button type="button" mat-raised-button (click)="openDialog()" color="primary" *ngIf="banderaEditar==false">Ver Ticket <mat-icon>remove_red_eye</mat-icon></button>
   <button type="button" mat-raised-button (click)="descargarTicket()" color="primary" *ngIf="banderaEditar==false">Descargar Ticket <mat-icon>attachment</mat-icon></button>
   <br>
 
