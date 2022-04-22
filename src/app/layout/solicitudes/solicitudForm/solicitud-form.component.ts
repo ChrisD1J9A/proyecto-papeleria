@@ -11,6 +11,8 @@ import { DetalleSolicitudPFDCService } from 'src/app/administracion/servicios/pa
 import { Detalle_solicitud_PFDC } from 'src/app/administracion/modelos/papeleria/detalle_solicitud_PFDC';
 import { ProductosService } from 'src/app/administracion/servicios/papeleria/productos.service';
 import { Producto } from 'src/app/administracion/modelos/papeleria/producto';
+import { Mail } from 'src/app/administracion/modelos/papeleria/Mail';
+import { MailService } from 'src/app/administracion/servicios/papeleria/mail.service';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import {
@@ -48,7 +50,7 @@ export class SolicitudFormComponent implements OnInit {
   minStock = JSON.parse(localStorage.getItem('minStock')!); //configuracion del minimo de stock
   maxExistencia = JSON.parse(localStorage.getItem('maxExistencia')!);  //configuracion de maximo de existencia
   minExistencia = JSON.parse(localStorage.getItem('minExistencia')!); //configuracion de minimo de existencia
-
+  mail = new Mail();
 
   constructor(private productosService: ProductosService,
     private formBuilder: FormBuilder,
@@ -56,6 +58,7 @@ export class SolicitudFormComponent implements OnInit {
     private router: Router,
     private detalleSolicitudService: DetalleSolicitudService,
     private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,
+    private mailService: MailService,
     private _snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>) {
     const currentYear = new Date().getFullYear();
@@ -153,6 +156,7 @@ export class SolicitudFormComponent implements OnInit {
                     `La solicitud fue enviada con éxito y queda como ${solicitud.estatus}`,
                     'success'
                   );
+                  this.enviarCorreo(solicitud);
                   this.router.navigate(['/layout/solicitudes']) //Se redirecciona a la tabla general de solicitudes en caso de no presentar errores
                 } else {
                   swal.fire(
@@ -308,4 +312,22 @@ export class SolicitudFormComponent implements OnInit {
   removerDetalles2(indice: number) {
     this.detalles2.removeAt(indice);
   }
+
+  //Método para mandar correo
+  enviarCorreo(solicitud: Solicitud)
+  {
+    this.mail.para = "16161339@itoaxaca.edu.mx";
+    this.mail.asunto = "Nueva solicitud";
+    this.mail.mensaje = "Se ha realizado una nueva solicitud por el usuario: "
+                    + solicitud.nombre_usuario +
+                    " de la sucursal: " + solicitud.nombre_sucursal +
+                    " el día: " + solicitud.fecha_solicitud +
+                    ", Para ver a detalle la solicitud se sugiere revisar el sistema";
+    this.mailService.enviar(this.mail).subscribe(
+      correo => {
+        console.log(correo);
+        console.log("correo enviado");
+      });
+  }
+
 }
