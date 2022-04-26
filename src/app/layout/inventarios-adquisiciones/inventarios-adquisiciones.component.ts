@@ -14,18 +14,18 @@ import swal from 'sweetalert2';
   styleUrls: ['./inventarios-adquisiciones.component.scss']
 })
 export class InventariosAdquisicionesComponent implements OnInit {
-  sucursales: Sucursal[];
-  sucursal = new Sucursal();
-  inventario = new Inventario();
-  detalle_inventario = new Detalle_inventario();
-  inventarioBajo = new Array();
-  displayedColumns: string[] = ['id_producto', 'unidad', 'descripcion', 'cant_existente'];
-  displayedColumns2: string[] = ['id_inventario', 'sucursal', 'productos', 'cant_existente'];
-  dataSource = new MatTableDataSource();
-  dataSource2 = new MatTableDataSource();
-  BanderaMostrar = false;
-  mostrarTodos = false;
-  nombreSucursalInventarioActual: string;
+  sucursales: Sucursal[]; //Lista de sucursales
+  sucursal = new Sucursal(); //Objeto sucursal, sirve para almacenar la sucursal elegida en el select
+  inventario = new Inventario();//Objeto inventario, sirve para almacenar el inventario de la sucursal elegida
+  detalle_inventario = new Detalle_inventario();//Objeto detalle_inventario del inventario elegido
+  inventarioBajo = new Array();//Lista para almacenar los productos con stock bajo
+  displayedColumns: string[] = ['id_producto', 'unidad', 'descripcion', 'cant_existente']; //Encabezados para la tabla del inventario seleccioado
+  displayedColumns2: string[] = ['id_inventario', 'sucursal', 'productos', 'cant_existente'];//Encabezados para la  tabla de todos los inventarios
+  dataSource = new MatTableDataSource();//Dónde se carga la informacion del inventario para mostrar en la tabla
+  dataSource2 = new MatTableDataSource();//Donde se cargan los datos de todos los inventarios para mostrar en su respectiva tabla
+  BanderaMostrar = false; //Bandera con la cual evalua si se muestran o no el inventario de X sucursal
+  mostrarTodos = false;//Bandera para mostrar o no todos los inventarios
+  nombreSucursalInventarioActual: string;//Variable para almacenar el nombre de la sucursal seleccionada
 
   constructor(private sucursalService: SucursalService,
     private inventarioService: InventarioService,
@@ -47,6 +47,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
     this.dataSource2.filter = filterValue.trim().toLowerCase();
   }
 
+/** Una vez seleccionada la sucursal este metodo buscará el inventario correspondiente y lo mostrara en  su tabla */
   cargarInventario() {
     this.limpiar();
     if (this.sucursal.idSucursal){
@@ -89,17 +90,18 @@ export class InventariosAdquisicionesComponent implements OnInit {
     }
   }
 
+//Metodo para cargar todos los inventarios almacenados en la bd
   cargarTodosInventarios()
   {
-    this.limpiar();
-    this.detalleInvenarioService.getTodosInventarios().subscribe(
+    this.limpiar(); //Limpia las tablas antes de almacenar nueva informacion
+    this.detalleInvenarioService.getTodosInventarios().subscribe( //Se hace una consulta en la bd de todos los inventarios
       todos => {
         console.log(todos);
-        this.BanderaMostrar = false;
-        this.mostrarTodos = true;
-        this.dataSource = new MatTableDataSource(todos);
-        this.inventarioBajo = todos.filter(invent => invent.cant_existente <= 5);
-        this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
+        this.BanderaMostrar = false; //La bandera para mostrar un inventario individual se desactiva
+        this.mostrarTodos = true;//Bandera de mostrar todos los inventarios se activa
+        this.dataSource = new MatTableDataSource(todos);//Se cargan los inventarios a la tabla
+        this.inventarioBajo = todos.filter(invent => invent.cant_existente <= 5);//Se hace un filtro para conocer los inventarios con stock bajo
+        this.dataSource2 = new MatTableDataSource(this.inventarioBajo); //Se cargan los datos filtrados anteriormente
         swal.fire({
           icon: 'success',
           title: '¡Hecho!',
@@ -109,6 +111,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
     )
   }
 
+//Metodo para limpiar las tablas de los inventarios
   limpiar()
   {
     this.dataSource = new MatTableDataSource();

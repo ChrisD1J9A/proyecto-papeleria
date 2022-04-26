@@ -156,11 +156,24 @@
     <span matSuffix *ngIf="bandera==true">.00 pesos</span>
   </mat-form-field>
 
-  <button type="button" mat-raised-button (click)="fileInput.click()" color="primary" *ngIf="banderaEditar==true" class="espacio">Subir Ticket* <mat-icon>attachment</mat-icon></button>
+  <button type="button"
+          mat-raised-button
+          (click)="fileInput.click()"
+          color="primary"
+          *ngIf="banderaEditar==true"
+          class="espacio"
+          matTooltip="Subir un archivo de tipo PDF o imagen con un peso máximo de 5MB">Subir Ticket* <mat-icon>attachment</mat-icon></button>
   <p *ngIf="banderaEditar==true">{{mensajet}}</p>
   <input hidden (change)="subirTicket($event)" #fileInput type="file" id="file">
 
-  <button type="button" mat-raised-button (click)="openDialog()" color="primary" *ngIf="banderaEditar==false">Ver Ticket <mat-icon>remove_red_eye</mat-icon></button>
+  <button type="button"
+          mat-raised-button
+          (click)="openDialog()"
+          color="primary"
+          *ngIf="banderaEditar==false">
+          Ver Ticket
+          <mat-icon>remove_red_eye</mat-icon>
+  </button>
   <button type="button" mat-raised-button (click)="descargarTicket()" color="primary" *ngIf="banderaEditar==false">Descargar Ticket <mat-icon>attachment</mat-icon></button>
   <br>
 
@@ -170,7 +183,11 @@
   </mat-form-field>
 
   <div class="botones">
-    <button type="button" mat-raised-button (click)="guardarCompra()" color="warn" *ngIf="banderaEditar==true">Guardar<mat-icon>save</mat-icon></button>
+    <button type="button"
+            mat-raised-button
+            (click)="guardarCompra()"
+            color="warn"
+            *ngIf="banderaEditar==true">Guardar<mat-icon>save</mat-icon></button>
 
   </div>
 </div>

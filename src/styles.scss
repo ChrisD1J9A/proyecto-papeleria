@@ -11,10 +11,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     color: #3D5AFE;
   }
 
-  .mySnackbarDelete {
+.mySnackbarDelete {
     color: white;
-  }
+}
 
-  .mySnackbarDelete .mat-simple-snackbar-action  {
-      color: red;
-    }
+.mySnackbarDelete .mat-simple-snackbar-action  {
+    color: red;
+}
+
+.mat-tooltip {
+  font-size: 14px !important;
+  max-width: 500px !important;
+}

@@ -15,17 +15,30 @@
     <mat-label>Fecha</mat-label>
     <input matInput [min]="date" [max]="date" [matDatepicker]="picker1" formControlName="fecha_solicitud" readonly>
     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-    <mat-datepicker #picker1></mat-datepicker>
+    <mat-datepicker #picker1 disabled></mat-datepicker>
   </mat-form-field>
 
 
   <h3>En la tabla de productos podrá elegir los productos que desee solicitar</h3>
 
   <div FormArrayName="detalles">
-    <button class="btn1" mat-raised-button color="warn" *ngIf="productosSeleccionados.size>=1" (click)="eliminarTodo()">
+    <button class="btn1"
+            mat-raised-button
+            color="warn"
+            *ngIf="productosSeleccionados.size>=1"
+            (click)="eliminarTodo()"
+            matTooltip="Quitar todos los productos seleccionados">
       <mat-icon>delete</mat-icon>
       Borrar todo
     </button>
+    <button mat-mini-fab
+            color="primary"
+            matTooltip="Esta sucursal sólo tiene permitido relizar una solicitud de un máximo de {{maxExistencia}} productos y
+                        debe de tener un minimo de {{minExistencia}} productos en existencia">
+      <mat-icon>help</mat-icon>
+    </button>
+
+
     <br><br>
     <div *ngFor="let detalle of detalles.controls; let i = index;" class="areaProductosSeleccionados">
       <div [formGroup]="detalle">
@@ -110,7 +123,13 @@
   </div>
 
   <label for="productoDesconocido">Agregar un producto fuera del catalogo de productos </label>
-  <button mat-mini-fab color="warn" class="btn1" name="productoDesconocido" (click)="agregarProductoFueraDelCatalogo()">
+  <button mat-mini-fab
+          color="warn"
+          class="btn1"
+          name="productoDesconocido"
+          (click)="agregarProductoFueraDelCatalogo()"
+          matTooltip="En caso de no encontrar algún producto en la tabla (Catálogo de productos),
+                      con este botón podrá especificar el prodcuto que desee solicitar">
     <mat-icon>add_circle</mat-icon>
   </button>
   <br>
@@ -121,8 +140,14 @@
   </mat-form-field>
 
   <br>
-  <button mat-raised-button color="primary" (click)="submit()"> Aceptar </button>
-  <button mat-raised-button color="warn" (click)="cancelar()"> Cancelar </button>
+  <button mat-raised-button
+          color="primary"
+          (click)="submit()"
+          matTooltip="Enviar la solicitud"> Aceptar </button>
+  <button mat-raised-button
+          color="warn"
+          (click)="cancelar()"
+          matTooltip="Cancelar y volver a solicitudes"> Cancelar </button>
 </form>
 
 
@@ -156,7 +181,11 @@
       <th mat-header-cell *matHeaderCellDef> Acciones </th>
       <td mat-cell *matCellDef="let producto">
         <div class="btns">
-          <button class="btn1" mat-mini-fab color="primary" (click)="agregarProducto(producto)">
+          <button class="btn1"
+                  mat-mini-fab
+                  color="primary"
+                  (click)="agregarProducto(producto)"
+                  matTooltip="Agregar el producto a la solicitud">
             <mat-icon>add_circle_outline</mat-icon>
           </button>
         </div>

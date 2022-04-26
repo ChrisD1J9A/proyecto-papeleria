@@ -6,38 +6,72 @@
   <!-- <mat-divider></mat-divider> -->
   <h2 matSubheader class="mt-2 ">Administracion </h2>
   <a mat-list-item routerLinkActive="list-item-active" routerLink="/layout">
-    <mat-icon>dashboard</mat-icon> Dashboard
+    <mat-icon>home</mat-icon> Inicio
   </a>
 
-  <a *ngIf="tienePermiso('SOLICITUDES')" mat-list-item routerLinkActive="list-item-active" routerLink="solicitudes">
+  <a *ngIf="tienePermiso('SOLICITUDES')"
+      mat-list-item
+      routerLinkActive="list-item-active"
+      routerLink="solicitudes"
+      matTooltip="En este apartado podrá visualizar las solicitudes Pendientes,
+                  Aceptadas, Rechazadas y Canceladas, ademas de realizar nuevas solicitudes">
     <mat-icon>assignment</mat-icon> Solicitudes
   </a>
 
-  <a *ngIf="tienePermiso('SOLICITUDES ADQUISICIONES')" mat-list-item routerLinkActive="list-item-active" routerLink="solicitudes-adquisiciones">
-    <mat-icon>assignment</mat-icon> Solicitudes
+  <a *ngIf="tienePermiso('SOLICITUDES ADQUISICIONES')"
+      mat-list-item
+      routerLinkActive="list-item-active"
+      routerLink="solicitudes-adquisiciones"
+      matTooltip="En este apartado podrá visualizar las solicitudes Pendientes,
+                  Aceptadas y Rechazadas de las diferentes sucursales">
+    <mat-icon matBadge="{{solicitudesPendiente}}" matBadgeColor="warn">assignment</mat-icon> Solicitudes
   </a>
 
-  <a *ngIf="tienePermiso('COMPRAS')" mat-list-item routerLinkActive="list-item-active" routerLink="compras">
+  <a *ngIf="tienePermiso('COMPRAS')"
+      mat-list-item
+      routerLinkActive="list-item-active"
+      routerLink="compras"
+      matTooltip="En este apartado podrá visualizar las compras pendientes o completadas">
     <mat-icon>shopping_cart</mat-icon> Compras
   </a>
 
-  <a *ngIf="tienePermiso('COMPRAS ADQUISICIONES')"mat-list-item routerLinkActive="list-item-active" routerLink="compras-adquisiciones">
+  <a *ngIf="tienePermiso('COMPRAS ADQUISICIONES')"
+      mat-list-item
+      routerLinkActive="list-item-active"
+      routerLink="compras-adquisiciones"
+      matTooltip="En este apartado podrá visualizar las compras pendientes o completadas de las diferentes sucursales">
     <mat-icon>shopping_cart</mat-icon> Compras
   </a>
 
-  <a *ngIf="tienePermiso('INVENTARIO')" mat-list-item routerLinkActive="list-item-active" routerLink="inventario">
+  <a *ngIf="tienePermiso('INVENTARIO')"
+      mat-list-item
+      routerLinkActive="list-item-active"
+      routerLink="inventario"
+      matTooltip="En este apartado podrá visualizar el inventario">
     <mat-icon>description</mat-icon> Inventario
   </a>
 
-  <a *ngIf="tienePermiso('INVENTARIO ADQUISICIONES')" mat-list-item routerLinkActive="list-item-active" routerLink="inventarios-adquisiciones">
+  <a *ngIf="tienePermiso('INVENTARIO ADQUISICIONES')"
+      mat-list-item
+      routerLinkActive="list-item-active"
+      routerLink="inventarios-adquisiciones"
+      matTooltip="En este apartado podrá visualizar el inventario de todas las sucursales">
     <mat-icon>description</mat-icon> Inventarios
   </a>
 
-  <a *ngIf="tienePermiso('PRODUCTOS')" mat-list-item routerLinkActive="list-item-active" routerLink="productos">
+  <a *ngIf="tienePermiso('PRODUCTOS')"
+      mat-list-item
+      routerLinkActive="list-item-active"
+      routerLink="productos"
+      matTooltip="En este apartado podrá visualizar el catalogo de productos; Agregar, editar y dar de baja productos">
     <mat-icon>store</mat-icon> Productos
   </a>
 
-  <a *ngIf="tienePermiso('PROVEEDORES')" mat-list-item routerLinkActive="list-item-active" routerLink="proveedores">
+  <a *ngIf="tienePermiso('PROVEEDORES')"
+      mat-list-item
+      routerLinkActive="list-item-active"
+      routerLink="proveedores"
+      matTooltip="En este apartado podrá visualizar el catalogo de proveedores; Agregar, editar y dar de baja proveedores">
     <mat-icon>local_shipping</mat-icon> Proveedores
   </a>
 
@@ -49,15 +83,23 @@
     </mat-icon>
   </a>
 
-
   <div class="submenu" [ngClass]="{'expanded' : showSubmenu}" *ngIf="isShowing || isExpanded">
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="unidades">
+    <a mat-list-item
+       routerLinkActive="list-item-active"
+       routerLink="unidades"
+       matTooltip="En esta apartado se podrá Agregar, editar y dar de baja unidades">
       <mat-icon mat-list-icon>settings_applications</mat-icon> Unidades
     </a>
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="maxMinStock">
+    <a mat-list-item
+       routerLinkActive="list-item-active"
+       routerLink="maxMinStock"
+       matTooltip="En esta apartado se podrá Agregar, editar y dar de baja la configuración de Máximos y mínimos de Stock">
       <mat-icon mat-list-icon>perm_data_setting</mat-icon>Máximos y minimos de Stock
     </a>
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="maxMinExistencia">
+    <a mat-list-item
+       routerLinkActive="list-item-active"
+       routerLink="maxMinExistencia"
+       matTooltip="En esta apartado se podrá Agregar, editar y dar de baja la configuración de Máximos y mínimos de Existencia">
       <mat-icon mat-list-icon>perm_data_setting</mat-icon>Máximos y minimos de existencia
     </a>
     </div>
