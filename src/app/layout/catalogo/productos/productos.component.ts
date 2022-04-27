@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Producto } from 'src/app/administracion/modelos/papeleria/producto';
 import { ProductosService } from 'src/app/administracion/servicios/papeleria/productos.service';
-import { ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
 
 @Component({
@@ -11,24 +10,26 @@ import swal from 'sweetalert2';
   styleUrls: ['./productos.component.scss']
 })
 export class ProductosComponent implements OnInit {
-  producto = new Producto();
-  displayedColumns: string[] = ['id_producto', 'descripcion', 'precio_subtotal', 'precio_iva', 'precio_total', 'estatus', 'observaciones', 'id_unidad', 'action'];
-  dataSource = new MatTableDataSource();
+  producto = new Producto(); //Obejto producto
+  displayedColumns: string[] = ['id_producto', 'descripcion', 'precio_subtotal', 'precio_iva', 'precio_total', 'estatus', 'observaciones', 'id_unidad', 'action'];//Encabezados de la tabla de productos
+  dataSource = new MatTableDataSource();//Lista donde se almacenaran los productos en la tabla
 
-  constructor(private productosService: ProductosService, private activatedRoute: ActivatedRoute) { }
+  constructor(private productosService: ProductosService) { }
 
   ngOnInit(): void {
     this.productosService.getProductos().subscribe(
       productos => {
-        this.dataSource = new MatTableDataSource(productos);
+        this.dataSource = new MatTableDataSource(productos); //Se cargan los productos de la bd en la tabla
       });
   }
 
+//Metodo para ubicar un elemento en la tabla, deacuerdo a lo que el usuario ingrese
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+//Metodo para dar de baja un producto en la base de datos
   baja(producto: Producto): void {
     swal
       .fire({
@@ -68,6 +69,7 @@ export class ProductosComponent implements OnInit {
       });
   }
 
+//Metodo para activar un productos en la base de datos
   activar(producto: Producto): void {
     swal
       .fire({

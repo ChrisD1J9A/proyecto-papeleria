@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter, OnInit, ViewChild, Renderer2, ElementRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { UsuarioService } from 'src/app/administracion/servicios';
+import { Solicitud } from 'src/app/administracion/modelos/papeleria/solicitud';
+import { SolicitudesService } from 'src/app/administracion/servicios/papeleria/solicitudes.service';
 
 
 declare var jQuery:any;
@@ -24,7 +26,7 @@ export class SidebarComponent implements OnInit {
 
 permisosUsuario=false//125
 
-
+  solicitudesPendiente: number;
   permisosU :any;
   perfil: any;
   idRegion: any
@@ -39,10 +41,8 @@ permisosUsuario=false//125
   constructor(
     public router: Router,
     private renderer: Renderer2,
-    private userService: UsuarioService
-
-
-  ) {
+    private userService: UsuarioService,
+    private solicitudService: SolicitudesService) {
 
 
       this.router.events.subscribe(val => {
@@ -66,7 +66,7 @@ permisosUsuario=false//125
       this.pushRightClass = 'push-right';
       this.permisosU = JSON.parse(localStorage.getItem('permisos'));
       this.permisos()
-
+      this.cuantasSolicitudesPendientesHay();
 
   }
 
@@ -212,5 +212,15 @@ this.permisosAreas=true//130
     }else{
       return false;
     }
+  }
+
+  //Metodo que sirve para saber la cantidad de solicitudes pendientes existen
+  cuantasSolicitudesPendientesHay(){
+    var pendientes: Solicitud[];
+    this.solicitudService.getSolicitudes().subscribe(
+      solis => {
+          pendientes = solis.filter(sol => sol.estatus ==="Pendiente");
+          this.solicitudesPendiente = pendientes.length;
+      })
   }
 }

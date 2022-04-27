@@ -143,8 +143,8 @@ export class SolicitudAdqViewComponent implements OnInit {
                         `La solicitud:  ${solicitud.id_solicitud} fue aceptada con éxito`,
                         'success'
                       );
-                      this.crearCompra()
-                      this.router.navigate(['/layout/solicitudes-adquisiciones'])
+                      this.crearCompra();
+                      this.router.navigate(['/layout/solicitudes-adquisiciones']);
                     } else {
                       swal.fire(
                         'Mensaje',

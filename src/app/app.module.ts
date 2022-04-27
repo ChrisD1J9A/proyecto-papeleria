@@ -37,7 +37,9 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
@@ -143,7 +145,9 @@ import { TicketViewComponent } from './layout/compras-adquisiciones/compra/ticke
     MatCheckboxModule,
     MatTabsModule,
     MatSnackBarModule,
-    PdfViewerModule
+    PdfViewerModule,
+    MatTooltipModule,
+    MatBadgeModule
   ],
   providers: [
     MatDatepickerModule,
