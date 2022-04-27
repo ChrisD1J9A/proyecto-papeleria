@@ -13,6 +13,8 @@ import { DetalleCompraPFDCService } from '../../../administracion/servicios/pape
 import { Detalle_compra_PFDC } from '../../../administracion/modelos/papeleria/detalle_compra_PFDC';
 import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
+import { MaxMinStockService } from 'src/app/administracion/servicios/papeleria/max-min-stock.service';
+import { MaxMinExistenciaService } from 'src/app/administracion/servicios/papeleria/max-min-existencia.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -37,6 +39,10 @@ export class SolicitudAdqViewComponent implements OnInit {
   cant_autorizada = new FormControl('', [Validators.required]);
   nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
   dataSource2 = new MatTableDataSource();
+  maxStock: number; //configuracion de maximo de stock
+  minStock: number; //configuracion del minimo de stock
+  maxExistencia: number;  //configuracion de maximo de existencia
+  minExistencia: number; //configuracion de minimo de existencia
 
   constructor(private solicitudesService: SolicitudesService,
               private detalleSolicitudService: DetalleSolicitudService,
@@ -45,7 +51,9 @@ export class SolicitudAdqViewComponent implements OnInit {
               private comprasService: ComprasService,
               private detalleCompraService: DetalleCompraService,
               private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,
-              private detalleCompraPFDCService: DetalleCompraPFDCService) { }
+              private detalleCompraPFDCService: DetalleCompraPFDCService,
+              private maxMinStockService: MaxMinStockService,
+              private maxMinExistenciaService: MaxMinExistenciaService) { }
 
   ngOnInit(): void {
     this.cargarSolicitud();
@@ -57,11 +65,11 @@ export class SolicitudAdqViewComponent implements OnInit {
   }
 
   getErrorMessage() {
-    return this.observacion_aprobacion_rechazo.hasError('required') ? 'Debe de dejar algún comentario' : '';
+    return this.observacion_aprobacion_rechazo.hasError('required') ? 'Deje algún comentario' : '';
   }
 
-  getErrorMessage2() {
-    return this.cant_autorizada.hasError('required') ? 'Si la solicitud va a ser aceptada debe ingresar alguna cantidad' : '';
+  getErrorMessage2(){
+      return "Cantidad ingresada no válida";
   }
 
   cargarSolicitud(): void {
@@ -71,6 +79,7 @@ export class SolicitudAdqViewComponent implements OnInit {
         this.solicitudesService.getSolicitud(id).subscribe(
           (solicitud) => {
             this.solicitud = solicitud;
+            this.obtenerMaximosMinimosDeLaSucursal(solicitud);//se cargan las configuraciones de la sucursal donde se emite la solicitud
             if (this.solicitud.estatus === "Pendiente") {
               this.flag = false;
             } else {
@@ -230,6 +239,35 @@ export class SolicitudAdqViewComponent implements OnInit {
                 console.log(detaCompraPFDC);
               });
           }
+        }
+      });
+  }
+
+  /*Método que sirve para obtener la configuracion de maximos y minimos de la sucursal
+  donde se emitio la solicitud y se almacenan dichas configuraciones en el variables
+  En dado caso de no existir una configuracion para la sucursal se colocarán valores por default*/
+  obtenerMaximosMinimosDeLaSucursal(solicitud: Solicitud)
+  {
+    var nombreSucursal = solicitud.nombre_sucursal;
+    this.maxMinStockService.getMaxMinDeStockBySucursal(nombreSucursal).subscribe(
+      maxMinStockSucursal => {
+        if(maxMinStockSucursal === null){
+          this.maxStock = 50;
+          this.minStock = 5;
+        }else{
+          this.maxStock = maxMinStockSucursal.max_stock;
+          this.minStock = maxMinStockSucursal.min_stock;
+        }
+      });
+
+    this.maxMinExistenciaService.getMaxMinDeExistenciaBySucursal(nombreSucursal).subscribe(
+      maxMinExistenciaSucursal => {
+        if(maxMinExistenciaSucursal === null){
+          this.maxExistencia = 50;
+          this.minExistencia = 5;
+        }else{
+          this.maxExistencia = maxMinExistenciaSucursal.max_existencia;
+          this.minExistencia = maxMinExistenciaSucursal.min_existencia;
         }
       });
   }

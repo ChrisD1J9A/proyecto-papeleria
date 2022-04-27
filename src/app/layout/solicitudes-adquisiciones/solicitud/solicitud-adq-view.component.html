@@ -71,8 +71,8 @@
       <td mat-cell *matCellDef="let detalle_solicitud">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Cantidad autorizada</mat-label>
-          <input matInput name="cant_autorizada" type="number" placeholder=" " [(ngModel)]="detalle_solicitud.cant_autorizada" readonly={{flag}} required>
-          <mat-error *ngIf="cant_autorizada.invalid">{{getErrorMessage2()}}</mat-error>
+          <input matInput name="cant_autorizada" type="number" placeholder=" " [(ngModel)]="detalle_solicitud.cant_autorizada" readonly={{flag}} min="1" max="{{maxStock}}" required>
+            <mat-error *ngIf="cant_autorizada.invalid">{{getErrorMessage2()}}</mat-error>
         </mat-form-field>
       </td>
     </ng-container>
@@ -135,6 +135,4 @@
       <button mat-raised-button *ngIf="solicitud.estatus==='Pendiente'" color="warn" (click)="rechazarSolicitud()"> Rechazar Solicitud <mat-icon>cancel</mat-icon></button>
     </div>
   </div>
-
-
 </div>

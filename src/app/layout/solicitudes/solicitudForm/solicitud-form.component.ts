@@ -13,6 +13,8 @@ import { ProductosService } from 'src/app/administracion/servicios/papeleria/pro
 import { Producto } from 'src/app/administracion/modelos/papeleria/producto';
 import { Mail } from 'src/app/administracion/modelos/papeleria/Mail';
 import { MailService } from 'src/app/administracion/servicios/papeleria/mail.service';
+import { MaxMinStockService } from 'src/app/administracion/servicios/papeleria/max-min-stock.service';
+import { MaxMinExistenciaService } from 'src/app/administracion/servicios/papeleria/max-min-existencia.service';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import {
@@ -46,10 +48,10 @@ export class SolicitudFormComponent implements OnInit {
   nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!); //Asignar la sucursal desde donde se logea
   idSucursal: any;
   nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);//Asignar el nombre del usuario que se logeo
-  maxStock = JSON.parse(localStorage.getItem('maxStock')!); //configuracion de maximo de stock
-  minStock = JSON.parse(localStorage.getItem('minStock')!); //configuracion del minimo de stock
-  maxExistencia = JSON.parse(localStorage.getItem('maxExistencia')!);  //configuracion de maximo de existencia
-  minExistencia = JSON.parse(localStorage.getItem('minExistencia')!); //configuracion de minimo de existencia
+  maxStock: number; //configuracion de maximo de stock
+  minStock: number; //configuracion del minimo de stock
+  maxExistencia: number;  //configuracion de maximo de existencia
+  minExistencia: number; //configuracion de minimo de existencia
   mail = new Mail();
 
   constructor(private productosService: ProductosService,
@@ -59,6 +61,8 @@ export class SolicitudFormComponent implements OnInit {
     private detalleSolicitudService: DetalleSolicitudService,
     private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,
     private mailService: MailService,
+    private maxMinStockService: MaxMinStockService,
+    private maxMinExistenciaService: MaxMinExistenciaService,
     private _snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>) {
     const currentYear = new Date().getFullYear();
@@ -100,6 +104,7 @@ export class SolicitudFormComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.pds);
       });
     this.idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
+    this.obtenerMaximosMinimosDeLaSucursal();
   }
 
   applyFilter(event: Event) {
@@ -327,6 +332,35 @@ export class SolicitudFormComponent implements OnInit {
       correo => {
         console.log(correo);
         console.log("correo enviado");
+      });
+  }
+
+  /*Método que sirve para obtener la configuracion de maximos y minimos de la sucursal
+  donde se esta logeando y se almacenan dichas configuraciones en variables
+  En dado caso de no existir una configuracion para la sucursal se colocarán valores por default*/
+  obtenerMaximosMinimosDeLaSucursal()
+  {
+    var nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!);
+    this.maxMinStockService.getMaxMinDeStockBySucursal(nombreSucursal).subscribe(
+      maxMinStockSucursal => {
+        if(maxMinStockSucursal === null){
+          this.maxStock = 50;
+          this.minStock = 5;
+        }else{
+          this.maxStock = maxMinStockSucursal.max_stock;
+          this.minStock = maxMinStockSucursal.min_stock;
+        }
+      });
+
+    this.maxMinExistenciaService.getMaxMinDeExistenciaBySucursal(nombreSucursal).subscribe(
+      maxMinExistenciaSucursal => {
+        if(maxMinExistenciaSucursal === null){
+          this.maxExistencia = 50;
+          this.minExistencia = 5;
+        }else{
+          this.maxExistencia = maxMinExistenciaSucursal.max_existencia;
+          this.minExistencia = maxMinExistenciaSucursal.min_existencia;
+        }
       });
   }
 
