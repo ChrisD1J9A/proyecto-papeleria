@@ -13,15 +13,15 @@ import { SucursalService } from 'src/app/administracion/servicios';
   styleUrls: ['./max-min-de-existencia.component.scss']
 })
 export class MaxMinDeExistenciaComponent implements OnInit {
-  maxMinDeExistencia: MaxMinDeExistencia = new MaxMinDeExistencia();
-  MaxMins: MaxMinDeExistencia[];
-  titulo: string = "Agregar nueva configuracion de existencia";
-  displayedColumns: string[] = ['id_config_max_min', 'sucursal', 'usuario_modifico', 'max_existencia', 'min_existencia', 'fecha_creacion', 'fecha_act', 'action'];
-  dataSource = new MatTableDataSource();
-  maxMinFR = new FormControl('', [Validators.required]);
-  sucursales!: Sucursal[];
-  sucursal = new Sucursal();
-  banderaEditar = true;
+  maxMinDeExistencia: MaxMinDeExistencia = new MaxMinDeExistencia(); //Objeto de la configuracion MaxMinDeExistencia
+  MaxMins: MaxMinDeExistencia[];//Lista de configuraciones
+  titulo: string = "Agregar nueva configuracion de existencia";//Titulo para mostrar en el html
+  displayedColumns: string[] = ['id_config_max_min', 'sucursal', 'usuario_modifico', 'max_existencia', 'min_existencia', 'fecha_creacion', 'fecha_act', 'action'];//Encabezado para la tabla de las configuraciones
+  dataSource = new MatTableDataSource();//Dónde se cargan los datos para  la tabla
+  maxMinFR = new FormControl('', [Validators.required]);//Validacion del formulario
+  sucursales!: Sucursal[];//
+  sucursal = new Sucursal();//Objeto sucursal
+  banderaEditar = true;//Bandera dónde se especifica si se edita o no un campo de las configuracion
   editCheckB = false;
   controlMax = new FormControl();
 

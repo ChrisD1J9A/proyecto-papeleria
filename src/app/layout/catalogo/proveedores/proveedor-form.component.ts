@@ -11,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./proveedor-form.component.scss']
 })
 export class ProveedorFormComponent implements OnInit {
-  titulo: string = "Agregar nuevo Producto";
+  titulo: string = "Agregar nuevo Proveedor";
   titulo2: string = "Editar Producto";
   proveedor = new Proveedor();
   proveedores: Proveedor[];
