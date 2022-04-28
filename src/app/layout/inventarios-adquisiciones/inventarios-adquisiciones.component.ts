@@ -6,6 +6,7 @@ import { Inventario } from '../../administracion/modelos/papeleria/inventario';
 import { Detalle_inventario } from '../../administracion/modelos/papeleria/detalle_inventario';
 import { InventarioService } from '../../administracion/servicios/papeleria/inventario.service';
 import { DetalleInventarioService } from '../../administracion/servicios/papeleria/detalle-inventario.service';
+import { MaxMinStockService } from 'src/app/administracion/servicios/papeleria/max-min-stock.service';
 import swal from 'sweetalert2';
 
 @Component({
@@ -26,10 +27,13 @@ export class InventariosAdquisicionesComponent implements OnInit {
   BanderaMostrar = false; //Bandera con la cual evalua si se muestran o no el inventario de X sucursal
   mostrarTodos = false;//Bandera para mostrar o no todos los inventarios
   nombreSucursalInventarioActual: string;//Variable para almacenar el nombre de la sucursal seleccionada
+  maxStock: number; //configuracion de maximo de stock
+  minStock: number; //configuracion del minimo de stock
 
   constructor(private sucursalService: SucursalService,
-    private inventarioService: InventarioService,
-    private detalleInvenarioService: DetalleInventarioService) { }
+              private inventarioService: InventarioService,
+              private detalleInvenarioService: DetalleInventarioService,
+              private maxMinStockService: MaxMinStockService) { }
 
   ngOnInit(): void {
     this.sucursalService.getSucursales().subscribe(val => {
@@ -55,7 +59,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
         inventario => {
           this.inventario = inventario;
           this.nombreSucursalInventarioActual = this.sucursal.nombreSucursal;
-          console.log(inventario);
+          this.obtenerMaximosMinimosDeLaSucursal(inventario);
           if (inventario == null) {
             this.BanderaMostrar = false;
             this.mostrarTodos = false;
@@ -71,7 +75,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
             this.detalleInvenarioService.getDetallesInventario(this.inventario.id_inventario).subscribe(
               detas => {
                 this.dataSource = new MatTableDataSource(detas);
-                this.inventarioBajo = detas.filter(invent => invent.cant_existente <= 5);
+                this.inventarioBajo = detas.filter(invent => invent.cant_existente <= this.minStock);
                 this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
                 swal.fire({
                   icon: 'success',
@@ -118,4 +122,21 @@ export class InventariosAdquisicionesComponent implements OnInit {
     this.dataSource2 = new MatTableDataSource();
   }
 
+  /*Método que sirve para obtener la configuracion de maximos y minimos de la sucursal
+  al que le pertenezca el inventario y se almacenan dichas configuraciones en el variables
+  En dado caso de no existir una configuracion para la sucursal se colocarán valores por default*/
+  obtenerMaximosMinimosDeLaSucursal(inventario: Inventario)
+  {
+    var nombreSucursal = inventario.nombre_sucursal;
+    this.maxMinStockService.getMaxMinDeStockBySucursal(nombreSucursal).subscribe(
+      maxMinStockSucursal => {
+        if(maxMinStockSucursal === null){
+          this.maxStock = 50;
+          this.minStock = 5;
+        }else{
+          this.maxStock = maxMinStockSucursal.max_stock;
+          this.minStock = maxMinStockSucursal.min_stock;
+        }
+      });
+  }
 }

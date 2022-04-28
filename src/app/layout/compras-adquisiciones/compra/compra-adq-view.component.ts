@@ -44,11 +44,6 @@ export class CompraAdqViewComponent implements OnInit {
     this.cargarCompra();
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
   cargarCompra(): void {
     this.activatedRoute.params.subscribe(params => {
       let id = params['id']

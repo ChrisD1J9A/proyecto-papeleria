@@ -42,11 +42,6 @@
   </div>
 
   <div>
-    <mat-form-field appearance="standard" class="area-txt">
-      <mat-label>Filtrar por </mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo compra 1" #input>
-    </mat-form-field>
-
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="tipo_unidad">
         <th mat-header-cell *matHeaderCellDef> Tipo de unidad </th>
@@ -82,10 +77,6 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
-      </tr>
     </table>
   </div>
   <br>

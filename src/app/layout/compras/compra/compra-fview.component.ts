@@ -13,6 +13,8 @@ import { InventarioService } from '../../../administracion/servicios/papeleria/i
 import { Detalle_compra_PFDC } from '../../../administracion/modelos/papeleria/detalle_compra_PFDC';
 import { DetalleCompraPFDCService } from '../../../administracion/servicios/papeleria/detalle-compra-pfdc.service';
 import { DetalleInventarioService } from '../../../administracion/servicios/papeleria/detalle-inventario.service'
+import { MaxMinStockService } from 'src/app/administracion/servicios/papeleria/max-min-stock.service';
+import { MaxMinExistenciaService } from 'src/app/administracion/servicios/papeleria/max-min-existencia.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 import { TicketViewComponent } from '../../compras-adquisiciones/compra/ticket/ticket-view.component';
@@ -47,6 +49,10 @@ export class CompraFViewComponent implements OnInit {
   minDate: Date;
   bandera = true;
   pfdcFlag: boolean;
+  maxStock: number; //configuracion de maximo de stock
+  minStock: number; //configuracion del minimo de stock
+  maxExistencia: number;  //configuracion de maximo de existencia
+  minExistencia: number; //configuracion de minimo de existencia
 
   constructor(private comprasService: ComprasService,
     private detalleCompraService: DetalleCompraService,
@@ -54,6 +60,8 @@ export class CompraFViewComponent implements OnInit {
     private inventarioService: InventarioService,
     private detaInventarioService: DetalleInventarioService,
     private detalleCompraPFDCService: DetalleCompraPFDCService,
+    private maxMinStockService: MaxMinStockService,
+    private maxMinExistenciaService: MaxMinExistenciaService,
     private router: Router, private activatedRoute: ActivatedRoute,
     private dialog: MatDialog)
     {
@@ -67,16 +75,7 @@ export class CompraFViewComponent implements OnInit {
       proveedores => {
         this.proveedores = proveedores;
       });
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  applyFilter2(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource2.filter = filterValue.trim().toLowerCase();
+    this.obtenerMaximosMinimosDeLaSucursal();
   }
 
   getErrorMessage() {
@@ -84,7 +83,7 @@ export class CompraFViewComponent implements OnInit {
   }
 
   getErrorMessage2() {
-    return this.numericos.hasError('required') ? 'Ingrese un valor menor/igual a la cantidad autorizada y mayor a 0' : '';
+    return 'Ingrese una cantidad válida';
   }
 
   total_input(n: any)
@@ -126,6 +125,7 @@ export class CompraFViewComponent implements OnInit {
                 detalles_ComprasPFDC => {
                   console.log(detalles_ComprasPFDC);
                   this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);
+                  this.detalles_compra = detalles_ComprasPFDC;
                   this.pfdcFlag = true;
               });
             }else{
@@ -135,6 +135,7 @@ export class CompraFViewComponent implements OnInit {
         this.detalleCompraService.getDetallesCompra(id).subscribe(
           deta_compra => {
             this.dataSource = new MatTableDataSource(deta_compra);
+            this.detalles_compra = deta_compra;
           });
       }
     });
@@ -158,11 +159,19 @@ export class CompraFViewComponent implements OnInit {
   validarDetalles(): boolean {
     let bandera = false;
     this.detalles_compra = this.dataSource.data;
+    this.detalles_compra_PFDC = this.dataSource2.data;
     for (this.detalle_compra of this.detalles_compra) {
-      if (this.detalle_compra.cant_comprada == null || this.detalle_compra.cant_comprada < 1) {
+      if (this.detalle_compra.cant_comprada == null || this.detalle_compra.cant_comprada < 1 || this.detalle_compra.cant_comprada > this.maxStock) {
         bandera = true;
       }
     }
+
+    for (this.detalle_compra_PFDC of this.detalles_compra_PFDC) {
+      if (this.detalle_compra_PFDC.cant_comprada == null || this.detalle_compra_PFDC.cant_comprada < 1 || this.detalle_compra_PFDC.cant_comprada > this.maxStock) {
+        bandera = true;
+      }
+    }
+
     return bandera;
   }
 
@@ -292,5 +301,34 @@ export class CompraFViewComponent implements OnInit {
         ticket: ubicacionArchivo,
       },
     });
+  }
+
+  /*Método que sirve para obtener la configuracion de maximos y minimos de la sucursal
+  donde se esta logeando y se almacenan dichas configuraciones en variables
+  En dado caso de no existir una configuracion para la sucursal se colocarán valores por default*/
+  obtenerMaximosMinimosDeLaSucursal()
+  {
+    var nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!);
+    this.maxMinStockService.getMaxMinDeStockBySucursal(nombreSucursal).subscribe(
+      maxMinStockSucursal => {
+        if(maxMinStockSucursal === null){
+          this.maxStock = 50;
+          this.minStock = 5;
+        }else{
+          this.maxStock = maxMinStockSucursal.max_stock;
+          this.minStock = maxMinStockSucursal.min_stock;
+        }
+      });
+
+    this.maxMinExistenciaService.getMaxMinDeExistenciaBySucursal(nombreSucursal).subscribe(
+      maxMinExistenciaSucursal => {
+        if(maxMinExistenciaSucursal === null){
+          this.maxExistencia = 50;
+          this.minExistencia = 5;
+        }else{
+          this.maxExistencia = maxMinExistenciaSucursal.max_existencia;
+          this.minExistencia = maxMinExistenciaSucursal.min_existencia;
+        }
+      });
   }
 }

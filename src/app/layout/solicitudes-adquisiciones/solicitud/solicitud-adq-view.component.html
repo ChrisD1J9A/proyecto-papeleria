@@ -41,7 +41,15 @@
       <mat-label>Comentarios del solicitante: </mat-label>
       <textarea matInput [(ngModel)]="solicitud.observacion_solicitud" name="observacion_solicitud" readonly></textarea>
     </mat-form-field>
-
+    <br>
+    <button mat-mini-fab
+            class="botonAyuda"
+            color="primary"
+            matTooltip="Para autorizar la solicitud tome en cuenta que la sucursal dónde fue emitida esta solicitud,
+                        sólo tiene permitido tener un máximo de {{maxStock}} productos en Stock y debe de tener un
+                        mínimo de {{minStock}} productos en Stock">
+      <mat-icon>help</mat-icon>
+    </button>
     <h2>Solicita:</h2>
   </div>
 
@@ -67,12 +75,12 @@
     </ng-container>
 
     <ng-container matColumnDef="cant_autorizada">
-      <th mat-header-cell *matHeaderCellDef> Cantidad autorizadas </th>
+      <th mat-header-cell *matHeaderCellDef> Cantidad autorizada </th>
       <td mat-cell *matCellDef="let detalle_solicitud">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Cantidad autorizada</mat-label>
           <input matInput name="cant_autorizada" type="number" placeholder=" " [(ngModel)]="detalle_solicitud.cant_autorizada" readonly={{flag}} min="1" max="{{maxStock}}" required>
-            <mat-error *ngIf="cant_autorizada.invalid">{{getErrorMessage2()}}</mat-error>
+          <mat-error *ngIf="cant_autorizada.invalid">{{getErrorMessage2()}}</mat-error>
         </mat-form-field>
       </td>
     </ng-container>
@@ -109,8 +117,8 @@
         <td mat-cell *matCellDef="let detalle_solicitud_PFDC">
           <mat-form-field appearance="fill" floatLabel="always">
             <mat-label>Cantidad autorizada</mat-label>
-            <input matInput name="cant_autorizada" type="number" placeholder=" " [(ngModel)]="detalle_solicitud_PFDC.cant_autorizada" readonly={{flag}} required>
-            <mat-error *ngIf="cant_autorizada.invalid">{{getErrorMessage2()}}</mat-error>
+            <input matInput name="cant_autorizada2" type="number" placeholder=" " [(ngModel)]="detalle_solicitud_PFDC.cant_autorizada" readonly={{flag}} min="1" max="{{maxStock}}" required>
+            <mat-error *ngIf="cant_autorizada2.invalid">{{getErrorMessage2()}}</mat-error>
           </mat-form-field>
         </td>
       </ng-container>

@@ -36,7 +36,8 @@ export class SolicitudAdqViewComponent implements OnInit {
   dataSource = new MatTableDataSource();
   flag: boolean;
   observacion_aprobacion_rechazo = new FormControl('', [Validators.required]);
-  cant_autorizada = new FormControl('', [Validators.required]);
+  cant_autorizada = new FormControl(); //FomrControl para evaluar la cantidad autorizada de productos del catalogo
+  cant_autorizada2 = new FormControl();//FomrControl para evaluar la cantidad autorizada de productos fuera del catalogo
   nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
   dataSource2 = new MatTableDataSource();
   maxStock: number; //configuracion de maximo de stock
@@ -59,17 +60,12 @@ export class SolicitudAdqViewComponent implements OnInit {
     this.cargarSolicitud();
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
   getErrorMessage() {
     return this.observacion_aprobacion_rechazo.hasError('required') ? 'Deje algún comentario' : '';
   }
 
   getErrorMessage2(){
-      return "Cantidad ingresada no válida";
+      return 'Cantidad ingresada no válida';
   }
 
   cargarSolicitud(): void {
@@ -103,7 +99,13 @@ export class SolicitudAdqViewComponent implements OnInit {
   validarDetalles(): boolean {
     let bandera = false;
     for (this.detalle_solicitud of this.detalles_solicitud) {
-      if (this.detalle_solicitud.cant_autorizada == null || this.detalle_solicitud.cant_autorizada < 1) {
+      if (this.detalle_solicitud.cant_autorizada == null || this.detalle_solicitud.cant_autorizada < 1 || this.detalle_solicitud.cant_autorizada > this.maxStock) {
+        bandera = true;
+      }
+    }
+
+    for (this.detalle_solicitud_PFDC of this.detalles_solicitud_pfdc) {
+      if (this.detalle_solicitud_PFDC.cant_autorizada == null || this.detalle_solicitud_PFDC.cant_autorizada < 1 || this.detalle_solicitud_PFDC.cant_autorizada > this.maxStock) {
         bandera = true;
       }
     }
@@ -270,5 +272,7 @@ export class SolicitudAdqViewComponent implements OnInit {
           this.minExistencia = maxMinExistenciaSucursal.min_existencia;
         }
       });
+      this.cant_autorizada = new FormControl('', [Validators.required, Validators.max(this.maxStock), Validators.min(1)]); //Se cargan las validaciones para el los input de cantidad autorizada
+      this.cant_autorizada2 = new FormControl('', [Validators.required, Validators.max(this.maxStock), Validators.min(1)]);
   }
 }
