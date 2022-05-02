@@ -34,7 +34,7 @@ export class ProductoFormComponent implements OnInit {
   ngOnInit(): void {
     this.unidadService.getUnidades().subscribe(
       unidades => {
-        this.unidades = unidades
+        this.unidades = unidades.filter(u => u.estatus == 1);
       });
     this.cargarProducto();
     this.bandera=false;
@@ -71,8 +71,7 @@ export class ProductoFormComponent implements OnInit {
       if (id) {
         this.productosService.getProducto(id).subscribe(
           (producto) => this.producto = producto
-        )
-      }
+        )};
     })
   }
 
