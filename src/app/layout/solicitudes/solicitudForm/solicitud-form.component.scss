@@ -19,6 +19,10 @@ textarea{
   height: 100px;
 }
 
+.buscador{
+  //margin-left: 75%;
+}
+
 .areaProductosSeleccionados{
   width  : 940px;
   background: #d0ceeb;
@@ -32,6 +36,8 @@ textarea{
 
 .area-tabla-p
 {
+  width: 1000px;
+  height: 500px;
   margin-top: 50px;
   margin-left: 20px;
 }
@@ -48,4 +54,8 @@ button
 
 .btn1{
   margin-left: 15px;
+}
+
+input{
+  text-transform: uppercase;
 }

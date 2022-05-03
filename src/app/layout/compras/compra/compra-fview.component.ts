@@ -53,6 +53,7 @@ export class CompraFViewComponent implements OnInit {
   minStock: number; //configuracion del minimo de stock
   maxExistencia: number;  //configuracion de maximo de existencia
   minExistencia: number; //configuracion de minimo de existencia
+  numeroSolicitud: number;
 
   constructor(private comprasService: ComprasService,
     private detalleCompraService: DetalleCompraService,
@@ -107,6 +108,7 @@ export class CompraFViewComponent implements OnInit {
           (compra) => {
             this.compra = compra;
             this.proveedor = this.compra.proveedor;
+            this.numeroSolicitud = compra.solicitud.id_solicitud;
             if (this.proveedor) {
               this.nombreProveedor = this.proveedor.nombre;
             } else {

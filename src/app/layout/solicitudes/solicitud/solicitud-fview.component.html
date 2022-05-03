@@ -3,6 +3,7 @@
     <h1>
       <mat-icon>assignment</mat-icon> Solicitud {{solicitud.id_solicitud}}
     </h1>
+
     <h2>Solicitud {{solicitud.estatus}}
       <mat-icon style="color: green" *ngIf="solicitud.estatus==='Aceptada'">check_circle</mat-icon>
       <mat-icon style="color: red" *ngIf="solicitud.estatus==='Rechazada'">cancel</mat-icon>
@@ -98,18 +99,19 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <br>
-
-    <div>
-      <mat-form-field appearance="outline" class="largeInput">
-        <mat-label>Comentarios de adquisiciones: </mat-label>
-        <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo" readonly></textarea>
-      </mat-form-field>
-    </div>
-
-    <div *ngIf="solicitud.estatus==='Pendiente'">
-      <button mat-raised-button color="warn" (click)="cancelarSolicitud()"> Cancelar Solicitud <mat-icon>report_off</mat-icon></button>
-    </div>
   </div>
+  <br>
+
+  <mat-form-field appearance="outline" class="largeInput">
+    <mat-label>Comentarios de adquisiciones: </mat-label>
+    <textarea matInput [(ngModel)]="solicitud.observacion_aprobacion_rechazo" name="observacion_aprobacion_rechazo" readonly></textarea>
+  </mat-form-field>
+
+  <div *ngIf="solicitud.estatus==='Pendiente'">
+    <button mat-raised-button color="warn" (click)="cancelarSolicitud()"> Cancelar Solicitud <mat-icon>report_off</mat-icon></button>
+  </div>
+  <button mat-raised-button color="primary" name="compra" *ngIf="solicitud.estatus==='Aceptada'" (click)="verRegistrarCompra()">
+    Ver/Registrar Compra
+  </button>
 
 </div>

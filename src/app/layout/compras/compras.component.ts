@@ -11,7 +11,7 @@ import { ComprasService } from '../../administracion/servicios/papeleria/compras
 export class ComprasComponent implements OnInit {
   compra = new Compra();
   compras: Compra[];
-  displayedColumns: string[] = ['id_compra', 'fecha_compra', 'gasto_total', 'estatus', 'action'];
+  displayedColumns: string[] = ['id_compra', 'solicitud', 'fecha_compra', 'gasto_total', 'estatus', 'action'];
   dataSource = new MatTableDataSource();
   idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
 

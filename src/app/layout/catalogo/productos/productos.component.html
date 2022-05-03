@@ -7,8 +7,9 @@
   <br>
   <h1>Tabla de productos</h1>
   <mat-form-field appearance="standard">
-    <mat-label>Filtrar por </mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo broche" #input>
+    <mat-label>Buscar </mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo boligrafo" #input>
+    <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 </div>
 

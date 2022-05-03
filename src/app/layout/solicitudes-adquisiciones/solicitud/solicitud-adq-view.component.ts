@@ -15,6 +15,8 @@ import { ComprasService } from '../../../administracion/servicios/papeleria/comp
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
 import { MaxMinStockService } from 'src/app/administracion/servicios/papeleria/max-min-stock.service';
 import { MaxMinExistenciaService } from 'src/app/administracion/servicios/papeleria/max-min-existencia.service';
+import { Mail } from 'src/app/administracion/modelos/papeleria/Mail';
+import { MailService } from 'src/app/administracion/servicios/papeleria/mail.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -44,6 +46,7 @@ export class SolicitudAdqViewComponent implements OnInit {
   minStock: number; //configuracion del minimo de stock
   maxExistencia: number;  //configuracion de maximo de existencia
   minExistencia: number; //configuracion de minimo de existencia
+  mail = new Mail(); //Objeto mail, usado para tener una estructura al momento de enviar un correo
 
   constructor(private solicitudesService: SolicitudesService,
               private detalleSolicitudService: DetalleSolicitudService,
@@ -54,7 +57,8 @@ export class SolicitudAdqViewComponent implements OnInit {
               private detalleSolicitudPFDCService: DetalleSolicitudPFDCService,
               private detalleCompraPFDCService: DetalleCompraPFDCService,
               private maxMinStockService: MaxMinStockService,
-              private maxMinExistenciaService: MaxMinExistenciaService) { }
+              private maxMinExistenciaService: MaxMinExistenciaService,
+              private mailService: MailService) { }
 
   ngOnInit(): void {
     this.cargarSolicitud();
@@ -146,6 +150,7 @@ export class SolicitudAdqViewComponent implements OnInit {
                         'success'
                       );
                       this.crearCompra();
+                      this.enviarCorreo(solicitud);
                       this.router.navigate(['/layout/solicitudes-adquisiciones']);
                     } else {
                       swal.fire(
@@ -190,6 +195,7 @@ export class SolicitudAdqViewComponent implements OnInit {
                   `La solicitud:  ${solicitud.id_solicitud} fue rechazada con éxito`,
                   'success'
                 );
+                this.enviarCorreo(solicitud)
                 this.router.navigate(['/layout/solicitudes-adquisiciones'])
               } else {
                 swal.fire(
@@ -274,5 +280,19 @@ export class SolicitudAdqViewComponent implements OnInit {
       });
       this.cant_autorizada = new FormControl('', [Validators.required, Validators.max(this.maxStock), Validators.min(1)]); //Se cargan las validaciones para el los input de cantidad autorizada
       this.cant_autorizada2 = new FormControl('', [Validators.required, Validators.max(this.maxStock), Validators.min(1)]);
+  }
+
+  //Método para mandar correo
+  enviarCorreo(solicitud: Solicitud)
+  {
+    this.mail.para = "16161339@itoaxaca.edu.mx"; //Destinatario, en este caso tendría que ser al correo de quién envía la solicitud
+    this.mail.asunto = "Solicitud " + solicitud.estatus;
+    this.mail.mensaje = "Su solicitud ha sido " + solicitud.estatus + " por adquisiciones el día: " +
+                        new Date() + ", Para ver a detalle la solicitud se sugiere revisar el sistema";
+    this.mailService.enviar(this.mail).subscribe(
+      correo => {
+        console.log(correo);
+        console.log("correo enviado");
+      });
   }
 }

@@ -15,9 +15,17 @@
     <td mat-cell *matCellDef="let compra"> {{compra.id_compra}} </td>
   </ng-container>
 
+  <ng-container matColumnDef="solicitud">
+    <th mat-header-cell *matHeaderCellDef> N° Solicitud </th>
+    <td mat-cell *matCellDef="let compra"> <a [routerLink]="['/layout/solicitudes/detalle_solicitud', compra.solicitud.id_solicitud]">
+                                              {{compra.solicitud.id_solicitud}}
+                                            </a>
+    </td>
+  </ng-container>
+
   <ng-container matColumnDef="fecha_compra">
     <th mat-header-cell *matHeaderCellDef> Fecha de la compra</th>
-    <td mat-cell *matCellDef="let compra"> {{compra.fecha_creacion | date: 'dd/MM/yy'}} </td>
+    <td mat-cell *matCellDef="let compra"> {{compra.fecha_creacion | date: 'dd/MM/yyyy'}} </td>
   </ng-container>
 
   <ng-container matColumnDef="gasto_total">
