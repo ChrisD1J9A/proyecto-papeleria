@@ -1,0 +1,54 @@
+<div class="formato1">
+  <h1>GASTOS MÁXIMOS HECHOS EN CADA SUCURSAL</h1>
+
+  <div class="Parametros">
+    <h4>Seleccionar rango de tiempo para consultar: </h4>
+    <mat-form-field appearance="fill">
+      <mat-label>Rango de tiempo</mat-label>
+      <mat-select name="meses" [(ngModel)]="meses">
+        <mat-option value="1">El último mes</mat-option>
+        <mat-option value="2">El último Bimestre</mat-option>
+        <mat-option value="12">El último Año</mat-option>
+        <mat-option value="6">El último Semestre</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-mini-fab color="warn" (click)="cargarGastosMaxPorSucursal()" matTooltip="Cargar las de acuerdo al rango de tiempo seleccionado">
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+
+  <div name="tabla">
+    <mat-form-field appearance="standard" class="area-txt">
+      <mat-label>Buscar </mat-label>
+      <input matInput (keyup)="applyFilter1($event)" placeholder="Ejemplo compra 1" #input>
+    </mat-form-field>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id_compra">
+        <th mat-header-cell *matHeaderCellDef> N° Compra </th>
+        <td mat-cell *matCellDef="let compra"> compra[0] </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sucursal">
+        <th mat-header-cell *matHeaderCellDef> Sucursal </th>
+        <td mat-cell *matCellDef="let compra"> compra[1] </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef> Fecha de compra</th>
+        <td mat-cell *matCellDef="let compra"> {{compra[2] | date: 'dd/MM/yy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="maximo">
+        <th mat-header-cell *matHeaderCellDef> Maximo </th>
+        <td mat-cell *matCellDef="let compra"> compra[3] </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
+      </tr>
+    </table>
+  </div>
+</div>

@@ -88,10 +88,4 @@ export class SolicitudFViewComponent implements OnInit {
     })
 
   }
-
-  //Metodo para redigirse a la compra
-  verRegistrarCompra(){
-    this.router.navigateByUrl('/layout/compras');
-  }
-
 }

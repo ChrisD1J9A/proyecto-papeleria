@@ -110,7 +110,7 @@
   <div *ngIf="solicitud.estatus==='Pendiente'">
     <button mat-raised-button color="warn" (click)="cancelarSolicitud()"> Cancelar Solicitud <mat-icon>report_off</mat-icon></button>
   </div>
-  <button mat-raised-button color="primary" name="compra" *ngIf="solicitud.estatus==='Aceptada'" (click)="verRegistrarCompra()">
+  <button mat-raised-button color="primary" name="compra" *ngIf="solicitud.estatus==='Aceptada'" routerLink="/layout/compras">
     Ver/Registrar Compra
   </button>
 

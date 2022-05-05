@@ -69,6 +69,7 @@ import { MaxMinDeStockComponent } from './layout/catalogo/configuraciones/maxMin
 import { MaxMinDeExistenciaComponent } from './layout/catalogo/configuraciones/maxMinDeStock/max-min-de-existencia/max-min-de-existencia.component';
 import { InventariosAdquisicionesComponent } from './layout/inventarios-adquisiciones/inventarios-adquisiciones.component';
 import { TicketViewComponent } from './layout/compras-adquisiciones/compra/ticket/ticket-view.component';
+import { ReportesViewComponent } from './layout/compras-adquisiciones/reportes/reportes-view.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import { TicketViewComponent } from './layout/compras-adquisiciones/compra/ticke
     MaxMinDeExistenciaComponent,
     InventariosAdquisicionesComponent,
     TicketViewComponent,
+    ReportesViewComponent,
   ],
   imports: [
     BrowserModule,

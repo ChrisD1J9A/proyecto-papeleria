@@ -12,6 +12,7 @@ import { ComprasComponent } from './layout/compras/compras.component';
 import { CompraFViewComponent} from './layout/compras/compra/compra-fview.component';
 import { TicketViewComponent } from './layout/compras-adquisiciones/compra/ticket/ticket-view.component';
 import { ComprasAdquisicionesComponent } from './layout/compras-adquisiciones/compras-adquisiciones.component';
+import { ReportesViewComponent } from './layout/compras-adquisiciones/reportes/reportes-view.component';
 import { CompraAdqViewComponent } from './layout/compras-adquisiciones/compra/compra-adq-view.component';
 import { InventarioComponent } from './layout/inventario/inventario.component';
 import { InventariosAdquisicionesComponent } from './layout/inventarios-adquisiciones/inventarios-adquisiciones.component';
@@ -50,6 +51,7 @@ const routes: Routes = [
          { path: 'compras-adquisiciones', component: ComprasAdquisicionesComponent, data:{permiso:Permisos.COMPRASADQUISICIONES}},
          { path: 'compras-adquisiciones/detalle_compra/:id', component: CompraAdqViewComponent},
          { path: 'compras-adquisiciones/detalle_compra/:id/ticket', component: TicketViewComponent},
+         {path: 'compras-adquisiciones/reportes', component: ReportesViewComponent},
          { path: 'inventario', component: InventarioComponent, data:{permiso:Permisos.INVENTARIO}},
          { path: 'inventarios-adquisiciones', component: InventariosAdquisicionesComponent, data:{permiso:Permisos.INVENTARIOSADQUISICIONES}},
          { path: 'productos', component: ProductosComponent, data:{permiso:Permisos.PRODUCTOS}},

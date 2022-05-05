@@ -50,6 +50,21 @@ export class ComprasService {
     );
   }
 
+  gastoMaxPorSucursal(meses: number): Observable<any[]>{
+    return this.http.get<any[]>(`${this.urlEndPoint}/reportes/maxGasto/${meses}`);
+  }
+
+  gastoMaxPorSucursalHistorico(): Observable<any[]>{
+    return this.http.get<any[]>(`${this.urlEndPoint}/reportes/maxGasto`);
+  }
+
+  gastoTotalPorSucursal(meses: number): Observable<any[]>{
+    return this.http.get<any[]>(`${this.urlEndPoint}/reportes/gastoTotal/${meses}`);
+  }
+
+  gastoTotalPorSucursalHistorico(): Observable<any[]>{
+    return this.http.get<any[]>(`${this.urlEndPoint}/reportes/gastoTotal`);
+  }
   /*descargarTicket(nombreArchivo: String): Observable<Blob>
   {
     return this.http.get(`${this.urlEndPoint}/show/archivo/${nombreArchivo}`, { headers: this.httpHeadersArchivo, responseType: 'blob' })
