@@ -58,6 +58,10 @@ export class ComprasService {
     return this.http.get<any[]>(`${this.urlEndPoint}/reportes/maxGasto`);
   }
 
+  gastoMaxPorSucursalRangos(fecha1: string, fecha2: string): Observable<any[]>{
+    return this.http.get<any[]>(`${this.urlEndPoint}/reportes/maxGasto/${fecha1}/${fecha2}`);
+  }
+
   gastoTotalPorSucursal(meses: number): Observable<any[]>{
     return this.http.get<any[]>(`${this.urlEndPoint}/reportes/gastoTotal/${meses}`);
   }
