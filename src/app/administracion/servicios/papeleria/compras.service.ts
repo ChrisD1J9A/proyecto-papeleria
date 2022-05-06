@@ -50,24 +50,28 @@ export class ComprasService {
     );
   }
 
-  gastoMaxPorSucursal(meses: number): Observable<any[]>{
+  gastoMaxPorSucursales(meses: number): Observable<any[]>{
     return this.http.get<any[]>(`${this.urlEndPoint}/reportes/maxGasto/${meses}`);
   }
 
-  gastoMaxPorSucursalHistorico(): Observable<any[]>{
+  gastoMaxPorSucursalesHistorico(): Observable<any[]>{
     return this.http.get<any[]>(`${this.urlEndPoint}/reportes/maxGasto`);
   }
 
-  gastoMaxPorSucursalRangos(fecha1: string, fecha2: string): Observable<any[]>{
+  gastoMaxPorSucursalesRangos(fecha1: string, fecha2: string): Observable<any[]>{
     return this.http.get<any[]>(`${this.urlEndPoint}/reportes/maxGasto/${fecha1}/${fecha2}`);
   }
 
-  gastoTotalPorSucursal(meses: number): Observable<any[]>{
+  gastoTotalPorSucursales(meses: number): Observable<any[]>{
     return this.http.get<any[]>(`${this.urlEndPoint}/reportes/gastoTotal/${meses}`);
   }
 
-  gastoTotalPorSucursalHistorico(): Observable<any[]>{
+  gastoTotalPorSucursalesHistorico(): Observable<any[]>{
     return this.http.get<any[]>(`${this.urlEndPoint}/reportes/gastoTotal`);
+  }
+
+  gastoTotalPorSucursalesRangos(fecha1: string, fecha2: string): Observable<any[]>{
+    return this.http.get<any[]>(`${this.urlEndPoint}/reportes/gastoTotal/${fecha1}/${fecha2}`);
   }
   /*descargarTicket(nombreArchivo: String): Observable<Blob>
   {
