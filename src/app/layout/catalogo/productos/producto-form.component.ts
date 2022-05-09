@@ -46,9 +46,8 @@ export class ProductoFormComponent implements OnInit {
 
   precio_input1(n: any)
   {
-    n = n * 0.16;
-    this.producto.precio_iva = n.toFixed(2);
-    this.producto.precio_total = this.producto.precio_subtotal + this.producto.precio_iva;
+    this.producto.precio_iva = n * 0.16;
+    this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva);
     if (n % 1 == 0) {
         this.bandera =  true;
         console.log(n);
@@ -63,8 +62,8 @@ export class ProductoFormComponent implements OnInit {
 
   precio_input2(n: any)
   {
-    this.producto.precio_total = this.producto.precio_subtotal + this.producto.precio_iva;
-    this.producto.precio_total.toFixed(2);
+    this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva);
+    //this.producto.precio_total.toFixed(2);
   }
 
   cargarProducto(): void {

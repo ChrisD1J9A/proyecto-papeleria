@@ -73,6 +73,14 @@ export class ComprasService {
   gastoTotalPorSucursalesRangos(fecha1: string, fecha2: string): Observable<any[]>{
     return this.http.get<any[]>(`${this.urlEndPoint}/reportes/gastoTotal/${fecha1}/${fecha2}`);
   }
+
+  getComprasPorTiempo(meses: number): Observable<Compra[]>{
+    return this.http.get<Compra[]>(`${this.urlEndPoint}/tiempo/${meses}`);
+  }
+
+  getComprasPorRangos(fecha1: string, fecha2: string): Observable<Compra[]>{
+    return this.http.get<Compra[]>(`${this.urlEndPoint}/tiempo/${fecha1}/${fecha2}`);
+  }
   /*descargarTicket(nombreArchivo: String): Observable<Blob>
   {
     return this.http.get(`${this.urlEndPoint}/show/archivo/${nombreArchivo}`, { headers: this.httpHeadersArchivo, responseType: 'blob' })

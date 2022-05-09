@@ -91,6 +91,7 @@
   <br>
 
   <div *ngIf="solicitud.pfdc===true">
+    <p>productos fuera del catálogo</p>
     <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
       <ng-container matColumnDef="tipo_unidad">
         <th mat-header-cell *matHeaderCellDef> Unidad </th>

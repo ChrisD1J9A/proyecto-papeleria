@@ -16,8 +16,9 @@ form {
   text-align: center;
 }
 
-input{
-  text-transform: uppercase;
+mat-form-field{
+  width: 150px;
+  margin-right: 20px;
 }
 
 /*textarea{

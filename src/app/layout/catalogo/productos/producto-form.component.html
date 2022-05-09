@@ -9,8 +9,8 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" floatLabel="always">
-      <mat-label>Precio subtotal</mat-label>
-      <input matInput name="precio_subtotal" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_subtotal" (input)="precio_input1($event.target.value)" value="{{producto.precio_subtotal | currency:'MXN':'symbol'">
+      <mat-label>Precio</mat-label>
+      <input matInput name="precio_subtotal" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_subtotal" (input)="precio_input1($event.target.value)" value="{{producto.precio_subtotal | number:'1.2-2'">
       <span matPrefix>$&nbsp;</span>
       <span matSuffix *ngIf="bandera==false">pesos</span>
       <span matSuffix *ngIf="bandera==true">.00 pesos</span>
@@ -18,14 +18,14 @@
 
     <mat-form-field appearance="fill" floatLabel="always">
       <mat-label>IVA</mat-label>
-      <input matInput name="precio_iva" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_iva" (input)="precio_input2($event.target.value)">
+      <input matInput name="precio_iva" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_iva" (input)="precio_input2($event.target.value)" >
       <span matPrefix>$&nbsp;</span>
       <span matSuffix>pesos</span>
     </mat-form-field>
 
     <mat-form-field appearance="fill" floatLabel="always">
       <mat-label>Precio total</mat-label>
-      <input matInput name="precio_total" type="number" placeholder="0.00" class="example-right-align" placeholder="0" [(ngModel)]="producto.precio_total" readonly>
+      <input matInput name="precio_total" type="number" placeholder="0.00" class="example-right-align" [(ngModel)]="producto.precio_total" readonly>
       <span matPrefix>$&nbsp;</span>
       <span matSuffix>pesos</span>
     </mat-form-field>

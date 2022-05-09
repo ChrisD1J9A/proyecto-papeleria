@@ -1,3 +1,7 @@
+.formato{
+  margin-left: 20px;
+}
+
 form {
   position: relative;
   //border: 2px solid #ccc;
@@ -30,7 +34,7 @@ textarea{
 
 .mat-form-field
 {
-  padding-left: 10px;
+  //padding-left: 10px;
   padding-right: 10px;
 }
 
@@ -45,11 +49,13 @@ textarea{
 table {
   width: 100%;
   margin: auto;
+  text-transform: uppercase;  
 }
 
 button
 {
   margin-right: 50px;
+  text-transform: uppercase;
 }
 
 .btn1{
@@ -57,5 +63,9 @@ button
 }
 
 input{
+  text-transform: uppercase;
+}
+
+label, p, mat-label{
   text-transform: uppercase;
 }

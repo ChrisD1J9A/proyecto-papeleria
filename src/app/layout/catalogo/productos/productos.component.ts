@@ -11,7 +11,7 @@ import swal from 'sweetalert2';
 })
 export class ProductosComponent implements OnInit {
   producto = new Producto(); //Obejto producto
-  displayedColumns: string[] = ['id_producto', 'descripcion', 'precio_subtotal', 'precio_iva', 'precio_total', 'estatus', 'observaciones', 'id_unidad', 'action'];//Encabezados de la tabla de productos
+  displayedColumns: string[] = ['id_producto', 'descripcion', 'precio_subtotal', 'precio_iva', 'precio_total', 'estatus', 'id_unidad', 'action'];//Encabezados de la tabla de productos
   dataSource = new MatTableDataSource();//Lista donde se almacenaran los productos en la tabla
 
   constructor(private productosService: ProductosService) { }

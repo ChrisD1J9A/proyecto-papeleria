@@ -319,16 +319,18 @@ export class SolicitudFormComponent implements OnInit {
   }
 
   //Método para mandar correo
-  enviarCorreo(solicitud: Solicitud)
+  enviarCorreo(solicitud: Solicitud)//Recibe un objeto de tipo solicitud para obtener informacion de la solicitud que se emite
   {
-    this.mail.para = "16161339@itoaxaca.edu.mx";
-    this.mail.asunto = "Nueva solicitud";
-    this.mail.mensaje = "Se ha realizado una nueva solicitud por el usuario: "
-                    + solicitud.nombre_usuario +
-                    " de la sucursal: " + solicitud.nombre_sucursal +
-                    " el día: " + solicitud.fecha_solicitud +
+    var fecha = new Date;
+    var fechaFomr = fecha.getDate() + "/" + (fecha.getMonth()+1)+ "/"+fecha.getFullYear();//Formato de fecha para enviar en el correo
+    this.mail.para = "16161339@itoaxaca.edu.mx"; //Se tiene un objeto Mail y en esta sección se modifica el destinatario
+    this.mail.asunto = "Nueva solicitud, solicitud: " + solicitud.id_solicitud; //Seccion para agregar el asunto del mail
+    this.mail.mensaje = "Se ha realizado una nueva solicitud por el usuario: "//Seccion para establecer el mensaje del correo
+                    + solicitud.nombre_usuario + //Nombre del usario quien realiza la Solicitud
+                    " de la sucursal: " + solicitud.nombre_sucursal + //Sucursal desde donde se emite la solicitud
+                    " el día: " + fechaFomr + //Fecha formateada
                     ", Para ver a detalle la solicitud se sugiere revisar el sistema";
-    this.mailService.enviar(this.mail).subscribe(
+    this.mailService.enviar(this.mail).subscribe(//Una vez que quedó escrito el contenido del correo procede a enviarse a traves del backend
       correo => {
         console.log(correo);
         console.log("correo enviado");
@@ -340,24 +342,24 @@ export class SolicitudFormComponent implements OnInit {
   En dado caso de no existir una configuracion para la sucursal se colocarán valores por default*/
   obtenerMaximosMinimosDeLaSucursal()
   {
-    var nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!);
-    this.maxMinStockService.getMaxMinDeStockBySucursal(nombreSucursal).subscribe(
-      maxMinStockSucursal => {
-        if(maxMinStockSucursal === null){
+    var nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!); //Al iniciar sesion se guarda la sucursal desde donde se ingresa en el localStorage, Aquí solo guardamos en  una variable esa informacion
+    this.maxMinStockService.getMaxMinDeStockBySucursal(nombreSucursal).subscribe(//Se consulta en la base de datos si existe la configuracion de max y min de la sucursal donde se ingresa
+      maxMinStockSucursal => { //El back devuelve el objeto en caso  de existir configuracion, en caso  contrario  devolvera null
+        if(maxMinStockSucursal === null){//En dado caso de que la sucursal no tenga configuracion, se le asignan valores por default
           this.maxStock = 50;
           this.minStock = 5;
-        }else{
+        }else{ //En caso de que si hay configuracion se guardan en las variables correspondientes
           this.maxStock = maxMinStockSucursal.max_stock;
           this.minStock = maxMinStockSucursal.min_stock;
         }
       });
 
-    this.maxMinExistenciaService.getMaxMinDeExistenciaBySucursal(nombreSucursal).subscribe(
-      maxMinExistenciaSucursal => {
-        if(maxMinExistenciaSucursal === null){
+    this.maxMinExistenciaService.getMaxMinDeExistenciaBySucursal(nombreSucursal).subscribe(//Se consulta en la base de datos si existe la configuracion de max y min de la sucursal donde se ingresa
+      maxMinExistenciaSucursal => { //El back devuelve el objeto en caso  de existir configuracion, en caso  contrario  devolvera null
+        if(maxMinExistenciaSucursal === null){//En dado caso de que la sucursal no tenga configuracion, se le asignan valores por default
           this.maxExistencia = 50;
           this.minExistencia = 5;
-        }else{
+        }else{//En caso de que si hay configuracion se guardan en las variables correspondientes
           this.maxExistencia = maxMinExistenciaSucursal.max_existencia;
           this.minExistencia = maxMinExistenciaSucursal.min_existencia;
         }
