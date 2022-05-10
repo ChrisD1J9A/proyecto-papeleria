@@ -160,6 +160,19 @@ export class ReportesViewComponent implements OnInit {
         });
     }
   }
+
+  cargarCompras()
+  {
+    this.compraService.getCompras().subscribe(
+      datos => {
+        this.dataSource3 = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
+        if (datos.length == 0) { //Si la consulta no devuelve dato alguno
+          swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');//Mensaje de que la consulta no devolvió datos
+        }else{
+          swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
+        }
+      });
+  }
 }
 
 

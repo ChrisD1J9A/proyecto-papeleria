@@ -25,10 +25,10 @@ export class ProductoFormComponent implements OnInit {
   bandera: Boolean;
 
   constructor(private productosService: ProductosService,
-              private unidadService: UnidadService,
-              private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private _decimalPipe: DecimalPipe) {
+    private unidadService: UnidadService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private _decimalPipe: DecimalPipe) {
   }
 
   ngOnInit(): void {
@@ -37,43 +37,54 @@ export class ProductoFormComponent implements OnInit {
         this.unidades = unidades.filter(u => u.estatus == 1);
       });
     this.cargarProducto();
-    this.bandera=false;
+    this.cargarProductoFDC();
+    this.bandera = false;
   }
 
   getErrorMessage() {
     return this.descripcionProducto.hasError('required') ? 'Ingrese/seleccione algún dato' : '';
   }
 
-  precio_input1(n: any)
-  {
+  precio_input1(n: any) {
     this.producto.precio_iva = n * 0.16;
     this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva);
     if (n % 1 == 0) {
-        this.bandera =  true;
-        console.log(n);
-        console.log(this.bandera);
+      this.bandera = true;
+      console.log(n);
+      console.log(this.bandera);
     } else {
-        this.bandera = false;
-        console.log(n);
-        console.log(this.bandera);
+      this.bandera = false;
+      console.log(n);
+      console.log(this.bandera);
     }
     //{{ this.producto.precio_subtotal | number: 1.2-2:'fr'}}
   }
 
-  precio_input2(n: any)
-  {
+  precio_input2(n: any) {
     this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva);
     //this.producto.precio_total.toFixed(2);
   }
 
   cargarProducto(): void {
     this.activatedRoute.params.subscribe(params => {
-      let id = params['id']
+      let id: number = params['id']
       if (id) {
-        this.productosService.getProducto(id).subscribe(
-          (producto) => this.producto = producto
-        )};
+        if (isNaN(id) == false) {
+          this.productosService.getProducto(id).subscribe(
+            (producto) => this.producto = producto
+          )
+        };
+      }
     })
+  }
+
+  cargarProductoFDC(): void {
+    this.activatedRoute.params.subscribe(params => {
+      let nombre: string = params['nombre']
+      if (nombre) {
+        this.producto.descripcion = nombre;
+      }
+    });
   }
 
   public create(): void {
@@ -139,8 +150,7 @@ export class ProductoFormComponent implements OnInit {
     }
   }
 
-  public cancel(): void
-  {
+  public cancel(): void {
     this.router.navigate(['/layout/productos'])
     this.ngOnInit();
   }

@@ -198,44 +198,48 @@
         Seleccionar un rango específico de fechas
       </mat-checkbox>
       <br>
-      <button mat-raised-button color="primary" matTooltip="Ver los mayores gastos hechos en cada sucursal históricamente">
+      <button mat-raised-button color="primary" (click)="cargarCompras()" matTooltip="Ver todas las compras históricamente">
         Histórico
         <mat-icon>history</mat-icon>
       </button>
 
 
       <div name="tabla">
-        <mat-form-field appearance="standard" class="area-txt">
-          <mat-label>Buscar </mat-label>
-          <input matInput (keyup)="applyFilter3($event)" placeholder="Ejemplo 05/05/2022" #input>
-        </mat-form-field>
-        <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8">
-          <ng-container matColumnDef="id_compra">
-            <th mat-header-cell *matHeaderCellDef> N° Compra </th>
-            <td mat-cell *matCellDef="let compra"> {{compra.id_compra}} </td>
-          </ng-container>
+        <button mat-stroked-button color="primary" style="color: green; margin-left: 83%;" (click)="exporter.exportTable('xlsx', {fileName:'compras_realizadas'})">
+          Exportar a Excel <i class="material-icons">file_download</i>
+        </button>
 
-          <ng-container matColumnDef="sucursal">
-            <th mat-header-cell *matHeaderCellDef> Sucursal </th>
-            <td mat-cell *matCellDef="let compra"> {{compra.nombre_sucursal}} </td>
-          </ng-container>
+          <mat-form-field appearance="standard" class="area-txt">
+            <mat-label>Buscar </mat-label>
+            <input matInput (keyup)="applyFilter3($event)" placeholder="Ejemplo 05/05/2022" #input>
+          </mat-form-field>
+          <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8" matTableExporter #exporter="matTableExporter">
+            <ng-container matColumnDef="id_compra">
+              <th mat-header-cell *matHeaderCellDef> N° Compra </th>
+              <td mat-cell *matCellDef="let compra"> {{compra.id_compra}} </td>
+            </ng-container>
 
-          <ng-container matColumnDef="fecha">
-            <th mat-header-cell *matHeaderCellDef> Fecha de compra</th>
-            <td mat-cell *matCellDef="let compra"> {{compra.fecha_creacion | date: 'dd/MM/yyyy'}} </td>
-          </ng-container>
+            <ng-container matColumnDef="sucursal">
+              <th mat-header-cell *matHeaderCellDef> Sucursal </th>
+              <td mat-cell *matCellDef="let compra"> {{compra.nombre_sucursal}} </td>
+            </ng-container>
 
-          <ng-container matColumnDef="maximo">
-            <th mat-header-cell *matHeaderCellDef> Gasto </th>
-            <td mat-cell *matCellDef="let compra"> {{compra.gasto_total | currency }} Pesos</td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <ng-container matColumnDef="fecha">
+              <th mat-header-cell *matHeaderCellDef> Fecha de compra</th>
+              <td mat-cell *matCellDef="let compra"> {{compra.fecha_creacion | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
 
-          <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
-          </tr>
-        </table>
+            <ng-container matColumnDef="maximo">
+              <th mat-header-cell *matHeaderCellDef> Gasto </th>
+              <td mat-cell *matCellDef="let compra"> {{compra.gasto_total | currency }} Pesos</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
+            </tr>
+          </table>
       </div>
     </div>
   </mat-tab>

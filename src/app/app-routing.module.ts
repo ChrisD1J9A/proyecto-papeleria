@@ -20,6 +20,7 @@ import { LoginComponent } from './login/login.component';
 import { UnidadComponent } from './layout/catalogo/configuraciones/unidad/unidad.component';
 import { ProductosComponent } from './layout/catalogo/productos/productos.component';
 import { ProductoFormComponent } from './layout/catalogo/productos/producto-form.component';
+import { ProductosFDCViewComponent } from './layout/catalogo/productos/productosFueraDeCatalogo/productos-fdcview.component';
 import { ProveedoresComponent } from './layout/catalogo/proveedores/proveedores.component';
 import { ProveedorFormComponent } from './layout/catalogo/proveedores/proveedor-form.component';
 import { MaxMinDeStockComponent } from './layout/catalogo/configuraciones/maxMinDeStock/max-min-de-stock/max-min-de-stock.component';
@@ -57,6 +58,8 @@ const routes: Routes = [
          { path: 'productos', component: ProductosComponent, data:{permiso:Permisos.PRODUCTOS}},
          { path: 'productos/producto-form', component: ProductoFormComponent},
          { path: 'productos/producto-form/:id', component: ProductoFormComponent},
+         { path: 'productos/producto-form/nombre/:nombre', component: ProductoFormComponent},
+         { path: 'productos/productosFDC', component: ProductosFDCViewComponent},
          { path: 'proveedores', component: ProveedoresComponent, data:{permiso:Permisos.PROVEEDORES}},
          { path: 'proveedores/proveedor-form', component: ProveedorFormComponent},
          { path: 'proveedores/proveedor-form/:id', component: ProveedorFormComponent},

@@ -1,7 +1,13 @@
 <div class="area-txt">
   <h1>Productos</h1>
-  <button mat-raised-button color="primary" [routerLink]="['producto-form']"> <mat-icon>add_box</mat-icon> Agregar producto </button>
-
+  <button mat-raised-button class="btn2" color="primary" [routerLink]="['producto-form']"> <mat-icon>add_box</mat-icon> Agregar producto </button>
+  <button mat-raised-button
+          color="warn"
+          [routerLink]="['productosFDC']"
+          matTooltip="Sección para ver los productos que se han solicitado y que de momento no se encuentran en el catálogo de productos"> 
+          <mat-icon>assignment_late</mat-icon>
+          Productos fuera del catálogo
+  </button>
 
   <br>
   <br>

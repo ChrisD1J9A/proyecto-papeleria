@@ -26,4 +26,9 @@ export class DetalleSolicitudPFDCService {
   {
     return this.http.get<Detalle_solicitud_PFDC[]>(`${this.urlEndPoint}/${id}`);
   }
+
+  public getDetallesSolicitud_PFDC_All(): Observable<Detalle_solicitud_PFDC[]>
+  {
+    return this.http.get<Detalle_solicitud_PFDC[]>(`${this.urlEndPoint}`);
+  }
 }

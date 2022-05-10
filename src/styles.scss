@@ -3,6 +3,8 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; text-transform: uppercase; }
 button{text-transform: uppercase; }
+input{ text-transform: uppercase;}
+textarea{ text-transform: uppercase;}
 
 .mySnackbarSucess {
   color: white;
