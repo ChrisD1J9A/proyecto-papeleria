@@ -50,10 +50,10 @@
           <mat-label>Cantidad existente</mat-label>
           <input matInput type="number" formControlName="cant_existente" required>
           <mat-error  *ngIf="this.detalle.get('cant_existente')?.errors?.['max']">
-            La cantidad ingresada no se considera válida para realizar una solicitud
+            Se excedió en la cantidad máxima permitida
           </mat-error>
           <mat-error  *ngIf="this.detalle.get('cant_existente')?.errors?.['min']">
-            La cantidad ingresada no se considera válida para realizar una solicitud
+            Ingrese una cantidad válida para continuar
           </mat-error>
           <mat-error  *ngIf="this.detalle.get('cant_existente')?.errors?.['required']">
             Ingrese una cantidad para continuar
@@ -63,10 +63,10 @@
           <mat-label>Cantidad solicitada</mat-label>
           <input matInput type="number" formControlName="cant_solicitada" required>
           <mat-error  *ngIf="this.detalle.get('cant_solicitada')?.errors?.['max']">
-            La cantidad ingresada no se considera válida para realizar una solicitud
+            Se excedió en la cantidad máxima permitida
           </mat-error>
           <mat-error  *ngIf="this.detalle.get('cant_solicitada')?.errors?.['min']">
-            La cantidad ingresada no se considera válida para realizar una solicitud
+            Ingrese una cantidad válida para continuar
           </mat-error>
           <mat-error  *ngIf="this.detalle.get('cant_solicitada')?.errors?.['required']">
             Ingrese una cantidad válida para continuar

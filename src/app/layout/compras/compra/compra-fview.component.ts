@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Compra } from '../../../administracion/modelos/papeleria/compra';
@@ -18,7 +19,7 @@ import { MaxMinExistenciaService } from 'src/app/administracion/servicios/papele
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 import { TicketViewComponent } from '../../compras-adquisiciones/compra/ticket/ticket-view.component';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -53,7 +54,8 @@ export class CompraFViewComponent implements OnInit {
   minStock: number; //configuracion del minimo de stock
   maxExistencia: number;  //configuracion de maximo de existencia
   minExistencia: number; //configuracion de minimo de existencia
-  numeroSolicitud: number;
+  numeroSolicitud: number;//Variable para almacenar el id de la solicitud al que pertenece la compra
+  precioFormateado: string; //variable que se usa para dar formato de pesos en el input gasto total
 
   constructor(private comprasService: ComprasService,
     private detalleCompraService: DetalleCompraService,
@@ -64,11 +66,11 @@ export class CompraFViewComponent implements OnInit {
     private maxMinStockService: MaxMinStockService,
     private maxMinExistenciaService: MaxMinExistenciaService,
     private router: Router, private activatedRoute: ActivatedRoute,
-    private dialog: MatDialog)
-    {
-      const currentYear = new Date().getFullYear();
-      this.minDate = new Date(currentYear - 1, 12, 31);
-    }
+    private currencyPipe: CurrencyPipe,
+    private dialog: MatDialog) {
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 1, 12, 31);
+  }
 
   ngOnInit(): void {
     this.cargarCompra();
@@ -87,16 +89,27 @@ export class CompraFViewComponent implements OnInit {
     return 'Ingrese una cantidad válida';
   }
 
-  total_input(n: any)
-  {
-    if (n % 1 == 0) {
-        this.bandera =  true;
-        console.log(n);
-        console.log(this.bandera);
+  //En este método se da formato de  pesos al input que registra precios, en este caso del gasto gasto_total
+  formatoDePesos(element) {
+    if (isNaN(this.compra.gasto_total)) {
+      swal.fire('No es una cantidad válida', 'Ingrese una cantidad válida', 'error');
+      this.compra.gasto_total = 0.0;
     } else {
-        this.bandera = false;
-        console.log(n);
-        console.log(this.bandera);
+      this.precioFormateado = this.compra.gasto_total.toString();
+      this.precioFormateado = this.currencyPipe.transform(this.precioFormateado, '$');
+      element.target.value = this.precioFormateado;
+    }
+  }
+
+  total_input(n: any) {
+    if (n % 1 == 0) {
+      this.bandera = true;
+      console.log(n);
+      console.log(this.bandera);
+    } else {
+      this.bandera = false;
+      console.log(n);
+      console.log(this.bandera);
     }
   }
 
@@ -122,15 +135,15 @@ export class CompraFViewComponent implements OnInit {
             }
             console.log(this.banderaEditar);
 
-            if(compra.solicitud.pfdc){
+            if (compra.solicitud.pfdc) {
               this.detalleCompraPFDCService.getDetallesCompra_PFDC(compra.id_compra).subscribe(
                 detalles_ComprasPFDC => {
                   console.log(detalles_ComprasPFDC);
                   this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);
                   this.detalles_compra = detalles_ComprasPFDC;
                   this.pfdcFlag = true;
-              });
-            }else{
+                });
+            } else {
               this.pfdcFlag = false;
             }
           });
@@ -145,15 +158,13 @@ export class CompraFViewComponent implements OnInit {
 
   subirTicket(event) {
     this.ticket = event.target.files[0];
-    if(this.ticket.type.indexOf('pdf') < 0 && this.ticket.type.indexOf('image') < 0)
-    {
+    if (this.ticket.type.indexOf('pdf') < 0 && this.ticket.type.indexOf('image') < 0) {
       swal.fire('Error seleccionar un formato válido: ', 'El archivo debe ser del tipo imagen o pdf', 'error');
       this.ticket = null;
     }
-    if(this.ticket)
-    {
+    if (this.ticket) {
       this.mensajet = this.ticket.name;
-    }else{
+    } else {
       this.mensajet = "Ticket no seleccionado*";
     }
   }
@@ -199,9 +210,9 @@ export class CompraFViewComponent implements OnInit {
                 this.comprasService.cargarTicket(this.ticket, compra.id_compra).
                   subscribe(compra => {
                     console.log(compra);
-                    if(compra.solicitud.pfdc===true){
+                    if (compra.solicitud.pfdc === true) {
                       this.detalles_compra_PFDC = this.dataSource2.data;
-                      this.detalleCompraPFDCService.update(this.detalles_compra_PFDC, compra.id_compra).subscribe(detas_pfdc =>{});
+                      this.detalleCompraPFDCService.update(this.detalles_compra_PFDC, compra.id_compra).subscribe(detas_pfdc => { });
                     }
                   });
                 this.detalleCompraService.update(this.detalles_compra, compra.id_compra).subscribe(
@@ -245,53 +256,49 @@ export class CompraFViewComponent implements OnInit {
     window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);
   }
 
-  crearActualizarInventario(detalles_c: Detalle_compra[])
-  {
-    var deta_compra  = new Detalle_compra()
+  crearActualizarInventario(detalles_c: Detalle_compra[]) {
+    var deta_compra = new Detalle_compra()
     this.inventarioService.getInventarioBySucursal(this.compra.id_sucursal).subscribe(
       inventarioConsulta => {
-         if(inventarioConsulta===null)
-         {
-           console.log("No hay inventario");
+        if (inventarioConsulta === null) {
+          console.log("No hay inventario");
 
-           var deta_invent  = new Detalle_inventario();
-           var invent = new Inventario();
-           invent.nombre_sucursal = this.compra.nombre_sucursal;
-           invent.id_sucursal = this.compra.id_sucursal;
-           invent.fecha_ultima_actualizacion = new Date();
-           this.inventarioService.create(invent).subscribe(
-             inventarionuevo => {
-               for(deta_compra of detalles_c)
-               {
-                 deta_invent.inventario = inventarionuevo;
-                 deta_invent.producto = deta_compra.producto;
-                 deta_invent.cant_existente = deta_compra.cant_existente + deta_compra.cant_comprada;
-                 deta_invent.fecha_ultima_actualizacion = new Date();
-                 this.detaInventarioService.create(deta_invent).subscribe(
-                   deta_i =>{
-                     console.log("done " + deta_i.producto.descripcion + " " + deta_i.inventario.id_inventario);
-                   })
-               }
-             });
-         }else{
-           console.log("Si hay inventario");
-           inventarioConsulta.fecha_ultima_actualizacion = new Date();
-           this.inventarioService.update(inventarioConsulta).subscribe(
+          var deta_invent = new Detalle_inventario();
+          var invent = new Inventario();
+          invent.nombre_sucursal = this.compra.nombre_sucursal;
+          invent.id_sucursal = this.compra.id_sucursal;
+          invent.fecha_ultima_actualizacion = new Date();
+          this.inventarioService.create(invent).subscribe(
+            inventarionuevo => {
+              for (deta_compra of detalles_c) {
+                deta_invent.inventario = inventarionuevo;
+                deta_invent.producto = deta_compra.producto;
+                deta_invent.cant_existente = deta_compra.cant_existente + deta_compra.cant_comprada;
+                deta_invent.fecha_ultima_actualizacion = new Date();
+                this.detaInventarioService.create(deta_invent).subscribe(
+                  deta_i => {
+                    console.log("done " + deta_i.producto.descripcion + " " + deta_i.inventario.id_inventario);
+                  })
+              }
+            });
+        } else {
+          console.log("Si hay inventario");
+          inventarioConsulta.fecha_ultima_actualizacion = new Date();
+          this.inventarioService.update(inventarioConsulta).subscribe(
             inventarioActualizado => {
-                  var deta_i = new Detalle_inventario();
-                  deta_i.inventario = inventarioActualizado;
-                  for(deta_compra of detalles_c)
-                  {
-                      deta_i.producto = deta_compra.producto;
-                      deta_i.fecha_ultima_actualizacion = new Date();
-                      deta_i.cant_existente = deta_compra.cant_existente + deta_compra.cant_comprada;
-                      this.detaInventarioService.create(deta_i).subscribe(
-                        det =>{
-                          console.log("actualizado/creado");
-                        });
-                  }
-                });
-         }
+              var deta_i = new Detalle_inventario();
+              deta_i.inventario = inventarioActualizado;
+              for (deta_compra of detalles_c) {
+                deta_i.producto = deta_compra.producto;
+                deta_i.fecha_ultima_actualizacion = new Date();
+                deta_i.cant_existente = deta_compra.cant_existente + deta_compra.cant_comprada;
+                this.detaInventarioService.create(deta_i).subscribe(
+                  det => {
+                    console.log("actualizado/creado");
+                  });
+              }
+            });
+        }
       });
   }
 
@@ -308,15 +315,14 @@ export class CompraFViewComponent implements OnInit {
   /*Método que sirve para obtener la configuracion de maximos y minimos de la sucursal
   donde se esta logeando y se almacenan dichas configuraciones en variables
   En dado caso de no existir una configuracion para la sucursal se colocarán valores por default*/
-  obtenerMaximosMinimosDeLaSucursal()
-  {
+  obtenerMaximosMinimosDeLaSucursal() {
     var nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!);
     this.maxMinStockService.getMaxMinDeStockBySucursal(nombreSucursal).subscribe(
       maxMinStockSucursal => {
-        if(maxMinStockSucursal === null){
+        if (maxMinStockSucursal === null) {
           this.maxStock = 50;
           this.minStock = 5;
-        }else{
+        } else {
           this.maxStock = maxMinStockSucursal.max_stock;
           this.minStock = maxMinStockSucursal.min_stock;
         }
@@ -324,10 +330,10 @@ export class CompraFViewComponent implements OnInit {
 
     this.maxMinExistenciaService.getMaxMinDeExistenciaBySucursal(nombreSucursal).subscribe(
       maxMinExistenciaSucursal => {
-        if(maxMinExistenciaSucursal === null){
+        if (maxMinExistenciaSucursal === null) {
           this.maxExistencia = 50;
           this.minExistencia = 5;
-        }else{
+        } else {
           this.maxExistencia = maxMinExistenciaSucursal.max_existencia;
           this.minExistencia = maxMinExistenciaSucursal.min_existencia;
         }

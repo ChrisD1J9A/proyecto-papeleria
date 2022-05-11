@@ -104,7 +104,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
         this.BanderaMostrar = false; //La bandera para mostrar un inventario individual se desactiva
         this.mostrarTodos = true;//Bandera de mostrar todos los inventarios se activa
         this.dataSource = new MatTableDataSource(todos);//Se cargan los inventarios a la tabla
-        this.inventarioBajo = todos.filter(invent => invent.cant_existente <= 5);//Se hace un filtro para conocer los inventarios con stock bajo
+        this.inventarioBajo = todos.filter(invent => invent[3] <= 5);//Se hace un filtro para conocer los inventarios con stock bajo
         this.dataSource2 = new MatTableDataSource(this.inventarioBajo); //Se cargan los datos filtrados anteriormente
         swal.fire({
           icon: 'success',

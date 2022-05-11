@@ -139,12 +139,10 @@
   </div>
   <br>
 
-  <mat-form-field appearance="fill" class="largeInput">
+  <mat-form-field appearance="fill" class="gastoInput">
     <mat-label>Gasto total </mat-label>
-    <input matInput [(ngModel)]="compra.gasto_total" type="number" name="gasto_total" readonly="{{banderaEditar==false}}" (input)="total_input($event.target.value)" max="50000" min="1" required>
-    <span matPrefix>$&nbsp;</span>
-    <span matSuffix *ngIf="bandera==false">pesos</span>
-    <span matSuffix *ngIf="bandera==true">.00 pesos</span>
+    <input matInput  [(ngModel)]="compra.gasto_total" type="text" name="gasto_total" readonly="{{banderaEditar==false}}" (blur)="formatoDePesos($event)" onkeypress="return event.charCode >= 46 && event.charCode <= 57" max="50000" min="1" required>
+    <span matSuffix >pesos</span>
     <mat-error *ngIf="numericos.invalid">{{getErrorMessage2()}}</mat-error>
   </mat-form-field>
 
@@ -169,7 +167,7 @@
   <button type="button" mat-raised-button (click)="descargarTicket()" color="primary" *ngIf="banderaEditar==false">Descargar Ticket <mat-icon>attachment</mat-icon></button>
   <br>
 
-  <mat-form-field appearance="outline" class="inputs">
+  <mat-form-field appearance="fill" class="inputs">
     <mat-label>Observaciones </mat-label>
     <textarea matInput [(ngModel)]="compra.observaciones" name="observaciones" readonly="{{banderaEditar==false}}"></textarea>
   </mat-form-field>
