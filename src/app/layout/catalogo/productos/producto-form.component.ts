@@ -47,7 +47,9 @@ export class ProductoFormComponent implements OnInit {
 
   precio_input1(n: any) {
     this.producto.precio_iva = n * 0.16;
+    this.producto.precio_iva = parseFloat((Math.round(this.producto.precio_iva * 100) / 100).toFixed(2));
     this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva);
+    this.producto.precio_total = parseFloat((Math.round(this.producto.precio_total * 100) / 100).toFixed(2));
     if (n % 1 == 0) {
       this.bandera = true;
       console.log(n);
@@ -62,7 +64,7 @@ export class ProductoFormComponent implements OnInit {
 
   precio_input2(n: any) {
     this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva);
-    //this.producto.precio_total.toFixed(2);
+    this.producto.precio_total = parseFloat((Math.round(this.producto.precio_total * 100) / 100).toFixed(2));
   }
 
   cargarProducto(): void {

@@ -91,7 +91,7 @@ export class CompraFViewComponent implements OnInit {
 
   //En este método se da formato de  pesos al input que registra precios, en este caso del gasto gasto_total
   formatoDePesos(element) {
-    if (isNaN(this.compra.gasto_total)) {
+    if (isNaN(this.compra.gasto_total) || this.compra.gasto_total== 0.00) {
       swal.fire('No es una cantidad válida', 'Ingrese una cantidad válida', 'error');
       this.compra.gasto_total = 0.0;
     } else {
