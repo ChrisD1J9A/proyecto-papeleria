@@ -322,13 +322,13 @@ export class SolicitudFormComponent implements OnInit {
   enviarCorreo(solicitud: Solicitud)//Recibe un objeto de tipo solicitud para obtener informacion de la solicitud que se emite
   {
     var fecha = new Date;
-    var fechaFomr = fecha.getDate() + "/" + (fecha.getMonth()+1)+ "/"+fecha.getFullYear();//Formato de fecha para enviar en el correo
+    var fechaForm = fecha.getDate() + "/" + (fecha.getMonth()+1)+ "/"+fecha.getFullYear();//Formato de fecha para enviar en el correo
     this.mail.para = "16161339@itoaxaca.edu.mx"; //Se tiene un objeto Mail y en esta sección se modifica el destinatario
     this.mail.asunto = "Nueva solicitud, solicitud: " + solicitud.id_solicitud; //Seccion para agregar el asunto del mail
     this.mail.mensaje = "Se ha realizado una nueva solicitud por el usuario: "//Seccion para establecer el mensaje del correo
                     + solicitud.nombre_usuario + //Nombre del usario quien realiza la Solicitud
                     " de la sucursal: " + solicitud.nombre_sucursal + //Sucursal desde donde se emite la solicitud
-                    " el día: " + fechaFomr + //Fecha formateada
+                    " el día: " + fechaForm + //Fecha formateada
                     ", Para ver a detalle la solicitud se sugiere revisar el sistema";
     this.mailService.enviar(this.mail).subscribe(//Una vez que quedó escrito el contenido del correo procede a enviarse a traves del backend
       correo => {

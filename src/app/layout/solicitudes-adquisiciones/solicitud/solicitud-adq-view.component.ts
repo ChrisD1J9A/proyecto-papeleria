@@ -285,10 +285,12 @@ export class SolicitudAdqViewComponent implements OnInit {
   //Método para mandar correo
   enviarCorreo(solicitud: Solicitud)
   {
+    var fecha = new Date;
+    var fechaForm = fecha.getDate() + "/" + (fecha.getMonth()+1)+ "/"+fecha.getFullYear();//Formato de fecha para enviar en el correo
     this.mail.para = "16161339@itoaxaca.edu.mx"; //Destinatario, en este caso tendría que ser al correo de quién envía la solicitud
     this.mail.asunto = "Solicitud " + solicitud.estatus;
     this.mail.mensaje = "Su solicitud ha sido " + solicitud.estatus + " por adquisiciones el día: " +
-                        new Date() + ", Para ver a detalle la solicitud se sugiere revisar el sistema";
+                        fechaForm + ", Para ver a detalle la solicitud se sugiere revisar el sistema";
     this.mailService.enviar(this.mail).subscribe(
       correo => {
         console.log(correo);
