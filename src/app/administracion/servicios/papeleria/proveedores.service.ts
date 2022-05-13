@@ -22,9 +22,9 @@ export class ProveedoresService {
     );
   }
 
-  public create(proveedor: Proveedor): Observable<Proveedor>
+  public create(proveedor: Proveedor): Observable<any>
   {
-      return this.http.post<Proveedor>(this.urlEndPoint, proveedor, {headers: this.httpHeaders}).pipe(
+      return this.http.post<any>(this.urlEndPoint, proveedor, {headers: this.httpHeaders}).pipe(
         catchError (e => {
           console.error(e.error.mensaje);
           swal.fire(e.error.mensaje, e.error.error , 'error');

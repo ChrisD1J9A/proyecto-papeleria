@@ -22,9 +22,9 @@ export class ProductosService {
     );
   }
 
-  public create(producto: Producto): Observable<Producto>
+  public create(producto: Producto): Observable<any>
   {
-      return this.http.post<Producto>(this.urlEndPoint, producto, {headers: this.httpHeaders}).pipe(
+      return this.http.post<any>(this.urlEndPoint, producto, {headers: this.httpHeaders}).pipe(
         catchError (e => {
           console.error(e.error.mensaje);
           swal.fire(e.error.mensaje, e.error.error , 'error');
