@@ -12,6 +12,18 @@ import { SidebarComponent } from './layout/components/sidebar/sidebar.component'
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 import { UnidadComponent} from './layout/catalogo/configuraciones/unidad/unidad.component';
+import { ComprasService } from './administracion/servicios/papeleria/compras.service';
+import { DetalleCompraPFDCService } from './administracion/servicios/papeleria/detalle-compra-pfdc.service';
+import { DetalleCompraService } from './administracion/servicios/papeleria/detalle-compra.service';
+import { DetalleInventarioService } from './administracion/servicios/papeleria/detalle-inventario.service';
+import { DetalleSolicitudService } from './administracion/servicios/papeleria/detalle-solicitud.service';
+import { DetalleSolicitudPFDCService } from './administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
+import { InventarioService } from './administracion/servicios/papeleria/inventario.service';
+import { MailService } from './administracion/servicios/papeleria/mail.service';
+import { MaxMinExistenciaService } from './administracion/servicios/papeleria/max-min-existencia.service';
+import { MaxMinStockService } from './administracion/servicios/papeleria/max-min-stock.service';
+import { ProveedoresService } from './administracion/servicios/papeleria/proveedores.service';
+import { SolicitudesService } from './administracion/servicios/papeleria/solicitudes.service';
 import {UnidadService} from './administracion/servicios/papeleria/unidad.service';
 import {ProductosService} from './administracion/servicios/papeleria/productos.service';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
@@ -52,7 +64,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ProductosComponent } from './layout/catalogo/productos/productos.component';
 import { ProductoFormComponent } from './layout/catalogo/productos/producto-form.component';
 import { ProveedoresComponent } from './layout/catalogo/proveedores/proveedores.component';
-import { ProveedoresService } from './administracion/servicios/papeleria/proveedores.service';
 import { ProveedorFormComponent } from './layout/catalogo/proveedores/proveedor-form.component';
 import { SolicitudesComponent } from './layout/solicitudes/solicitudes.component';
 import { SolicitudFormComponent } from './layout/solicitudes/solicitudForm/solicitud-form.component';
@@ -159,6 +170,18 @@ import { ProductosFDCViewComponent } from './layout/catalogo/productos/productos
     UnidadService,
     ProductosService,
     ProveedoresService,
+    ComprasService,
+    DetalleCompraPFDCService,
+    DetalleCompraService,
+    DetalleInventarioService,
+    DetalleSolicitudService,
+    DetalleSolicitudPFDCService,
+    InventarioService,
+    MailService,
+    MaxMinExistenciaService,
+    MaxMinStockService,
+    ProveedoresService,
+    SolicitudesService,
     DecimalPipe,
     CurrencyPipe,
   ],
