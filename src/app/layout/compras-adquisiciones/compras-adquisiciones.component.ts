@@ -109,7 +109,7 @@ export class ComprasAdquisicionesComponent implements OnInit {
         icon: 'warning',
         title: 'Oops...',
         text: 'Seleccione alguna sucursal para continuar',
-      })
+      });
     }
   }
 

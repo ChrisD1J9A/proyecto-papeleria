@@ -1,6 +1,11 @@
 <div class="area-txt">
   <h1>Compras</h1>
 
+  <button class="btn2" mat-raised-button color="warn" routerLink="reportes" matTooltip="Ver la sección de reportes de compras">
+    Reportes
+    <mat-icon>assessment</mat-icon>
+  </button><br>
+
   <mat-form-field appearance="fill" class="espaciado">
     <mat-label>Buscar compras por sucursal</mat-label>
     <mat-select placeholder="Sucursal" name="sucursal" [(ngModel)]="sucursal" matTooltip="Buscar las compras de alguna sucursal en especifico">
@@ -14,14 +19,14 @@
     <mat-icon>search</mat-icon>
   </button>
   <br>
-  <button class="btn2" mat-raised-button color="warn" routerLink="reportes" matTooltip="Ver la sección de reportes de compras">
-    Reportes
-    <mat-icon>assessment</mat-icon>
-  </button>
-
 </div>
 
-<div *ngIf="BanderaMostrar==true">
+<div *ngIf="BanderaMostrar==true" class="formato1">
+  Volver a la vista general
+  <button mat-mini-fab color="primary" (click)="BanderaMostrar=false" matTooltip="Ver de nuevo las compras de todas las sucursales">
+    <mat-icon>settings_backup_restore</mat-icon>
+  </button><br><br>
+
   <h2>Sucursal: {{sucursal.nombreSucursal}}</h2>
   <mat-form-field appearance="standard" class="area-txt">
     <mat-label>Buscar </mat-label>
@@ -72,7 +77,7 @@
 
 <div *ngIf="BanderaMostrar==false">
   <div class="area-txt">
-    <h1>Tabla General de compras</h1>
+    <h2>Tabla General de compras</h2>
   </div>
 
 
