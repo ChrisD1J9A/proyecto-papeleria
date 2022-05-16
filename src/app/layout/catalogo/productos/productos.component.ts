@@ -17,7 +17,7 @@ export class ProductosComponent implements OnInit {
   constructor(private productosService: ProductosService) { }
 
   ngOnInit(): void {
-    this.productosService.getProductos().subscribe(
+    this.productosService.getProductos().subscribe(//Se obtieen todos los  productos de la base de datos
       productos => {
         this.dataSource = new MatTableDataSource(productos); //Se cargan los productos de la bd en la tabla
       });
@@ -33,7 +33,7 @@ export class ProductosComponent implements OnInit {
   baja(producto: Producto): void {
     swal
       .fire({
-        title: '¿Está seguro de dar de baja este Producto?',
+        title: '¿Está seguro de dar de baja este Producto?',// Se pregunta al usuario antes de continuar
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -43,26 +43,26 @@ export class ProductosComponent implements OnInit {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          producto.estatus = 0;
+          producto.estatus = 0;//El estatus cambia a 0, es decir desactivado
           this.productosService.update(producto).subscribe(
             (response) => {
               if (response) {
                 swal.fire(
                   'Mensaje',
-                  `El producto:  ${response.descripcion} fue dado de baja con éxito`,
+                  `El producto:  ${response.descripcion} fue dado de baja con éxito`,//Mensaje de confirmacion exitoso
                   'success'
                 );
                 //  window.location.reload();
               } else {
                 swal.fire(
                   'Mensaje',
-                  `Error al dar de baja el producto`,
+                  `Error al dar de baja el producto`, //Mensaje de error
                   'error'
                 );
               }
             },
             (error) => {
-              swal.fire('Error', `Error al dar de baja`, 'error');
+              swal.fire('Error', `Error al dar de baja`, 'error');//Mensaje de error
             }
           );
         }
@@ -73,7 +73,7 @@ export class ProductosComponent implements OnInit {
   activar(producto: Producto): void {
     swal
       .fire({
-        title: '¿Está seguro de activar este Producto?',
+        title: '¿Está seguro de activar este Producto?', //Se consulta al usuario antes de continuar
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -83,20 +83,19 @@ export class ProductosComponent implements OnInit {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          producto.estatus = 1;
-          this.productosService.update(producto).subscribe(
+          producto.estatus = 1;//El estatus cambia a 1, es decir activado
+          this.productosService.update(producto).subscribe( //Se actualiza el producto en la base de datos
             (response) => {
               if (response) {
                 swal.fire(
                   'Mensaje',
-                  `El producto:  ${response.descripcion} fue activado con éxito`,
+                  `El producto:  ${response.descripcion} fue activado con éxito`, //Mensaje exitoso
                   'success'
                 );
-                //  window.location.reload();
               } else {
                 swal.fire(
                   'Mensaje',
-                  `Error al dar de baja el producto`,
+                  `Error al dar de baja el producto`, //Mensaje de error
                   'error'
                 );
               }

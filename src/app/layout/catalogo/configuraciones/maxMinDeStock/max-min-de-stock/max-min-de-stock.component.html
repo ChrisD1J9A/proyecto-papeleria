@@ -3,7 +3,6 @@
     <h1>{{ titulo }}
     </h1>
     <p *ngIf="banderaEditar==false"  class="inLine">Sucursal: {{maxMinDeStock.sucursal}} </p>
-    <mat-checkbox [(ngModel)]="banderaEditar" *ngIf="editCheckB==true" name="banderaEdit">Editar</mat-checkbox>
     <br>
     <mat-form-field appearance="fill" class="espaciado" *ngIf="banderaEditar==true">
         <mat-label>Sucursal</mat-label>
@@ -15,12 +14,12 @@
 
     <mat-form-field appearance="fill" class="espaciado">
       <mat-label>Máximo de stock</mat-label>
-      <input matInput type="number" [(ngModel)]="maxMinDeStock.max_stock" name="max_stock" required>
+      <input matInput type="number" [(ngModel)]="maxMinDeStock.max_stock" name="max_stock" min="1" onkeypress="return event.charCode >= 46 && event.charCode <= 57" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="espaciado">
       <mat-label>Mínimo de stock</mat-label>
-      <input matInput type="number" [(ngModel)]="maxMinDeStock.min_stock" name="min_stock" max="{{maxMinDeStock.max_stock}}" (input)="validarMaxMin($event.target.value)" required>
+      <input matInput type="number" [(ngModel)]="maxMinDeStock.min_stock" name="min_stock" max="{{maxMinDeStock.max_stock}}" min="0" onkeypress="return event.charCode >= 46 && event.charCode <= 57" (input)="validarMaxMin($event.target.value)" required>
       <mat-error *ngIf="controlMax.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <br>

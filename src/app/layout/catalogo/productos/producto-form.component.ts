@@ -6,7 +6,6 @@ import { Unidad } from 'src/app/administracion/modelos/papeleria/unidad';
 import { UnidadService } from 'src/app/administracion/servicios/papeleria/unidad.service';
 import swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-producto-form',
@@ -14,52 +13,48 @@ import { DecimalPipe } from '@angular/common';
   styleUrls: ['./producto-form.component.scss']
 })
 export class ProductoFormComponent implements OnInit {
-  titulo: string = "Agregar nuevo Producto";
-  titulo2: string = "Editar Producto";
-  producto = new Producto();
-  productos: Producto[];
-  unidad: Unidad = new Unidad();
-  unidades: Unidad[];
-  descripcionProducto = new FormControl('', [Validators.required]);
-  unidadProducto = new FormControl('', [Validators.required]);
-  bandera: Boolean;
+  titulo: string = "Agregar nuevo Producto"; //Titulo de la pagina si se agrega un nuevo producto
+  titulo2: string = "Editar Producto";//Titulo de la pagina si se edita un producto
+  producto = new Producto();//Objeto producto
+  productos: Producto[];//Arreglo de los productos en la base de datos
+  unidad: Unidad = new Unidad();//Objeto Unidad
+  unidades: Unidad[];//Agreglo delas unidades
+  descripcionProducto = new FormControl('', [Validators.required]);//FormControl Para validad elemento requerido
+  unidadProducto = new FormControl('', [Validators.required]);//FormControl Para validad elemento requerido
+  bandera: Boolean;//Bandera utilizado para dar formato  de pesos en el formulario
 
   constructor(private productosService: ProductosService,
     private unidadService: UnidadService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private _decimalPipe: DecimalPipe) {
+    private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.unidadService.getUnidades().subscribe(
+    this.unidadService.getUnidades().subscribe(//Se consulta en la base de datos todas las unidades
       unidades => {
-        this.unidades = unidades.filter(u => u.estatus == 1);
+        this.unidades = unidades.filter(u => u.estatus == 1); //Se aplica un filtro a los datos obtenidos, para solo dejar las unidades activas
       });
-    this.cargarProducto();
-    this.cargarProductoFDC();
-    this.bandera = false;
+    this.cargarProducto();//Si se accede a este formulario con el objetivo de actualizar un producto, mediante este metodo se obtienen losdatos
+    this.cargarProductoFDC();//Si se accede a este formulario con el objetivo de agregar un producto fuera  del catalogo de productos, mediante este metodo se obtienen losdatos
+    this.bandera = false;//La bandera se inicializa en false
   }
 
+  //Mensaje de error si el usuario no ingreso un dato en un campo requerido
   getErrorMessage() {
     return this.descripcionProducto.hasError('required') ? 'Ingrese/seleccione algún dato' : '';
   }
 
+  //Metodo mediante el cual se da cierto formato a los input de iva y precio total
   precio_input1(n: any) {
-    this.producto.precio_iva = n * 0.16;
-    this.producto.precio_iva = parseFloat((Math.round(this.producto.precio_iva * 100) / 100).toFixed(2));
-    this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva);
-    this.producto.precio_total = parseFloat((Math.round(this.producto.precio_total * 100) / 100).toFixed(2));
-    if (n % 1 == 0) {
-      this.bandera = true;
-      console.log(n);
-      console.log(this.bandera);
+    this.producto.precio_iva = n * 0.16;//Se aplica el porcentaje de iva a la cantidad ingresada pro el  usuario
+    this.producto.precio_iva = parseFloat((Math.round(this.producto.precio_iva * 100) / 100).toFixed(2));//Se aplica un formato de solo  dos decimales
+    this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva);//Para el precio total se suma la cantidad ingresada por el usuario  + el iva
+    this.producto.precio_total = parseFloat((Math.round(this.producto.precio_total * 100) / 100).toFixed(2));//Se aplica un formato de solo  dos decimales
+    if (n % 1 == 0) { //Se hace una validacion para saber si n (Valor ingresado por el usuario) tiene decimales
+      this.bandera = true;//Si si tiene decimales la bandera cambia a true y en la vista se agrega un .00 pesos al formulario
     } else {
-      this.bandera = false;
-      console.log(n);
-      console.log(this.bandera);
+      this.bandera = false;//Si no tiene decimales la bandera cambia a false y enla vista solo queda la palabra pesos
     }
-    //{{ this.producto.precio_subtotal | number: 1.2-2:'fr'}}
   }
 
   precio_input2(n: any) {

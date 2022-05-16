@@ -13,12 +13,11 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         this.username=JSON.parse(localStorage.getItem('currentUser')!).username;
-        this.idSuc = JSON.parse(localStorage.getItem('idSucursal')!);
+        //this.idSuc = JSON.parse(localStorage.getItem('idSucursal')!);
         this.obtenerNombreUsuario();
-        //this.obtenerMaximosMinimosDeLaSucursal();
-        this.fullusername = JSON.parse(localStorage.getItem('nombreCUsuario')!);
-        console.log(this.fullusername);
-        console.log(this.idSuc);
+        //this.fullusername = JSON.parse(localStorage.getItem('nombreCUsuario')!);
+        //console.log(this.fullusername);
+        //console.log(this.idSuc);
     }
 
     /*Metodo obtenerNombreUsuario
@@ -26,20 +25,19 @@ export class HomeComponent implements OnInit {
     con el identificador nombreCUsuario*/
     obtenerNombreUsuario(): void
     {
-      var username = JSON.parse(localStorage.getItem('currentUser')!).username;
-      var nombreCompleto: String;
-      this.usuarioService.getUsername(username)
+      var username = JSON.parse(localStorage.getItem('currentUser')!).username; //En el login se guardó el nombre de usuario que se ingresó, aca solo se recupera
+      var nombreCompleto: String; //Variable que almacena el nombre completo del usuario para usarlo durante el sistema
+      this.usuarioService.getUsername(username) //Buscarmos el usuario mediante el username
       .toPromise()
       .then((usuario) => {
           nombreCompleto = usuario.empleado.nombre +
           ' ' +
           usuario.empleado.apellidoPat +
           ' ' +
-          usuario.empleado.apellidoMat;
-          console.log(nombreCompleto);
+          usuario.empleado.apellidoMat; //Obtenemos sus nombres y apellidos para concatenarlos en la variable nombreCompleto
 
           localStorage.setItem('nombreCUsuario',
-          JSON.stringify(nombreCompleto));
+          JSON.stringify(nombreCompleto));//Gugardamos el nombre completo en un local localStorage
         });
     }
 }

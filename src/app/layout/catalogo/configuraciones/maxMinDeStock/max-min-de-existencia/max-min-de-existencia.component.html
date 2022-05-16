@@ -3,7 +3,7 @@
     <h1>{{ titulo }}
     </h1>
     <p *ngIf="banderaEditar==false"  class="inLine">Sucursal: {{maxMinDeExistencia.sucursal}} </p>
-    <mat-checkbox [(ngModel)]="banderaEditar" *ngIf="editCheckB==true" name="banderaEdit">Editar</mat-checkbox>
+    <!--<mat-checkbox [(ngModel)]="banderaEditar" *ngIf="editCheckB==true" name="banderaEdit">Editar</mat-checkbox>-->
     <br>
     <mat-form-field appearance="fill" class="espaciado" *ngIf="banderaEditar==true">
         <mat-label>Sucursal</mat-label>
@@ -15,12 +15,12 @@
 
     <mat-form-field appearance="fill" class="espaciado">
       <mat-label>Máximo de existencia</mat-label>
-      <input matInput type="number" [(ngModel)]="maxMinDeExistencia.max_existencia" name="max_existencia" required>
+      <input matInput type="number" [(ngModel)]="maxMinDeExistencia.max_existencia" name="max_existencia" min="1" onkeypress="return event.charCode >= 46 && event.charCode <= 57" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="espaciado">
       <mat-label>Mínimo de existencia</mat-label>
-      <input matInput type="number" [(ngModel)]="maxMinDeExistencia.min_existencia" name="min_existencia" max="{{maxMinDeExistencia.max_existencia}}" (input)="validarMaxMin($event.target.value)" required>
+      <input matInput type="number" [(ngModel)]="maxMinDeExistencia.min_existencia" name="min_existencia" max="{{maxMinDeExistencia.max_existencia}}" min="0" onkeypress="return event.charCode >= 46 && event.charCode <= 57" (input)="validarMaxMin($event.target.value)" required>
       <mat-error *ngIf="controlMax.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
 
