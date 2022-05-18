@@ -68,11 +68,12 @@ export class SolicitudFormComponent implements OnInit {
     const currentYear = new Date().getFullYear();
   }
 
-  //Formularios reactivos
+  //Para poder obtener datos de detalles de solicitud (Formularios reactivos)
   get detalles(): FormArray {
     return this.detalleSForm.get('detalles') as FormArray;
   }
 
+  //Para poder obtener datos de detalles de solicitud productos fuera del catalogo(Formularios reactivos)
   get detalles2(): FormArray {
     return this.detalleSPFDCForm.get('detalles2') as FormArray;
   }
@@ -99,14 +100,15 @@ export class SolicitudFormComponent implements OnInit {
   los productos activos (1) para mostrarlos en el formulario*/
   ngOnInit(): void {
     this.productosService.getProductos().subscribe(
-      productos => {
-        this.pds = productos.filter(p => p.estatus === 1);
-        this.dataSource = new MatTableDataSource(this.pds);
+      productos => {//Se obtienen todos los productos de la base de datos
+        this.pds = productos.filter(p => p.estatus === 1);//se realiza un filtro para obtener solo los productos activos
+        this.dataSource = new MatTableDataSource(this.pds);//Se cargan a la tabla
       });
-    this.idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
-    this.obtenerMaximosMinimosDeLaSucursal();
+    this.idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);//Se obtiene la sucursaldesde donde se inicio sesion
+    this.obtenerMaximosMinimosDeLaSucursal();//Se obtiene la configuracion de maximos y minimos de la sucursal logeada
   }
 
+  //Metodo para realizar busquedas en la tabla de productos
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

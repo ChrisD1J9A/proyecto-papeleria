@@ -53,34 +53,34 @@ export class InventariosAdquisicionesComponent implements OnInit {
 
 /** Una vez seleccionada la sucursal este metodo buscará el inventario correspondiente y lo mostrara en  su tabla */
   cargarInventario() {
-    this.limpiar();
-    if (this.sucursal.idSucursal){
+    this.limpiar();//Limpia las listas para evitar errores
+    if (this.sucursal.idSucursal){//Obtenemos la sucursal seleccionada por el usuario
       this.inventarioService.getInventarioBySucursal(this.sucursal.idSucursal).subscribe(
-        inventario => {
-          this.inventario = inventario;
-          this.nombreSucursalInventarioActual = this.sucursal.nombreSucursal;
-          this.obtenerMaximosMinimosDeLaSucursal(inventario);
-          if (inventario == null) {
-            this.BanderaMostrar = false;
-            this.mostrarTodos = false;
-            this.sucursal = new Sucursal();
+        inventario => {//Obtenemos el inventario mediante el id de la sucursal
+          this.inventario = inventario;//almacenamos el inventario en el objeto
+          this.nombreSucursalInventarioActual = this.sucursal.nombreSucursal;//Guardamos el nombre
+          this.obtenerMaximosMinimosDeLaSucursal(inventario);//Se cargan los maximos y minimos de la sucursal del seleccionado inventario
+          if (inventario == null) {//De ser null el inventario quiere decir que no hay inventario para esa sucursal en la base de datos
+            this.BanderaMostrar = false; //No muestra el inventario particular
+            this.mostrarTodos = false;//No muestra la tabla general de todos los inventarios
+            this.sucursal = new Sucursal();//Se limpia la sucursal seleccionada
             swal.fire({
               icon: 'warning',
               title: 'Oops...',
-              text: 'No se encontró un inventario de esa sucursal',
+              text: 'No se encontró un inventario de esa sucursal',//Se informa al usuario de que no hay inventario
             })
           }else{
-            this.BanderaMostrar = true;
+            this.BanderaMostrar = true;//Muestra el inventario de la sucursal
             this.mostrarTodos = false;
             this.detalleInvenarioService.getDetallesInventario(this.inventario.id_inventario).subscribe(
-              detas => {
-                this.dataSource = new MatTableDataSource(detas);
-                this.inventarioBajo = detas.filter(invent => invent.cant_existente <= this.minStock);
-                this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
+              detas => {//Se cargan los detalles de ese inventario, se hizo la busqueda en la base de datos mediante el id_inventario
+                this.dataSource = new MatTableDataSource(detas);//Se carga a la tabla
+                this.inventarioBajo = detas.filter(invent => invent.cant_existente <= this.minStock);//Se hace un filtro para determinar stock bajo
+                this.dataSource2 = new MatTableDataSource(this.inventarioBajo);//Se carga el stock bajo en su propia tabla
                 swal.fire({
                   icon: 'success',
                   title: '¡Hecho!',
-                  text: 'Inventario cargado',
+                  text: 'Inventario cargado', //Mensaje de que el inventario se cargó exitosamente
                 });
               });
           }
@@ -89,7 +89,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
       swal.fire({
         icon: 'warning',
         title: 'Oops...',
-        text: 'Seleccione alguna sucursal para continuar',
+        text: 'Seleccione alguna sucursal para continuar', //Mensaje de advertencia, el usuario forzosamente debe de seleccionar una sucursal
       });
     }
   }
@@ -109,7 +109,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
         swal.fire({
           icon: 'success',
           title: '¡Hecho!',
-          text: 'Inventarios cargados',
+          text: 'Inventarios cargados',//Mensaje de confirmacion
         });
       }
     )

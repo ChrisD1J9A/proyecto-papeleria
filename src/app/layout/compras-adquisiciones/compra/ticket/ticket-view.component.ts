@@ -11,7 +11,6 @@ export interface DialogData {
   styleUrls: ['./ticket-view.component.scss']
 })
 export class TicketViewComponent implements OnInit {
-  ticket: string;
   esPdf: boolean;
 
   constructor(public dialogRef: MatDialogRef<TicketViewComponent>,
@@ -21,13 +20,14 @@ export class TicketViewComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //Método para saber cual de los dos tipos de archivo es el ticket
   tipoArchivo()
   {
     if(this.data.ticket.endsWith(".pdf")===true)
     {
-      this.esPdf = true;
+      this.esPdf = true;// Si es true la bandera esPdf se activa
     }else{
-      this.esPdf = false;
+      this.esPdf = false;// Si es true la bandera esPdf se desactiva
     }
   }
 }

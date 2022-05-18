@@ -15,14 +15,14 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./solicitud-fview.component.scss']
 })
 export class SolicitudFViewComponent implements OnInit {
-  solicitud = new Solicitud();
-  detalle_solicitud = new Detalle_solicitud();
-  detalles_solicitud: Detalle_solicitud[];
-  detalle_solicitud_PFDC = new Detalle_solicitud_PFDC();
-  detalles_solicitud_PFDC: Detalle_solicitud_PFDC[];
-  displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];
-  dataSource = new MatTableDataSource();
-  dataSource2 = new MatTableDataSource();
+  solicitud = new Solicitud(); //Objecto solicitud
+  detalle_solicitud = new Detalle_solicitud();//Objeto detalle solicitud
+  detalles_solicitud: Detalle_solicitud[];//Arreglo de detalles de solicitud
+  detalle_solicitud_PFDC = new Detalle_solicitud_PFDC();//Objeto de detalle solicitud con productos fuera del catalogo
+  detalles_solicitud_PFDC: Detalle_solicitud_PFDC[];//Arreglo de de detalles de solicitud con productos fuera del catalogo
+  displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];//Encabezados para las columnas de la tabla de detalles
+  dataSource = new MatTableDataSource();//Tabla para detales de solicitud
+  dataSource2 = new MatTableDataSource();//Tabla para detales de solicitud con productos fuera del catalogo
 
   constructor(private solicitudesService: SolicitudesService,
               private detalleSolicitudService: DetalleSolicitudService,
@@ -30,62 +30,52 @@ export class SolicitudFViewComponent implements OnInit {
               private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.cargarSolicitud();
+    this.cargarSolicitud();//Metodo mediante el cual se carga la solicitud
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  applyFilter2(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource2.filter = filterValue.trim().toLowerCase();
-  }
-
+  //Metodo que carga la solicitud desde la base de datos
   cargarSolicitud(): void {
     this.activatedRoute.params.subscribe(params => {
-      let id = params['id']
-      if (id) {
+      let id = params['id']//Se obtiene el id de la solicitud en la ruta de navegacion
+      if (id) {//Se valida que exista el id
         this.solicitudesService.getSolicitud(id).subscribe(
-          (solicitud) =>
+          (solicitud) =>//Se busca la solicitud mediante el id_solicitud
           this.solicitud = solicitud
         )
         this.detalleSolicitudService.getDetallesSolicitud(id).subscribe(
-          deta_solicitudes => {
-            this.dataSource = new MatTableDataSource(deta_solicitudes);
-            console.log(id);
+          deta_solicitudes => {//Se buscan los detalles de la solicitud acorde al id_solicitud
+            this.dataSource = new MatTableDataSource(deta_solicitudes);//Se carga a la tabla
           });
         this.detalleSolicitudPFDCService.getDetallesSolicitud_PFDC(id).subscribe(
-          detalles_solicitudesPFDC => {
-            this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC);
+          detalles_solicitudesPFDC => {//Se obtienen los detalles de solicitud con productos fuera del catalogo
+            this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC);//Se carga a la tabla de productos fuera del catalogo
           });
       }
     });
   }
 
+  //Metodo para cancelar una solicitud, para cambiar el estatus de la solicitud siempre y cuando la solicitud se encuentre en pendiente
   cancelarSolicitud()
   {
     swal.fire({
-      title: '¿Está seguro de cancelar esta solicitud? ',
+      title: '¿Está seguro de cancelar esta solicitud? ',//Se pregunta al usuario antes de proseguir
       showDenyButton: true,
       showCancelButton: false,
       confirmButtonText: 'Si',
       denyButtonText: `No, seguir viendo`,
     }).then((result) => {
       if (result.isConfirmed) {
-        this.solicitud.estatus = "Cancelada";
-        this.solicitud.fecha_cancelacion = new Date();
-      //  this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);;
+        this.solicitud.estatus = "Cancelada";//Se cambia el estatus
+        this.solicitud.fecha_cancelacion = new Date();//Se establece la fecha de cancelacion
         this.solicitudesService.update(this.solicitud).subscribe(
-          solicitud => {
-            swal.fire(`La solicitud:  ${solicitud.id_solicitud} fue cancelada con éxito`, '', 'success');
-            this.router.navigate(['/layout/solicitudes'])
+          solicitud => {//Se actualiza la solicitud
+            swal.fire(`La solicitud:  ${solicitud.id_solicitud} fue cancelada con éxito`, '', 'success');//Se manda mensaje de operacion exitosa
+            this.router.navigate(['/layout/solicitudes']);//Se redirige a la tabla de las solicitudes
           })
       } else if (result.isDenied) {
-        swal.fire('La solicitud no fue guardada', '', 'info');
+        swal.fire('La solicitud no fue guardada', '', 'info'); //De no continuar el usuario aparece este mensaje
       }
-    })
+    });
 
   }
 }

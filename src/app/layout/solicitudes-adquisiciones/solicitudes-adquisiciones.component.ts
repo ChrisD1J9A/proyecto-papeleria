@@ -9,21 +9,21 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./solicitudes-adquisiciones.component.scss']
 })
 export class SolicitudesAdquisicionesComponent implements OnInit {
-  solicitud = new Solicitud();
-  solicitudes: Solicitud[];
-  aceptadas: Solicitud[];
-  rechazadas: Solicitud[];
-  pendientes: Solicitud[];
+  solicitud = new Solicitud();//Objeto solicitud
+  solicitudes: Solicitud[];//Arreglo de solicitudes
+  aceptadas: Solicitud[];//Arreglo de solicitudes aceptadas
+  rechazadas: Solicitud[];//Arreglo de solicitudes rechazadas
+  pendientes: Solicitud[];//Arreglo de solicitudes pendientes
   displayedColumns: string[] = ['id_solicitud',  'fecha_solicitud', 'fecha_revision', 'nombre_usuario', 'estatus', 'action'];
-  dataSource1 = new MatTableDataSource();
-  dataSource2 = new MatTableDataSource();
-  dataSource3 = new MatTableDataSource();;
+  dataSource1 = new MatTableDataSource();//Tabla de solicitudes aceptadas
+  dataSource2 = new MatTableDataSource();//Tabla de solicitudes rechazadas
+  dataSource3 = new MatTableDataSource();//Tabla de solicitudes pendientes
 
   constructor(private solicitudService: SolicitudesService) { }
 
   ngOnInit(): void {
     this.solicitudService.getSolicitudes().subscribe(
-      solicitudes => {
+      solicitudes => {//Se obtienen las solicitudes de la base de datos y se realizan filtros para cada tipo de solicitud
         this.solicitudes = solicitudes
         this.aceptadas = this.filtrarAceptadas(solicitudes);
         this.rechazadas = this.filtrarRechazadas(solicitudes);
@@ -34,31 +34,37 @@ export class SolicitudesAdquisicionesComponent implements OnInit {
       });
   }
 
+  //Metodo para realizar busquedas en la tabla de solicitudes aceptadas
   applyFilter1(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource1.filter = filterValue.trim().toLowerCase();
   }
 
+  //Metodo para realizar busquedas en la tabla de solicitudes rechazadas
   applyFilter2(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource2.filter = filterValue.trim().toLowerCase();
   }
 
+  //Metodo para realizar busquedas en la tabla de solicitudes pendientes
   applyFilter3(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource3.filter = filterValue.trim().toLowerCase();
   }
 
+  //Metodo para realizar filtrar la lista principal a solo aceptadas
   filtrarAceptadas(solicitudes: Solicitud[]): Solicitud[] {
     const aceptadas = solicitudes.filter(solicitud => solicitud.estatus === "Aceptada");
     return aceptadas;
   }
 
+  //Metodo para realizar filtrar la lista principal a solo rechazadas
   filtrarRechazadas(solicitudes: Solicitud[]): Solicitud[] {
     const rechazadas = solicitudes.filter(solicitud => solicitud.estatus === "Rechazada");
     return rechazadas;
   }
 
+  //Metodo para realizar filtrar la lista principal a solo pendientes
   filtrarPendientes(solicitudes: Solicitud[]): Solicitud[] {
     const pendientes = solicitudes.filter(solicitud => solicitud.estatus === "Pendiente");
     return pendientes;

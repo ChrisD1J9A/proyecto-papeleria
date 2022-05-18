@@ -139,9 +139,16 @@
   </div>
   <br>
 
-  <mat-form-field appearance="fill" class="gastoInput">
+  <mat-form-field appearance="fill" class="gastoInput" *ngIf="banderaEditar==true">
     <mat-label>Gasto total </mat-label>
-    <input matInput  [(ngModel)]="compra.gasto_total" type="text" name="gasto_total" readonly="{{banderaEditar==false}}" (blur)="formatoDePesos($event)" onkeypress="return event.charCode >= 46 && event.charCode <= 57" maxlength="8"  required>
+    <input matInput  [(ngModel)]="compra.gasto_total" type="text" name="gasto_total"  readonly="{{banderaEditar==false}}" (blur)="formatoDePesos($event)" onkeypress="return event.charCode >= 46 && event.charCode <= 57" maxlength="8"  required>
+    <span matSuffix >pesos</span>
+    <mat-error *ngIf="numericos.invalid">{{getErrorMessage2()}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="gastoInput" *ngIf="banderaEditar==false">
+    <mat-label>Gasto total </mat-label>
+    <input matInput  value="{{precioFormateado}}" type="text" name="gasto_total" readonly>
     <span matSuffix >pesos</span>
     <mat-error *ngIf="numericos.invalid">{{getErrorMessage2()}}</mat-error>
   </mat-form-field>

@@ -26,21 +26,21 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./solicitud-adq-view.component.scss']
 })
 export class SolicitudAdqViewComponent implements OnInit {
-  solicitud = new Solicitud();
-  detalle_solicitud = new Detalle_solicitud();
-  detalles_solicitud = new Array();
-  detalles_solicitud_pfdc = new Array();
-  detalle_solicitud_PFDC = new Detalle_solicitud_PFDC();
-  detalle_compra_pfdc = new Detalle_compra_PFDC();
-  compra = new Compra();
-  detalle_compra = new Detalle_compra();
-  displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];
-  dataSource = new MatTableDataSource();
-  flag: boolean;
-  observacion_aprobacion_rechazo = new FormControl('', [Validators.required]);
+  solicitud = new Solicitud();//Objeto solicitud
+  detalle_solicitud = new Detalle_solicitud();//Objeto detalle solicitud
+  detalles_solicitud = new Array();//Arreglo de detalles de solicitud
+  detalles_solicitud_pfdc = new Array();//Arreglo de detalles de solicitud con productos fuera del catalogo
+  detalle_solicitud_PFDC = new Detalle_solicitud_PFDC(); //detalle de solicitud con productos fuera del catalogo
+  detalle_compra_pfdc = new Detalle_compra_PFDC(); //detalle de compra con productos fuera del catalogo
+  compra = new Compra();//Objeto compra
+  detalle_compra = new Detalle_compra();//Objeto de Detalle_compra
+  displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];//Encabezados para las columnas de los detalles de solicitud
+  dataSource = new MatTableDataSource();//Tabla de los detalles de solicitud
+  flag: boolean;//bandera para activar o desacticr componentes
+  observacion_aprobacion_rechazo = new FormControl('', [Validators.required]);//Form control para validar los comentrios del formulario
   cant_autorizada = new FormControl(); //FomrControl para evaluar la cantidad autorizada de productos del catalogo
   cant_autorizada2 = new FormControl();//FomrControl para evaluar la cantidad autorizada de productos fuera del catalogo
-  nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
+  nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);//Se obtiene el nombre del usuario logeado
   dataSource2 = new MatTableDataSource();
   maxStock: number; //configuracion de maximo de stock
   minStock: number; //configuracion del minimo de stock
@@ -61,97 +61,101 @@ export class SolicitudAdqViewComponent implements OnInit {
               private mailService: MailService) { }
 
   ngOnInit(): void {
-    this.cargarSolicitud();
+    this.cargarSolicitud();//Metodo mediante el cual se carga la solicitud
   }
 
+  //Metodo que surge para indicar al usuario de que deje un comentario para aceptar o rechazar una solicitud
   getErrorMessage() {
     return this.observacion_aprobacion_rechazo.hasError('required') ? 'Deje algún comentario' : '';
   }
 
+  //Metodo para mostrar el mensaje de cantidad no válida
   getErrorMessage2(){
       return 'Cantidad ingresada no válida';
   }
 
+  //Metodo donde se carga la solicitud
   cargarSolicitud(): void {
     this.activatedRoute.params.subscribe(params => {
-      let id = params['id']
+      let id = params['id']//Se guarda el id_solicitud que viene en la ruta de navegacion
       if (id) {
         this.solicitudesService.getSolicitud(id).subscribe(
-          (solicitud) => {
-            this.solicitud = solicitud;
+          (solicitud) => {//SE BUSCA LA Solicitud mediante el id
+            this.solicitud = solicitud;//se guarda la solicitud
             this.obtenerMaximosMinimosDeLaSucursal(solicitud);//se cargan las configuraciones de la sucursal donde se emite la solicitud
-            if (this.solicitud.estatus === "Pendiente") {
-              this.flag = false;
+            if (this.solicitud.estatus === "Pendiente") {//Si el estus es pendiente
+              this.flag = false;//Entonces se muestran componentes para una solicitud pendiente
             } else {
-              this.flag = true;
+              this.flag = true;//Entonces se muestran componentes para una solicitud que no es pendiente(Rechazada o aceptada)
             }
           });
         this.detalleSolicitudService.getDetallesSolicitud(id).subscribe(
-          deta_solicitudes => {
-            this.dataSource = new MatTableDataSource(deta_solicitudes);
-            this.detalles_solicitud = deta_solicitudes;
+          deta_solicitudes => {//Se obtienen los detalles de la solicitud mediate el id
+            this.dataSource = new MatTableDataSource(deta_solicitudes);//Se cargan los datos a la tabla
+            this.detalles_solicitud = deta_solicitudes; //Se guardan los datos en su lista
           });
         this.detalleSolicitudPFDCService.getDetallesSolicitud_PFDC(id).subscribe(
-            detalles_solicitudesPFDC => {
-              this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC);
-              this.detalles_solicitud_pfdc = detalles_solicitudesPFDC;
+            detalles_solicitudesPFDC => {//Se obtienen los detalles de la solicitud con productos fuera del catalogo mediate el id
+              this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC); //Se cargan los datos a su tabla
+              this.detalles_solicitud_pfdc = detalles_solicitudesPFDC;//Se guardan los datos en su lista
         });
       }
     });
   }
 
+  //Para el caso en el que el estatus de que la solicitud sea pendiente, y se regitre acepte la solicitud en este método se validan los input donde se especifica cuanta cantidad de X producto se autoriza
   validarDetalles(): boolean {
-    let bandera = false;
-    for (this.detalle_solicitud of this.detalles_solicitud) {
-      if (this.detalle_solicitud.cant_autorizada == null || this.detalle_solicitud.cant_autorizada < 1 || this.detalle_solicitud.cant_autorizada > this.maxStock) {
+    let bandera = false;//Bandera que devolera este metodo, de ser true quiere decir que hay error en el fomulario, de lo contrario no hay error
+    for (this.detalle_solicitud of this.detalles_solicitud) {//Se recorren inicialmente los productos dentro del catalogo
+      if (this.detalle_solicitud.cant_autorizada == null || this.detalle_solicitud.cant_autorizada < 1 || this.detalle_solicitud.cant_autorizada > this.maxStock) {//La cantidad autorizada no puede ser nula, no puede un numero menor que 1 ni mayor que el maximo permitido en stock
         bandera = true;
       }
     }
 
-    for (this.detalle_solicitud_PFDC of this.detalles_solicitud_pfdc) {
-      if (this.detalle_solicitud_PFDC.cant_autorizada == null || this.detalle_solicitud_PFDC.cant_autorizada < 1 || this.detalle_solicitud_PFDC.cant_autorizada > this.maxStock) {
+    for (this.detalle_solicitud_PFDC of this.detalles_solicitud_pfdc) {//Se recorren los productos fuera del catalogo
+      if (this.detalle_solicitud_PFDC.cant_autorizada == null || this.detalle_solicitud_PFDC.cant_autorizada < 1 || this.detalle_solicitud_PFDC.cant_autorizada > this.maxStock) {//La cantidad autorizada no puede ser nula, no puede un numero menor que 1 ni mayor que el maximo permitido en stock
         bandera = true;
       }
     }
     return bandera;
   }
 
+  //Metodo para guardar/Actualizar la solicitud
   guardarSolicitud(): void {
-    console.log(this.validarDetalles());
-    if (this.validarDetalles()) {
+    if (this.validarDetalles()) {//Se valida los input donde se ingresó la cantidad autorizada
       swal.fire('Para aceptar la solicitud debe de ingresar un valor diferente de cero o válido en la cantidad que autoriza', '', 'info');
     } else {
-      if (this.solicitud.observacion_aprobacion_rechazo) {
+      if (this.solicitud.observacion_aprobacion_rechazo) {//Se evalua que el campo requiro sea diferente de nulo
         swal.fire({
-          title: '¿Está seguro de aprobar esta solicitud? ',
+          title: '¿Está seguro de aprobar esta solicitud? ',//Se pide verificacion
           showDenyButton: true,
           showCancelButton: false,
           confirmButtonText: 'Si',
           denyButtonText: `No, seguir viendo`,
         }).then((result) => {
           if (result.isConfirmed) {
-            this.detalles_solicitud = this.dataSource.data;
-            this.solicitud.estatus = "Aceptada";
-            this.solicitud.fecha_aprobacion = new Date();
-            this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);;
+            this.detalles_solicitud = this.dataSource.data;//Se obtienen los datos actualizados
+            this.solicitud.estatus = "Aceptada";//El estatus cambia
+            this.solicitud.fecha_aprobacion = new Date();//Se actualiza la fecha de fecha_aprobacion
+            this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);;//Se obtiene el nombre del usuario logeado
             this.solicitudesService.update(this.solicitud).subscribe(
-              solicitud => {
-                if(this.solicitud.pfdc===true){
-                  this.detalles_solicitud_pfdc = this.dataSource2.data;
+              solicitud => {//SE ACTUALIZA LA Solicitud
+                if(this.solicitud.pfdc===true){//Si hubieron productos fuera del catalogo
+                  this.detalles_solicitud_pfdc = this.dataSource2.data;//Se obtienen los datos y se actualizan en la base de datos
                   this.detalleSolicitudPFDCService.update(this.detalles_solicitud_pfdc, solicitud.id_solicitud).subscribe(detas_pfdc =>{});
                 }
 
                 this.detalleSolicitudService.update(this.detalles_solicitud, solicitud.id_solicitud).subscribe(
-                  detalles => {
+                  detalles => {//Se obtienen los datos y se actualizan en la base de datos
                     if (detalles) {
                       swal.fire(
                         'Mensaje',
                         `La solicitud:  ${solicitud.id_solicitud} fue aceptada con éxito`,
                         'success'
                       );
-                      this.crearCompra();
-                      this.enviarCorreo(solicitud);
-                      this.router.navigate(['/layout/solicitudes-adquisiciones']);
+                      this.crearCompra();//Se crea una compra para la solicitud actual
+                      this.enviarCorreo(solicitud);//Se manda un correo notificando el estatus de la sol}
+                      this.router.navigate(['/layout/solicitudes-adquisiciones']);//Se redirecciona  a las solicitudes
                     } else {
                       swal.fire(
                         'Mensaje',
@@ -172,7 +176,6 @@ export class SolicitudAdqViewComponent implements OnInit {
   }
 
   rechazarSolicitud(): void {
-
     if (this.solicitud.observacion_aprobacion_rechazo) {
       this.solicitud.estatus = "Rechazada";
       this.solicitud.fecha_rechazo = new Date();

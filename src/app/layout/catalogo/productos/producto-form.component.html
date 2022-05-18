@@ -18,7 +18,7 @@
 
     <mat-form-field appearance="fill" floatLabel="always">
       <mat-label>IVA</mat-label>
-      <input matInput name="precio_iva" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_iva" (input)="precio_input2($event.target.value)" >
+      <input matInput name="precio_iva" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_iva" (input)="precio_input2()" >
       <span matPrefix>$&nbsp;</span>
       <span matSuffix>pesos</span>
     </mat-form-field>

@@ -1,4 +1,5 @@
 import { Component, OnInit} from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { Solicitud } from '../../../administracion/modelos/papeleria/solicitud'
@@ -18,94 +19,87 @@ import {MatDialog} from '@angular/material/dialog';
   styleUrls: ['./compra-adq-view.component.scss']
 })
 export class CompraAdqViewComponent implements OnInit {
-  compra = new Compra();
-  proveedor = new Proveedor();
-  compras: Compra[];
-  detalles_compra: Detalle_compra[];
-  detalle_compra_PFDC = new Detalle_compra_PFDC();
-  detalles_compra_PFDC = new Array();
-  dataSource = new MatTableDataSource();
-  dataSource2 = new MatTableDataSource();
-  displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];
-  banderaEditar: Boolean;
-  nombreProveedor: String;
-  solicitud = new Solicitud();
-  bandera : Boolean;
-  enlaceTicket = "http://localhost:8080/api/compras/show/archivo/";
-  pfdcFlag: boolean;
+  compra = new Compra();//Objeto compra
+  proveedor = new Proveedor();//Objeto proveedor
+  compras: Compra[];//Arreglo de compras
+  detalles_compra: Detalle_compra[];//Arreglo de detalles de compra
+  detalle_compra_PFDC = new Detalle_compra_PFDC();//Objeto de detales de compra con productos fuera del catalogo
+  detalles_compra_PFDC = new Array();//Arreglo de detales de compra con productos fuera del catalogo
+  dataSource = new MatTableDataSource();//Tabla para los detalles de la compra
+  dataSource2 = new MatTableDataSource();//Tabla para los detalles de la compra con productos fuera del catalogo
+  displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];//Encabezados para las columnas de los detalles de compra
+  banderaEditar: Boolean;//Bandera que determina si se muestran determinados datos en la vista
+  nombreProveedor: String;//Variable para almacenar el nombre del proveedor
+  solicitud = new Solicitud();//Objeto solicitud
+  enlaceTicket = "http://localhost:8080/api/compras/show/archivo/";//Enlace al back del tick, solo hace falta indicar el nombre del ticket
+  pfdcFlag: boolean;//Bandera que se activa si hay productosfuera del catalogo en la compra
+  precioFormateado: string; //variable que se usa para dar formato de pesos en el input gasto total
 
   constructor(private compraService: ComprasService,
     private detalleCompraService: DetalleCompraService,
     private activatedRoute: ActivatedRoute,
     private detalleCompraPFDCService: DetalleCompraPFDCService,
+    private currencyPipe: CurrencyPipe,
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.cargarCompra();
+    this.cargarCompra();//Metodo para cargar la compra desde la base de datos
   }
 
+  //Metodo para cargar la compra desde la base de datos
   cargarCompra(): void {
-    this.activatedRoute.params.subscribe(params => {
-      let id = params['id']
-      if (id) {
-        this.compraService.getCompra(id).subscribe(
+    this.activatedRoute.params.subscribe(params => {//Se obtiene el id_compra de la ruta del navegador
+      let id = params['id']//Se guarda el mencionado id
+      if (id) {//Se valida que exista
+        this.compraService.getCompra(id).subscribe(//Se obtiene la compra mediante su id
           (compra) => {
-            this.compra = compra;
-            this.proveedor = this.compra.proveedor;
-            console.log(this.enlaceTicket = this.enlaceTicket + compra.ticket);
-            if (this.proveedor) {
+            this.compra = compra;//Se guarda la compra en el objeto compra
+            this.precioFormateado = this.compra.gasto_total.toString();//El gasto total que se registra lo pasamos a un string para darle formato de pesos
+            this.precioFormateado = this.currencyPipe.transform(this.precioFormateado, '$');//Se le da formato de pesos
+            this.proveedor = this.compra.proveedor;// Se guarda el objeto proveedor en su respectivo objeto
+            if (this.proveedor) {//Para evitar problemas internos se evalua la existencia del proveedor
               this.nombreProveedor = this.proveedor.nombre;
             } else {
               this.nombreProveedor = "";
             }
-            console.log(this.proveedor);
-            console.log(compra);
-            if (compra.estatus == 'Completada') {
+            if (compra.estatus == 'Completada') {//Dependiendo del estatus la compra se mostrará cierta informacion
               this.banderaEditar = false;
             } else {
               this.banderaEditar = true;
             }
-            this.solicitud = compra.solicitud;
-            if (compra.gasto_total % 1 == 0) {
-                this.bandera =  true;
-                console.log(this.bandera);
-            } else {
-                this.bandera = false;
-                console.log(this.bandera);
-            }
+            this.solicitud = compra.solicitud;//Se guarda o aisla el objeto soliciutd
 
-            if(compra.solicitud.pfdc){
+            if(compra.solicitud.pfdc){//Se evalua si existen productos fuera del catalogo
               this.detalleCompraPFDCService.getDetallesCompra_PFDC(compra.id_compra).subscribe(
-                detalles_ComprasPFDC => {
-                  console.log(detalles_ComprasPFDC);
-                  this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);
-                  this.pfdcFlag = true;
+                detalles_ComprasPFDC => {//De existeir se buscan estos productos fuera del catalogo mediante el id_compra
+                  this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);//Se cargan los datos obtenidos a la base de datos
+                  this.pfdcFlag = true;//Se activa esta bandera para mostrar los productos fuera del catalogo en su propia tabla
               });
             }else{
-              this.pfdcFlag = false;
+              this.pfdcFlag = false;//De no haber productos fuera del catalogo simplemente no se muestra su tabla
             }
           });
         this.detalleCompraService.getDetallesCompra(id).subscribe(
-          deta_compras => {
-            this.dataSource = new MatTableDataSource(deta_compras);
-            console.log(id);
+          deta_compras => {//Se buscan los detalles de la compra, partiendo de la id_compra
+            this.dataSource = new MatTableDataSource(deta_compras);//Se guardan los resultados obtenidos en la tabla
           });
       }
-    })
+    });
   }
 
+  //Metodo para descargar el tickt
   descargarTicket() {
-    var nombreArchivo = this.compra.ticket;
-    console.log(nombreArchivo);
-    window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);
+    var nombreArchivo = this.compra.ticket; //Se guarda el nombre del ticket de la compra
+    window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);//Se descarga el archivo accediendo a la ruta + el nombre del ticket
   }
 
+  //Metodo para visualizar el ticket en un Dialog
   openDialog() {
-    var ubicacionArchivo = "http://localhost:8080/api/compras/show/archivo/" + this.compra.ticket;
-    this.dialog.open(TicketViewComponent, {
+    var ubicacionArchivo = "http://localhost:8080/api/compras/show/archivo/" + this.compra.ticket; //Se establece la ruta para acceder al archivo en cuestion
+    this.dialog.open(TicketViewComponent, {//Se abre nuevo dialogo
       width: "1000px",
       data: {
-        ticket: ubicacionArchivo,
+        ticket: ubicacionArchivo,//Se carga la informacion del ticket
       },
     });
   }

@@ -57,89 +57,90 @@ export class ProductoFormComponent implements OnInit {
     }
   }
 
-  precio_input2(n: any) {
-    this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva);
-    this.producto.precio_total = parseFloat((Math.round(this.producto.precio_total * 100) / 100).toFixed(2));
+  //Metodo que entra en funcion cuando el usuario edita el input del IVA
+  precio_input2() {//Recibe un numero
+    this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva); //Suma el precio del producto mas el iva que el usuario edito
+    this.producto.precio_total = parseFloat((Math.round(this.producto.precio_total * 100) / 100).toFixed(2)); //Esta parte es para darle formato de pesos y redondear a dos decimales
   }
 
+  //Método mediante el cual se carga un producto proveniente de la base de datos y poder editarlo en el formulario
   cargarProducto(): void {
-    this.activatedRoute.params.subscribe(params => {
-      let id: number = params['id']
-      if (id) {
-        if (isNaN(id) == false) {
-          this.productosService.getProducto(id).subscribe(
-            (producto) => this.producto = producto
+    this.activatedRoute.params.subscribe(params => { //Cuando se edita un producto este genera una ruta, al final de esta ruta viene el id_producto
+      let id: number = params['id']//Guardamos en una variable dicha id_producto
+      if (id) {//Corroboramos que exista
+        if (isNaN(id) == false) { //Corroboramos que id sea un numero
+          this.productosService.getProducto(id).subscribe(//Consultamos en la base de datos mediante la id obtenida
+            (producto) => this.producto = producto//Se guarda en la variable producto y queda cargado al formulario
           )
         };
       }
     })
   }
 
+  //Metodo mediante el cual se carga un producto de la lista de productos fuera del catalogo
   cargarProductoFDC(): void {
-    this.activatedRoute.params.subscribe(params => {
-      let nombre: string = params['nombre']
-      if (nombre) {
-        this.producto.descripcion = nombre;
+    this.activatedRoute.params.subscribe(params => { //El nombre del producto viene cargado al final de la ruta
+      let nombre: string = params['nombre']//Guardamos el nombre del producto
+      if (nombre) {//Se corrobora que exista el nombre
+        this.producto.descripcion = nombre;//Se almacena en la descripcion del producto y el nombre queda cargado en el formulario
       }
     });
   }
 
+  //Metodo que entra en funcion cuando el usario guarda un producto nuevo
   public create(): void {
-    if (this.producto.descripcion) {
+    if (this.producto.descripcion) {//El campo obligatorio se corrobora aqui
       swal.fire({
-        title: '¿Desea guardar este nuevo elemento? ',
+        title: '¿Desea guardar este nuevo elemento? ',//Se pregunta al usuario antes de proceder
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: 'Si',
         denyButtonText: `No guardar`,
       }).then((result) => {
         if (result.isConfirmed) {
-          this.producto.estatus = 1;
-          //this.producto.precio_subtotal =  Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(this.producto.precio_subtotal;
-          this.productosService.create(this.producto).subscribe(
+          this.producto.estatus = 1; //Estatus por default 1(Activo)
+          this.productosService.create(this.producto).subscribe(//Se crea y almacena en la base de datos
             response => {
-              this.router.navigate(['/layout/productos'])
-              this.ngOnInit();
+              this.router.navigate(['/layout/productos']) //Se redirige al apartado donde se encuentran todos los productos
+              this.ngOnInit();//Se deja este componente en su estado inicial
             })
-          swal.fire('Guardado', `El producto ${this.producto.descripcion} fue guardado con éxito!`, 'success')
+          swal.fire('Guardado', `El producto ${this.producto.descripcion} fue guardado con éxito!`, 'success')//Se muestra un mensaje exitoso
         } else if (result.isDenied) {
-          swal.fire('El elemento no fue guardado', '', 'info')
+          swal.fire('El elemento no fue guardado', '', 'info'); //Si el usuario no decide guardar el producto se envia un mensaje confirmando su desicion
         }
       })
-      //this.ngOnInit();
     } else {
-      swal.fire({
+      swal.fire({//En caso de que el dato requerido esté vacío
         icon: 'warning',
         title: 'Oops...',
         text: 'Ingrese algún dato para continuar',
-      })
+      });
     }
   }
 
+  //Metodo utilizado para actualizar un producto
   public update(): void {
-    if (this.producto.descripcion) {
+    if (this.producto.descripcion) { //Se corrobora que el dato obligatorio no este vacío
       swal.fire({
-        title: '¿Desea actualizar este elemento?',
+        title: '¿Desea actualizar este elemento?', //Se pregunta al usuario antes de continuar
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: 'Si',
         denyButtonText: `No guardar`,
       }).then((result) => {
         if (result.isConfirmed) {
-          //  this.unidad.estatus = 1;
           this.productosService.update(this.producto)
-            .subscribe(producto => {
-              this.router.navigate(['/layout/productos'])
-              this.ngOnInit();
-            })
-          swal.fire('Actualizado', `El Producto ${this.producto.descripcion} actualizado con éxito!`, 'success')
+            .subscribe(producto => { //Se actiañoza en producto en la base de datos
+              this.router.navigate(['/layout/productos']); //Se redirige al apartado donde se listan los productos
+              this.ngOnInit();//El componente se deja en su estado inicial
+            });
+          swal.fire('Actualizado', `El Producto ${this.producto.descripcion} actualizado con éxito!`, 'success')//Se muestra al usuario un mensaje exitoso
         } else if (result.isDenied) {
-          swal.fire('El elemento no fue actualizado', '', 'info')
+          swal.fire('El elemento no fue actualizado', '', 'info'); //Si el usuario decideno actualizar
         }
-      })
-      //this.ngOnInit();
+      });
     } else {
-      swal.fire({
+      swal.fire({//Mensaje de alerta para que el usuario se de cuena que no ingresó el dato obligatorio
         icon: 'warning',
         title: 'Oops...',
         text: 'Ingrese algún dato para continuar',
@@ -147,8 +148,9 @@ export class ProductoFormComponent implements OnInit {
     }
   }
 
+  //Metodo que funciona y entra en funcionamiento cuando el usuario decide no guardar o actualizar algun producto
   public cancel(): void {
-    this.router.navigate(['/layout/productos'])
-    this.ngOnInit();
+    this.router.navigate(['/layout/productos']);//Se redirige a donde se encuentra el listado de productos
+    this.ngOnInit();//Se deja el componente en su estado inicial
   }
 }

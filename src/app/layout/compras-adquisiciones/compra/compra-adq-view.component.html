@@ -120,12 +120,10 @@
   </div>
   <br>
   <br>
-  <mat-form-field appearance="fill" class="largeInput">
+  <mat-form-field appearance="fill" class="gastoInput" >
     <mat-label>Gasto total </mat-label>
-    <span matPrefix>$&nbsp;</span>
-    <input matInput [(ngModel)]="compra.gasto_total" type="number" name="gasto_total" readonly>
-    <span matSuffix *ngIf="bandera==false">pesos</span>
-    <span matSuffix *ngIf="bandera==true">.00 pesos</span>
+    <input matInput  value="{{precioFormateado}}" type="text" name="gasto_total" readonly>
+    <span matSuffix >pesos</span>
   </mat-form-field>
 
   <button type="button" mat-raised-button (click)="openDialog()" color="primary" *ngIf="banderaEditar==false">Ver Ticket <mat-icon>remove_red_eye</mat-icon></button>
