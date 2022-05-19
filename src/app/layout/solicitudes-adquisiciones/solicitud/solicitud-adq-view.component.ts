@@ -175,35 +175,34 @@ export class SolicitudAdqViewComponent implements OnInit {
     }
   }
 
+  //Método utilizado para rechazar una solicitud
   rechazarSolicitud(): void {
-    if (this.solicitud.observacion_aprobacion_rechazo) {
-      this.solicitud.estatus = "Rechazada";
-      this.solicitud.fecha_rechazo = new Date();
-      this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);;
-
+    if (this.solicitud.observacion_aprobacion_rechazo) {//El unico requisito que se requiere para rechazar una solicitud es que el usuario deje un comentario y aqui se evalua
+      this.solicitud.estatus = "Rechazada";//El estatus cambia a Rechazada
+      this.solicitud.fecha_rechazo = new Date();//Se establece la fecha del rechazp
+      this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);;//Se obtiene el nombre del usuario logeado para registrarlo como la persona quien rechaza la solicitud
       swal.fire({
-        title: '¿Está seguro de rechazar esta solicitud? ',
+        title: '¿Está seguro de rechazar esta solicitud? ',//Se consulta al usuario antes de continuar
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: 'Si',
         denyButtonText: `Seguir`,
       }).then((result) => {
         if (result.isConfirmed) {
-          this.solicitudesService.update(this.solicitud).subscribe(
+          this.solicitudesService.update(this.solicitud).subscribe(//Se realiza la actualizacion en la base de datos
             solicitud => {
-              console.log(solicitud);
               if (solicitud) {
                 swal.fire(
                   'Mensaje',
-                  `La solicitud:  ${solicitud.id_solicitud} fue rechazada con éxito`,
+                  `La solicitud:  ${solicitud.id_solicitud} fue rechazada con éxito`,//Se notifica al usuario de que el rechazo se efectuó exitosamente
                   'success'
                 );
-                this.enviarCorreo(solicitud)
-                this.router.navigate(['/layout/solicitudes-adquisiciones'])
+                this.enviarCorreo(solicitud);//Se envia un correo electronico notificando el estatus de la solicitud
+                this.router.navigate(['/layout/solicitudes-adquisiciones']);//Se redirecciona a la tabla donde se muestran todas las solicitudes
               } else {
                 swal.fire(
                   'Mensaje',
-                  `Error al rechazar la solicitud`,
+                  `Error al rechazar la solicitud`,//Error en caso de haberlo
                   'error'
                 );
               }
@@ -211,33 +210,32 @@ export class SolicitudAdqViewComponent implements OnInit {
         }
       })
     } else {
-      swal.fire('Deje un comentario para continuar', '', 'info')
+      swal.fire('Deje un comentario para continuar', '', 'info');//Mensaje de aviso
     }
   }
 
-
+  //Cuando se acepta una solicitud este metodo crea una Compra para que posteriormente el usuario que envió solicitud pueda registrar la compra respectiva
   crearCompra()
   {
-    var detallesoli = new Detalle_solicitud();
-    this.compra.solicitud = this.solicitud;
-    this.compra.estatus = 'En proceso';
-    this.compra.id_sucursal = this.solicitud.id_sucursal;
-    this.compra.nombre_sucursal = this.solicitud.nombre_sucursal;
+    var detallesoli = new Detalle_solicitud();//Objeto Detalle_solicitud
+    this.compra.solicitud = this.solicitud; //La nueva compra se le asocia la solicitud que se acepta
+    this.compra.estatus = 'En proceso';//La compra nueva por default se deja el estatus en proceso
+    this.compra.id_sucursal = this.solicitud.id_sucursal;//Se le asigna a la copra el id_de la sucursal al que le pertenece
+    this.compra.nombre_sucursal = this.solicitud.nombre_sucursal;//Tambien el nombre
     this.comprasService.create(this.compra).subscribe(
-      compra => {
-        console.log(compra);
-        for (detallesoli of this.detalles_solicitud){
-          this.detalle_compra.compra = compra;
-          this.detalle_compra.producto = detallesoli.producto;
-          this.detalle_compra.cant_existente = detallesoli.cant_existente;
-          this.detalle_compra.cant_solicitada = detallesoli.cant_solicitada;
-          this.detalle_compra.cant_autorizada = detallesoli.cant_autorizada;
+      compra => {//Se registra la compra en la base de datos
+        for (detallesoli of this.detalles_solicitud){//Al igual que la solicitud, la compra registra los productos asi como las cantidades de existente, solicitdada y autorizada y por ello en este ciclo se asignan los mismos datos que detalle solicitud
+          this.detalle_compra.compra = compra;//Se le asigna al detalle compra la compra correspondiente
+          this.detalle_compra.producto = detallesoli.producto;//Se le asigna producto
+          this.detalle_compra.cant_existente = detallesoli.cant_existente;//la cantidad existente
+          this.detalle_compra.cant_solicitada = detallesoli.cant_solicitada;//la cantidad solicitada
+          this.detalle_compra.cant_autorizada = detallesoli.cant_autorizada;//la cantidad cant_autorizada
           this.detalleCompraService.create(this.detalle_compra).subscribe(
-            detalles =>{
+            detalles =>{//Se crea cada detalle conforme se realiza el ciclo for
               console.log(detalles);
             });
         }
-        if(this.solicitud.pfdc===true){
+        if(this.solicitud.pfdc===true){//Si se realizo una solicitud con productos fuera del catalogo se registran los detalles correspondientes
           var detaSoliPFDC = new Detalle_solicitud_PFDC();
           for(detaSoliPFDC of this.detalles_solicitud_pfdc){
             this.detalle_compra_pfdc.compra = compra;

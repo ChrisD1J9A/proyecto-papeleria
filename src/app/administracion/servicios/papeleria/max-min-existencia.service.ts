@@ -12,6 +12,9 @@ export class MaxMinExistenciaService {
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
   constructor(private http: HttpClient) { }
 
+  /**
+   **@return Devuelve todas las configuraciones de la base de datos
+   **/
   getMaxMinDeExistenciaA(): Observable<MaxMinDeExistencia[]>
   {
     return this.http.get(this.urlEndPoint).pipe(
@@ -19,21 +22,33 @@ export class MaxMinExistenciaService {
     );
   }
 
+  /**
+   **@return Crea o almacena una nueva configuracion en la base de datos
+   **/
   public create(maxMin: MaxMinDeExistencia): Observable<MaxMinDeExistencia>
   {
       return this.http.post<MaxMinDeExistencia>(this.urlEndPoint, maxMin, {headers: this.httpHeaders})
   }
 
+  /**
+   **@return Se consulta la configuracion en la base de datos mediante su id
+   **/
   public getMaxMinDeExistencia(id): Observable<MaxMinDeExistencia>
   {
     return this.http.get<MaxMinDeExistencia>(`${this.urlEndPoint}/${id}`);
   }
 
+  /**
+   **@return Se busca la configuracion de X sucursal en la base de datos
+   **/
   public getMaxMinDeExistenciaBySucursal(sucursal: string): Observable<MaxMinDeExistencia>
   {
     return this.http.get<MaxMinDeExistencia>(`${this.urlEndPoint}S/${sucursal}`);
   }
 
+  /**
+   **@return Realiza un update de la configuracion en la base de datos
+   **/
   public update(maxMin: MaxMinDeExistencia): Observable<MaxMinDeExistencia>
   {
     return this.http.put<MaxMinDeExistencia>(`${this.urlEndPoint}/${maxMin.id_maxMinDeExistencia}`, maxMin, {headers: this.httpHeaders});

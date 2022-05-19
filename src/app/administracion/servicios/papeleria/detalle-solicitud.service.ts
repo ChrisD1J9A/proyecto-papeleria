@@ -12,20 +12,27 @@ export class DetalleSolicitudService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   **@return Se crean o almacenan detalles de solicitud de la base de datos mediante
+   **/
   public create(detalle_solicitud: Detalle_solicitud): Observable<Detalle_solicitud>
   {
       return this.http.post<Detalle_solicitud>(this.urlEndPoint, detalle_solicitud, {headers: this.httpHeaders})
   }
 
+  /**
+   **@return Se actualizan todos los detalles de solicitud de la base de datos mediante el id de la solicitud
+   **/
   public update(detalle_solicitud: Detalle_solicitud[], id_solicitud: number): Observable<Detalle_solicitud[]>
   {
     return this.http.put<Detalle_solicitud[]>(`${this.urlEndPoint}/${id_solicitud}`, detalle_solicitud, {headers: this.httpHeaders})
   }
 
+  /**
+   **@return Se buscan todos los detalles de solicitud de la base de datos mediante el id de la solicitud
+   **/
   public getDetallesSolicitud(id): Observable<Detalle_solicitud[]>
   {
     return this.http.get<Detalle_solicitud[]>(`${this.urlEndPoint}/${id}`);
   }
-
-
 }

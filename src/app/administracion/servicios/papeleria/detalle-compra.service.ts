@@ -12,16 +12,25 @@ export class DetalleCompraService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   **@return Se crean detalles de compra en la base de datos
+   **/
   public create(detalle_compra: Detalle_compra): Observable<Detalle_compra>
   {
       return this.http.post<Detalle_compra>(this.urlEndPoint, detalle_compra, {headers: this.httpHeaders})
   }
 
+  /**
+   **@return Se actualizan detalles de compra en la base de datos
+   **/
   public update(detalle_compra: Detalle_compra[], id_compra: number): Observable<Detalle_compra[]>
   {
     return this.http.put<Detalle_compra[]>(`${this.urlEndPoint}/${id_compra}`, detalle_compra, {headers: this.httpHeaders})
   }
 
+  /**
+   **@return Se obtienen los detalles de compra en la base de datos mediante el id_compra
+   **/
   public getDetallesCompra(id): Observable<Detalle_compra[]>
   {
     return this.http.get<Detalle_compra[]>(`${this.urlEndPoint}/${id}`);

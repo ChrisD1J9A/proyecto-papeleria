@@ -12,21 +12,33 @@ export class DetalleSolicitudPFDCService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   **@return Se crea detalles de solicitud con productos fuera del catalogo en la base de datos
+   **/
   public create(detalle_solicitud: Detalle_solicitud_PFDC): Observable<Detalle_solicitud_PFDC>
   {
       return this.http.post<Detalle_solicitud_PFDC>(this.urlEndPoint, detalle_solicitud, {headers: this.httpHeaders})
   }
 
+  /**
+   **@return Se actualiza detalles de solicitud con productos fuera del catalogo en la base de datos
+   **/
   public update(detalle_solicitud_PFDC: Detalle_solicitud_PFDC[], id_solicitud: number): Observable<Detalle_solicitud_PFDC[]>
   {
     return this.http.put<Detalle_solicitud_PFDC[]>(`${this.urlEndPoint}/${id_solicitud}`, detalle_solicitud_PFDC, {headers: this.httpHeaders})
   }
 
+  /**
+   **@return Se obtienen todos detalles de solicitud con productos fuera del catalogo mediante el id de la solicitud
+   **/
   public getDetallesSolicitud_PFDC(id): Observable<Detalle_solicitud_PFDC[]>
   {
     return this.http.get<Detalle_solicitud_PFDC[]>(`${this.urlEndPoint}/${id}`);
   }
 
+  /**
+   **@return Devuelve todos los detalles de solicitud con productos fuera del catalogo disponibles en la base de datos
+   **/
   public getDetallesSolicitud_PFDC_All(): Observable<Detalle_solicitud_PFDC[]>
   {
     return this.http.get<Detalle_solicitud_PFDC[]>(`${this.urlEndPoint}`);

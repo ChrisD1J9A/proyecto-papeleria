@@ -15,6 +15,9 @@ export class ProveedoresService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  /**
+   **@return Devuelve un arreglo de proveedores de la base de datos
+   **/
   getProveedores(): Observable<Proveedor[]>
   {
     return this.http.get(this.urlEndPoint).pipe(
@@ -22,6 +25,9 @@ export class ProveedoresService {
     );
   }
 
+  /**
+   **@return Crea o almacena un proveedor nuevo la base de datos
+   **/
   public create(proveedor: Proveedor): Observable<any>
   {
       return this.http.post<any>(this.urlEndPoint, proveedor, {headers: this.httpHeaders}).pipe(
@@ -32,6 +38,9 @@ export class ProveedoresService {
         }));
   }
 
+  /**
+   **@return Hace un update de un proveedor en la base de datos y devuelve el mismo actualizado
+   **/
   public update(proveedor: Proveedor): Observable<Proveedor>
   {
     return this.http.put<Proveedor>(`${this.urlEndPoint}/${proveedor.id_proveedor}`, proveedor, {headers: this.httpHeaders}).pipe(
@@ -42,6 +51,9 @@ export class ProveedoresService {
       }));
   }
 
+  /**
+   **@return Devuelve un proveedor mediante su id en la base de datos
+   **/
   public getProveedor(id): Observable<Proveedor>
   {
     return this.http.get<Proveedor>(`${this.urlEndPoint}/${id}`).pipe(

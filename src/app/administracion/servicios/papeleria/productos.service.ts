@@ -15,13 +15,19 @@ export class ProductosService {
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
   constructor(private http: HttpClient, private router: Router) { }
 
-  getProductos(): Observable<Producto[]>
+  /**
+   **@return Devuelve un arreglo de productos de la base de datos
+   **/
+  public getProductos(): Observable<Producto[]>
   {
     return this.http.get(this.urlEndPoint).pipe(
       map( response => response as Producto[])
     );
   }
 
+  /**
+   **@return Crea o almacena un producto en la base de datos
+   **/
   public create(producto: Producto): Observable<any>
   {
       return this.http.post<any>(this.urlEndPoint, producto, {headers: this.httpHeaders}).pipe(
@@ -32,6 +38,9 @@ export class ProductosService {
         }));
   }
 
+  /**
+   **@return Realiza el update un producto en la base de datos y devuelve el mismo ya actualizado
+   **/
   public update(producto: Producto): Observable<Producto>
   {
     return this.http.put<Producto>(`${this.urlEndPoint}/${producto.id_producto}`, producto, {headers: this.httpHeaders}).pipe(
@@ -42,6 +51,9 @@ export class ProductosService {
       }));
   }
 
+  /**
+   **@return Busca un producto en la base de datos mediante su id
+   **/
   public getProducto(id): Observable<Producto>
   {
     return this.http.get<Producto>(`${this.urlEndPoint}/${id}`).pipe(
