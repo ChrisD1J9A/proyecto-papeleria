@@ -8,6 +8,4 @@ export class Detalle_compra{
   cant_solicitada: number;
   cant_autorizada: number;
   cant_comprada: number;
-  precio_unitario: number;
-  precio_total: number;
 }
