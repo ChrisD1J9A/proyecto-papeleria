@@ -35,6 +35,8 @@ export class InventariosAdquisicionesComponent implements OnInit {
               private detalleInvenarioService: DetalleInventarioService,
               private maxMinStockService: MaxMinStockService) { }
 
+  //Se obtienen las sucursales para poder mostrarlos en un select
+  //Y el usuario seleccione el inventario de una sucursal
   ngOnInit(): void {
     this.sucursalService.getSucursales().subscribe(val => {
       this.sucursales = val;
@@ -59,8 +61,10 @@ export class InventariosAdquisicionesComponent implements OnInit {
         inventario => {//Obtenemos el inventario mediante el id de la sucursal
           this.inventario = inventario;//almacenamos el inventario en el objeto
           this.nombreSucursalInventarioActual = this.sucursal.nombreSucursal;//Guardamos el nombre
-          this.obtenerMaximosMinimosDeLaSucursal(inventario);//Se cargan los maximos y minimos de la sucursal del seleccionado inventario
-          if (inventario == null) {//De ser null el inventario quiere decir que no hay inventario para esa sucursal en la base de datos
+          //Se cargan los maximos y minimos de la sucursal del seleccionado inventario
+          this.obtenerMaximosMinimosDeLaSucursal(inventario);
+          //De ser null el inventario quiere decir que no hay inventario para esa sucursal en la base de datos
+          if (inventario == null) {
             this.BanderaMostrar = false; //No muestra el inventario particular
             this.mostrarTodos = false;//No muestra la tabla general de todos los inventarios
             this.sucursal = new Sucursal();//Se limpia la sucursal seleccionada
@@ -72,11 +76,14 @@ export class InventariosAdquisicionesComponent implements OnInit {
           }else{
             this.BanderaMostrar = true;//Muestra el inventario de la sucursal
             this.mostrarTodos = false;
+            //Se cargan los detalles de ese inventario, se hizo la busqueda en la base de datos mediante el id_inventario
             this.detalleInvenarioService.getDetallesInventario(this.inventario.id_inventario).subscribe(
-              detas => {//Se cargan los detalles de ese inventario, se hizo la busqueda en la base de datos mediante el id_inventario
+              detas => {
                 this.dataSource = new MatTableDataSource(detas);//Se carga a la tabla
-                this.inventarioBajo = detas.filter(invent => invent.cant_existente <= this.minStock);//Se hace un filtro para determinar stock bajo
-                this.dataSource2 = new MatTableDataSource(this.inventarioBajo);//Se carga el stock bajo en su propia tabla
+                //Se hace un filtro para determinar stock bajo
+                this.inventarioBajo = detas.filter(invent => invent.cant_existente <= this.minStock);
+                //Se carga el stock bajo en su propia tabla
+                this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
                 swal.fire({
                   icon: 'success',
                   title: '¡Hecho!',
@@ -98,14 +105,19 @@ export class InventariosAdquisicionesComponent implements OnInit {
   cargarTodosInventarios()
   {
     this.limpiar(); //Limpia las tablas antes de almacenar nueva informacion
-    this.detalleInvenarioService.getTodosInventarios().subscribe( //Se hace una consulta en la bd de todos los inventarios
+    //Se hace una consulta en la bd de todos los inventarios
+    this.detalleInvenarioService.getTodosInventarios().subscribe(
       todos => {
-        console.log(todos);
-        this.BanderaMostrar = false; //La bandera para mostrar un inventario individual se desactiva
-        this.mostrarTodos = true;//Bandera de mostrar todos los inventarios se activa
-        this.dataSource = new MatTableDataSource(todos);//Se cargan los inventarios a la tabla
-        this.inventarioBajo = todos.filter(invent => invent[3] <= 5);//Se hace un filtro para conocer los inventarios con stock bajo
-        this.dataSource2 = new MatTableDataSource(this.inventarioBajo); //Se cargan los datos filtrados anteriormente
+        //La bandera para mostrar un inventario individual se desactiva
+        this.BanderaMostrar = false;
+        //Bandera de mostrar todos los inventarios se activa
+        this.mostrarTodos = true;
+        //Se cargan los inventarios a la tabla
+        this.dataSource = new MatTableDataSource(todos);
+        //Se hace un filtro para conocer los inventarios con stock bajo
+        this.inventarioBajo = todos.filter(invent => invent[3] <= 5);
+        //Se cargan los datos filtrados anteriormente
+        this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
         swal.fire({
           icon: 'success',
           title: '¡Hecho!',

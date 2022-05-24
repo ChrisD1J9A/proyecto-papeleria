@@ -44,17 +44,21 @@ export class InventarioComponent implements OnInit {
 
   //Metodo mediante el cual se carga el inventario de la base de datos
   cargarInventario() {
-    var idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);//Se obtiene la id de la sucursal desde donde se inicio sesion
+    //Se obtiene la id de la sucursal desde donde se inicio sesion
+    var idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);
     this.inventarioService.getInventarioBySucursal(idSucursal).subscribe(
       inventario => {//Se busca un inventario acorde a su id en la base de datos
         this.inventario = inventario;//Se guarda en el objeto inventario
-        this.obtenerMaximosMinimosDeLaSucursal(inventario);//Se obtienen los maximos y menimos de la sucursal de ese inventario
+        //Se obtienen los maximos y menimos de la sucursal de ese inventario
+        this.obtenerMaximosMinimosDeLaSucursal(inventario);
         if (this.inventario) {//Si existe inventario para la actual sucursal
           this.detalleInvenarioService.getDetallesInventario(inventario.id_inventario).subscribe(
             detas => {//Se buscan los detalles del inventario de acuerdo al id_inventario
               this.dataSource = new MatTableDataSource(detas);//Se carga a la tabla
-              this.inventarioBajo = detas.filter(invent => invent.cant_existente <= this.minStock);//Se hace un filtro para mostrar productos con stock bajo
-              this.dataSource2 = new MatTableDataSource(this.inventarioBajo);//Se carga a la tabla el inventario bajo
+              //Se hace un filtro para mostrar productos con stock bajo
+              this.inventarioBajo = detas.filter(invent => invent.cant_existente <= this.minStock);
+              //Se carga a la tabla el inventario bajo
+              this.dataSource2 = new MatTableDataSource(this.inventarioBajo);
               //console.log(this.inventarioBajo);
             });
         }

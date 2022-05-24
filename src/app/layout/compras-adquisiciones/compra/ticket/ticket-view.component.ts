@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 export interface DialogData {
   ticket: string;
@@ -14,7 +14,7 @@ export class TicketViewComponent implements OnInit {
   esPdf: boolean;
 
   constructor(public dialogRef: MatDialogRef<TicketViewComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData
+              @Inject(MAT_DIALOG_DATA) public data: DialogData//Se obtiene la información del ticket
             ) { this.tipoArchivo();}
 
   ngOnInit(): void {

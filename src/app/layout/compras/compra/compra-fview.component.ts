@@ -78,7 +78,8 @@ export class CompraFViewComponent implements OnInit {
       proveedores => {
         this.proveedores = proveedores.filter(p => p.estatus == 1);
       });
-    this.obtenerMaximosMinimosDeLaSucursal();//Obtener las configuraciones de maximos y minimos de la sucursal al que le pertenece la compra
+    //Obtener las configuraciones de maximos y minimos de la sucursal al que le pertenece la compra
+    this.obtenerMaximosMinimosDeLaSucursal();
   }
 
   //Metodo que devuelve mensaje para validar si la fecha (Dato obligatorio) fue seleccionada
@@ -93,63 +94,66 @@ export class CompraFViewComponent implements OnInit {
 
   //En este método se da formato de  pesos al input que registra precios, en este caso del gasto gasto_total
   formatoDePesos(element) {
-    if (isNaN(this.compra.gasto_total) || this.compra.gasto_total== 0.00) {//Primero evaluamos que el usuario ingreso un numero real o si ingreso un numero diferente de 0.0
-      swal.fire('No es una cantidad válida', 'Ingrese una cantidad válida', 'error');//Si no es un numero o si el numero es un 0.0 se lanza el mensaje de error
-      this.compra.gasto_total = 0.0;//En caso de haber los mencionados errores se deja en el input el valor de 0.0 para que el usuario vuelva a registrar correctamene
+    //Primero evaluamos que el usuario ingreso un numero real o si ingreso un numero diferente de 0.0
+    if (isNaN(this.compra.gasto_total) || this.compra.gasto_total== 0.00) {
+      //Si no es un numero o si el numero es un 0.0 se lanza el mensaje de error
+      swal.fire('No es una cantidad válida', 'Ingrese una cantidad válida', 'error');
+      //En caso de haber los mencionados errores se deja en el input el valor de 0.0 para que el usuario vuelva a registrar correctamene
+      this.compra.gasto_total = 0.0;
     } else {
-      this.precioFormateado = this.compra.gasto_total.toString();//El gasto total que se registra lo pasamos a un string para darle formato de pesos
-      this.precioFormateado = this.currencyPipe.transform(this.precioFormateado, '$');//Con la ayuda de CurrencyPipe se le da el formato de pesos
-      element.target.value = this.precioFormateado; //El formato anteriormente establecido se pasa al input para que visualmente se vea con dicho formato
+      //El gasto total que se registra lo pasamos a un string para darle formato de pesos
+      this.precioFormateado = this.compra.gasto_total.toString();
+      //Con la ayuda de CurrencyPipe se le da el formato de pesos
+      this.precioFormateado = this.currencyPipe.transform(this.precioFormateado, '$');
+      //El formato anteriormente establecido se pasa al input para que visualmente se vea con dicho formato
+      element.target.value = this.precioFormateado;
     }
   }
-
-  /*total_input(n: any) {
-    if (n % 1 == 0) {
-      this.bandera = true;
-      console.log(n);
-      console.log(this.bandera);
-    } else {
-      this.bandera = false;
-      console.log(n);
-      console.log(this.bandera);
-    }
-  }*/
 
   //Metodo mediante el cual se carga la compra desde la base de datos
   cargarCompra(): void {
     this.activatedRoute.params.subscribe(params => {
-      let id = params['id']//Se obtiene el id de la compra mediante la ruta, el id se cargo desde el componente donde se listan todas las compras
+      //Se obtiene el id de la compra mediante la ruta, el id se cargo desde el componente donde se listan todas las compras
+      let id = params['id']
       if (id) { //Se valida que exista dicha id
         this.comprasService.getCompra(id).subscribe(
           (compra) => {//Se busca en la base de datos la compra mediante la id anteriormente cargada
             this.compra = compra; //Se guarda en el objeto
-            this.precioFormateado = this.compra.gasto_total.toString();//El gasto total que se registra lo pasamos a un string para darle formato de pesos
+            //El gasto total que se registra lo pasamos a un string para darle formato de pesos
+            this.precioFormateado = this.compra.gasto_total.toString();
             this.precioFormateado = this.currencyPipe.transform(this.precioFormateado, '$');
             this.proveedor = this.compra.proveedor; //El proveedor de la compra se aisla en su propio objeto
-            this.numeroSolicitud = compra.solicitud.id_solicitud;//Se aisla tambien el id de la solicitud desde la cual viene la compra
+            //Se aisla tambien el id de la solicitud desde la cual viene la compra
+            this.numeroSolicitud = compra.solicitud.id_solicitud;
             if (this.proveedor) { //Para evitar errores en consola corroboramos que exista el proveedor
               this.nombreProveedor = this.proveedor.nombre;//Para guardar su nombre y mostrarlo en la vista
             } else {
               this.nombreProveedor = ""; //O dejar en blanco este nombre para que no necesariamente sea null
             }
             if (compra.estatus == 'Completada') {//En este punto se evalua el estatus de la compra
-              this.banderaEditar = false;//De ser una compra Completada implica que la compra no puede ser editada de nuevo, por lo tanto esta bander deja los input en readonly
+              //De ser una compra Completada implica que la compra no puede ser editada de nuevo,
+              //por lo tanto esta bander deja los input en readonly
+              this.banderaEditar = false;
             } else {
-              this.banderaEditar = true;//De ser un compra pendiente la banderaEditar se vuelve true y por lo tanto se permite editar o escribir en los input
+              //De ser un compra pendiente la banderaEditar se vuelve true y por lo tanto se permite editar o escribir en los input
+              this.banderaEditar = true;
             }
 
-            if (compra.solicitud.pfdc) {//Esta variable que pertenece en a la tabla de solicitud de ser true implica que la solicitud contiene productos fuera del catalogo
+            //Esta variable que pertenece en a la tabla de solicitud de ser true implica que la solicitud contiene productos fuera del catalogo
+            if (compra.solicitud.pfdc) {
               this.detalleCompraPFDCService.getDetallesCompra_PFDC(compra.id_compra).subscribe(
                 detalles_ComprasPFDC => {//De tener productos fuera del catalogo, se obtienen los datos respectivos mediante el id_compra
                   this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);//Los datos obtenidos se cargan a la tabla
                   this.detalles_compra = detalles_ComprasPFDC; //se cargan al arreglo respectivo tambien
-                  this.pfdcFlag = true;//Se activa esta bandera, en el html de ser true la tabla que cargan los productos fuera del catalogo puede ser visible
+                  //Se activa esta bandera, en el html de ser true la tabla que cargan los productos fuera del catalogo puede ser visible
+                  this.pfdcFlag = true;
                 });
             } else {//De ser false, implica que los productos de la solicitud son completamente dentro del catálogo de productos
               this.pfdcFlag = false;//La bandera se pone false implicando que no se muestre la tabla de productos fuera del catalogo
             }
           });
-        this.detalleCompraService.getDetallesCompra(id).subscribe(//Se obtienen los detalles de la compra mediante el id_compra, los productos y las cantidades solicitadas, autorizada y compradas
+          //Se obtienen los detalles de la compra mediante el id_compra, los productos y las cantidades solicitadas, autorizada y compradas
+        this.detalleCompraService.getDetallesCompra(id).subscribe(
           deta_compra => {
             this.dataSource = new MatTableDataSource(deta_compra);//Se cargan los datos a su tabla
             this.detalles_compra = deta_compra;//se cargan los datos tambien a su respectivo array
@@ -161,30 +165,37 @@ export class CompraFViewComponent implements OnInit {
   //Método mediante el cual se guarda el ticket y se válida el mismo
   subirTicket(event) {
     this.ticket = event.target.files[0];//Se guarda el archivo en el objeto ticket
-    if (this.ticket.type.indexOf('pdf') < 0 && this.ticket.type.indexOf('image') < 0) {//Se válida inicialmente si es formato pdf o de tipo imagen(Unicos tipps de archivos permitidos)
-      swal.fire('Error seleccionar un formato válido: ', 'El archivo debe ser del tipo imagen o pdf', 'error');//De no cumplirse el formato requerido se lanza error indicandole al usuario
+    //Se válida inicialmente si es formato pdf o de tipo imagen(Unicos tipps de archivos permitidos)
+    if (this.ticket.type.indexOf('pdf') < 0 && this.ticket.type.indexOf('image') < 0) {
+      //De no cumplirse el formato requerido se lanza error indicandole al usuario
+      swal.fire('Error seleccionar un formato válido: ', 'El archivo debe ser del tipo imagen o pdf', 'error');
       this.ticket = null;//Y el objeto se queda en null para que el usuario pueda volver a seleccionar
     }
     if (this.ticket) {//A este punto de ser un formato válido
       this.mensajet = this.ticket.name;//se guarda el nombre del archivo para mostrarlo en la vista
     } else {
-      this.mensajet = "Ticket no seleccionado*";//De lo contrario seguir indicando que el archivo sigue sin seleccionarse
+      //De lo contrario seguir indicando que el archivo sigue sin seleccionarse
+      this.mensajet = "Ticket no seleccionado*";
     }
   }
 
-  //Para el caso en el que el estatus de que la compra sea pendiente, y se regitre la compra, en este método se validan los input donde se especifica cuanta cantidad de X producto se compró
+  //Para el caso en el que el estatus de que la compra sea pendiente, y se regitre la compra,
+  //en este método se validan los input donde se especifica cuanta cantidad de X producto se compró
   validarDetalles(): boolean {
     let bandera = false;//Bandera que devolera este metodo, de ser true quiere decir que hay error en el fomulario, de lo contrario no hay error
-    this.detalles_compra = this.dataSource.data;//Los datos de los input se guardan en la tabla, por lo que aquí se actualizan los array de los detalles con la informacion proporcionada por el usuario
+    //Los datos de los input se guardan en la tabla, por lo que aquí se actualizan los array de los detalles con la informacion proporcionada por el usuario
+    this.detalles_compra = this.dataSource.data;
     this.detalles_compra_PFDC = this.dataSource2.data;//Aplica para el caso de los productos fuera del catalogo, recordemos que tiene su tabla aparte
     for (this.detalle_compra of this.detalles_compra) {//Se recorren inicialmente los productos dentro del catalogo
-      if (this.detalle_compra.cant_comprada == null || this.detalle_compra.cant_comprada < 1 || this.detalle_compra.cant_comprada > this.maxStock) {//La cantidad comprada no puede ser nula, no puede un numero menor que 1 ni mayor que el maximo permitido en stock
+      //La cantidad comprada no puede ser nula, no puede un numero menor que 1 ni mayor que el maximo permitido en stock
+      if (this.detalle_compra.cant_comprada == null || this.detalle_compra.cant_comprada < 1 || this.detalle_compra.cant_comprada > this.maxStock) {
         bandera = true;//De haber una coincidencia, implica error y la bandera se vuelve true
       }
     }
 
     for (this.detalle_compra_PFDC of this.detalles_compra_PFDC) {//Se recorren los productos fuera del catalogo
-      if (this.detalle_compra_PFDC.cant_comprada == null || this.detalle_compra_PFDC.cant_comprada < 1 || this.detalle_compra_PFDC.cant_comprada > this.maxStock) {//La cantidad comprada no puede ser nula, no puede un numero menor que 1 ni mayor que el maximo permitido en stock
+      //La cantidad comprada no puede ser nula, no puede un numero menor que 1 ni mayor que el maximo permitido en stock
+      if (this.detalle_compra_PFDC.cant_comprada == null || this.detalle_compra_PFDC.cant_comprada < 1 || this.detalle_compra_PFDC.cant_comprada > this.maxStock) {
         bandera = true;//De haber una coincidencia, implica error y la bandera se vuelve true
       }
     }
@@ -195,9 +206,11 @@ export class CompraFViewComponent implements OnInit {
   //Método mediante el cual se guarda la compra
   guardarCompra() {
     if (this.validarDetalles()) {//Se valida que no exista errores en los input de cantidad comprada
-      swal.fire('Para guardar la compra debe de ingresar un valor diferente de cero o válido en la cantidad comprada', '', 'info');//Mensaje de error
+      //Mensaje de error
+      swal.fire('Para guardar la compra debe de ingresar un valor diferente de cero o válido en la cantidad comprada', '', 'info');
     } else {
-      if (this.ticket && this.compra.gasto_total && this.compra.fecha_creacion && this.compra.gasto_total>0) {//Se válida que todos los campos requeridos estén rellenados
+      //Se válida que todos los campos requeridos estén rellenados
+      if (this.ticket && this.compra.gasto_total && this.compra.fecha_creacion && this.compra.gasto_total>0) {
         swal.fire({
           title: '¿Desea guardar esta compra? ',//Se consulta al usuario antes de continuar
           showDenyButton: true,
@@ -207,7 +220,8 @@ export class CompraFViewComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             this.compra.estatus = "Completada";//Al guardar la compra el estatus cambia a completada
-            this.compra.usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);//Se obtiene el nombre de usuario que ingresó al sistema para registrarlo como aquel que registro la compra
+            //Se obtiene el nombre de usuario que ingresó al sistema para registrarlo como aquel que registro la compra
+            this.compra.usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);
             //this.detalles_compra = this.dataSource.data;
             this.comprasService.update(this.compra).subscribe(
               compra => {//Se actualiza la compra en la base ded atos
@@ -215,13 +229,15 @@ export class CompraFViewComponent implements OnInit {
                   subscribe(compra => {//Se carga el ticket a la compra
                     if (compra.solicitud.pfdc === true) {//Se evalua si existen productos fuera del catalogo
                       this.detalles_compra_PFDC = this.dataSource2.data;//Se obtienen los datos de la tabla
-                      this.detalleCompraPFDCService.update(this.detalles_compra_PFDC, compra.id_compra).subscribe(detas_pfdc => { });//Se actualizan los detalles en la base de datos
+                      //Se actualizan los detalles en la base de datos
+                      this.detalleCompraPFDCService.update(this.detalles_compra_PFDC, compra.id_compra).subscribe(detas_pfdc => { });
                     }
                   });
                 this.detalleCompraService.update(this.detalles_compra, compra.id_compra).subscribe(
                   detalles => {//Se actualizan los detalles de compra con los productos del catalogo en la base de datos
                     if (detalles) {//Si la actualizacion se efectuó correctamente
-                      this.crearActualizarInventario(detalles);//En este metodo se crea o se actualiza el inventario de la sucursal de la compra
+                      //En este metodo se crea o se actualiza el inventario de la sucursal de la compra
+                      this.crearActualizarInventario(detalles);
                       swal.fire(
                         'Mensaje',
                         `La compra:  ${compra.id_compra} fue guardada con éxito`, //Mensaje de que la compra se guardo exitosamente
@@ -255,7 +271,8 @@ export class CompraFViewComponent implements OnInit {
   //En caso de que la compra este "Completada" se accede a este método en donde el ticket perteneciente a la compra se puede descargar
   descargarTicket() {
     var nombreArchivo = this.compra.ticket;//Se obtiene el nombre del ticket
-    window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);//Mediatne a la ruta establecida en el backend + el nombre del archivo se abre una nueva venta para descargar el archivo
+    //Mediatne a la ruta establecida en el backend + el nombre del archivo se abre una nueva venta para descargar el archivo
+    window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);
   }
 
   //En este metodo se crea o se actualiza el inventario de la secursal
@@ -274,7 +291,8 @@ export class CompraFViewComponent implements OnInit {
               for (deta_compra of detalles_c) { //Se recorre los detalles de compra que pide como parametro este metodo
                 deta_invent.inventario = inventarionuevo; //Se asigna el inventario recien creado
                 deta_invent.producto = deta_compra.producto; //Se agrega el producto de la compra
-                deta_invent.cant_existente = deta_compra.cant_existente + deta_compra.cant_comprada;//la cantidad que se compro mas la cantidad que se solicitó en un principio = a la cantidad actual del producto
+                //la cantidad que se compro mas la cantidad que se solicitó en un principio = a la cantidad actual del producto
+                deta_invent.cant_existente = deta_compra.cant_existente + deta_compra.cant_comprada;
                 deta_invent.fecha_ultima_actualizacion = new Date();//Se establece la fecha de actualizacion
                 this.detaInventarioService.create(deta_invent).subscribe(
                   deta_i => {//Se crea cada detalle del inventario conforme se recorre el for
@@ -305,8 +323,9 @@ export class CompraFViewComponent implements OnInit {
 
   //Método para poder visualizar un pdf, abriendo un Dialog(Componente de Angular Material)
   openDialog() {
-    var ubicacionArchivo = "http://localhost:8080/api/compras/show/archivo/" + this.compra.ticket;//Se establece la ruta del ticket de la compra
-    this.dialog.open(TicketViewComponent, {//Se abre un nuevo dialogo
+    //Se establece la ruta del ticket de la compra
+    var ubicacionArchivo = "http://localhost:8080/api/compras/show/archivo/" + this.compra.ticket;
+    this.dialog.open(TicketViewComponent, {//Se abre un nuevo dialogo con el contenido de TicketViewComponent
       width: "1000px",//Se establece el tamaño del componente
       data: {
         ticket: ubicacionArchivo,//Se pasa como parametro la ubicacion del archivo

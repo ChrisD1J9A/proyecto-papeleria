@@ -230,8 +230,7 @@ export class SolicitudFormComponent implements OnInit {
         this.detalles2.clear();//limpia el formulario de productos fuera del catalogo
         this.ngOnInit();//reestablece los datos iniciales
       }
-    })
-
+    });
   }
 
 //Método para accionar un mensaje de que se ha seleccionado un producto
@@ -254,17 +253,17 @@ export class SolicitudFormComponent implements OnInit {
     });
   }
 
+  /*Metodo que entra en operación en el momento que el usuario agregue a su lista de solicitud un producto*/
   agregarProducto(producto: Producto) {
     var indice = this.pds.findIndex(p => p === producto); //Aquí se obtiene el indice del producto seleccioado
     this.pds.splice(indice, 1); //se elimiina de la lista el producto seleccionado
-    this.dataSource = new MatTableDataSource(this.pds); //y se vuelve a cargar ala tabla.
+    this.dataSource = new MatTableDataSource(this.pds); //y se actualiza la tabla
     this.snackBarSuccess();
-    this.productosSeleccionados.add(producto); // añade el producto seleccionado a una lista auxiliar
+    this.productosSeleccionados.add(producto); // añade el producto seleccionado a una lista auxiliar para llevar un control
     this.agregarDetalles(producto); //agregar el formulario para el producto que se selecciono
-    //}
   }
 
-  /**/
+  /*Metodo que entra en operación en el momento que el usuario agregue a su lista de solicitud un producto fuera del catalogo*/
   agregarProductoFueraDelCatalogo() {
     this.agregarDetallesPFDC();
   }

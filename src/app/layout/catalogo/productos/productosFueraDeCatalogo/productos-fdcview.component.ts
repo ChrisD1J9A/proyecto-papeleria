@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Detalle_solicitud_PFDC } from 'src/app/administracion/modelos/papeleria/detalle_solicitud_PFDC';
 import { DetalleSolicitudPFDCService } from 'src/app/administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';

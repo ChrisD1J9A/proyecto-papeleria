@@ -103,17 +103,20 @@ export class SolicitudAdqViewComponent implements OnInit {
     });
   }
 
-  //Para el caso en el que el estatus de que la solicitud sea pendiente, y se regitre acepte la solicitud en este método se validan los input donde se especifica cuanta cantidad de X producto se autoriza
+  //Para el caso en el que el estatus de que la solicitud sea pendiente, y se regitre acepte la solicitud en este método se validan los input donde se especifica
+  //cuanta cantidad de X producto se autoriza
   validarDetalles(): boolean {
     let bandera = false;//Bandera que devolera este metodo, de ser true quiere decir que hay error en el fomulario, de lo contrario no hay error
     for (this.detalle_solicitud of this.detalles_solicitud) {//Se recorren inicialmente los productos dentro del catalogo
-      if (this.detalle_solicitud.cant_autorizada == null || this.detalle_solicitud.cant_autorizada < 1 || this.detalle_solicitud.cant_autorizada > this.maxStock) {//La cantidad autorizada no puede ser nula, no puede un numero menor que 1 ni mayor que el maximo permitido en stock
+      //La cantidad autorizada no puede ser nula, no puede un numero menor que 1 ni mayor que el maximo permitido en stock
+      if (this.detalle_solicitud.cant_autorizada == null || this.detalle_solicitud.cant_autorizada < 1 || this.detalle_solicitud.cant_autorizada > this.maxStock) {
         bandera = true;
       }
     }
 
     for (this.detalle_solicitud_PFDC of this.detalles_solicitud_pfdc) {//Se recorren los productos fuera del catalogo
-      if (this.detalle_solicitud_PFDC.cant_autorizada == null || this.detalle_solicitud_PFDC.cant_autorizada < 1 || this.detalle_solicitud_PFDC.cant_autorizada > this.maxStock) {//La cantidad autorizada no puede ser nula, no puede un numero menor que 1 ni mayor que el maximo permitido en stock
+      //La cantidad autorizada no puede ser nula, no puede un numero menor que 1 ni mayor que el maximo permitido en stock
+      if (this.detalle_solicitud_PFDC.cant_autorizada == null || this.detalle_solicitud_PFDC.cant_autorizada < 1 || this.detalle_solicitud_PFDC.cant_autorizada > this.maxStock) {
         bandera = true;
       }
     }
@@ -177,10 +180,12 @@ export class SolicitudAdqViewComponent implements OnInit {
 
   //Método utilizado para rechazar una solicitud
   rechazarSolicitud(): void {
-    if (this.solicitud.observacion_aprobacion_rechazo) {//El unico requisito que se requiere para rechazar una solicitud es que el usuario deje un comentario y aqui se evalua
+    //El unico requisito que se requiere para rechazar una solicitud es que el usuario deje un comentario y aqui se evalua
+    if (this.solicitud.observacion_aprobacion_rechazo) {
       this.solicitud.estatus = "Rechazada";//El estatus cambia a Rechazada
       this.solicitud.fecha_rechazo = new Date();//Se establece la fecha del rechazp
-      this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);;//Se obtiene el nombre del usuario logeado para registrarlo como la persona quien rechaza la solicitud
+      //Se obtiene el nombre del usuario logeado para registrarlo como la persona quien rechaza la solicitud
+      this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);
       swal.fire({
         title: '¿Está seguro de rechazar esta solicitud? ',//Se consulta al usuario antes de continuar
         showDenyButton: true,
@@ -192,13 +197,15 @@ export class SolicitudAdqViewComponent implements OnInit {
           this.solicitudesService.update(this.solicitud).subscribe(//Se realiza la actualizacion en la base de datos
             solicitud => {
               if (solicitud) {
+                //Se notifica al usuario de que el rechazo se efectuó exitosamente
                 swal.fire(
                   'Mensaje',
-                  `La solicitud:  ${solicitud.id_solicitud} fue rechazada con éxito`,//Se notifica al usuario de que el rechazo se efectuó exitosamente
+                  `La solicitud:  ${solicitud.id_solicitud} fue rechazada con éxito`,
                   'success'
                 );
                 this.enviarCorreo(solicitud);//Se envia un correo electronico notificando el estatus de la solicitud
-                this.router.navigate(['/layout/solicitudes-adquisiciones']);//Se redirecciona a la tabla donde se muestran todas las solicitudes
+                //Se redirecciona a la tabla donde se muestran todas las solicitudes
+                this.router.navigate(['/layout/solicitudes-adquisiciones']);
               } else {
                 swal.fire(
                   'Mensaje',
@@ -224,7 +231,9 @@ export class SolicitudAdqViewComponent implements OnInit {
     this.compra.nombre_sucursal = this.solicitud.nombre_sucursal;//Tambien el nombre
     this.comprasService.create(this.compra).subscribe(
       compra => {//Se registra la compra en la base de datos
-        for (detallesoli of this.detalles_solicitud){//Al igual que la solicitud, la compra registra los productos asi como las cantidades de existente, solicitdada y autorizada y por ello en este ciclo se asignan los mismos datos que detalle solicitud
+        //Al igual que la solicitud, la compra registra los productos asi como las cantidades de existente, solicitdada y
+        //autorizada y por ello en este ciclo se asignan los mismos datos que detalle solicitud
+        for (detallesoli of this.detalles_solicitud){
           this.detalle_compra.compra = compra;//Se le asigna al detalle compra la compra correspondiente
           this.detalle_compra.producto = detallesoli.producto;//Se le asigna producto
           this.detalle_compra.cant_existente = detallesoli.cant_existente;//la cantidad existente
@@ -235,7 +244,8 @@ export class SolicitudAdqViewComponent implements OnInit {
               console.log(detalles);
             });
         }
-        if(this.solicitud.pfdc===true){//Si se realizo una solicitud con productos fuera del catalogo se registran los detalles correspondientes
+        //Si se realizo una solicitud con productos fuera del catalogo se registran los detalles correspondientes
+        if(this.solicitud.pfdc===true){
           var detaSoliPFDC = new Detalle_solicitud_PFDC();
           for(detaSoliPFDC of this.detalles_solicitud_pfdc){
             this.detalle_compra_pfdc.compra = compra;

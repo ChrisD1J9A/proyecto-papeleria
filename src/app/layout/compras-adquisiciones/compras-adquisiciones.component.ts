@@ -14,32 +14,35 @@ import swal from 'sweetalert2';
   styleUrls: ['./compras-adquisiciones.component.scss']
 })
 export class ComprasAdquisicionesComponent implements OnInit {
-  sucursales: Sucursal[];
-  sucursal = new Sucursal();
-  compra = new Compra();
-  compras: Compra[];
-  comprasSuc: Compra[];
-  detalle_compra: Detalle_compra;
-  enProceso: Compra[];
-  completadas: Compra[];
-  displayedColumns: string[] = ['id_compra', 'fecha_compra', 'usuario', 'sucursal', 'action'];
-  dataSource1 = new MatTableDataSource();
-  dataSource2 = new MatTableDataSource();
-  dataSource3 = new MatTableDataSource();
-  dataSource4 = new MatTableDataSource();
-  BanderaMostrar: Boolean;
+  sucursales: Sucursal[];//Arreglo de sucursales
+  sucursal = new Sucursal();//Objeto sucursal
+  compra = new Compra();//Objeto compra
+  compras: Compra[];//Arreglo de compras
+  comprasSuc: Compra[];//Arreglo de compras de una sucursal
+  detalle_compra: Detalle_compra;//Objeto Detalle de compra
+  enProceso: Compra[];//Arreglo para las compras en proceso
+  completadas: Compra[];////Arreglo para las compras completadas
+  displayedColumns: string[] = ['id_compra', 'fecha_compra', 'usuario', 'sucursal', 'action'];//Encabezados para los titulos de las columnas de la tabla
+  dataSource1 = new MatTableDataSource();//Tabla para compras en proceso
+  dataSource2 = new MatTableDataSource();//Tbabla para compras completadas
+  dataSource3 = new MatTableDataSource();//Tabla para mostrar todas las compras
+  dataSource4 = new MatTableDataSource();//Tabla para mostrar compras de un sucursal
+  BanderaMostrar: Boolean;//Bandera para mostrar o no el área de compras de sucursal
 
 
   constructor(private sucursalService: SucursalService,
               private comprasService: ComprasService,
               private detalleCompraService: DetalleCompraService) { }
 
+
   ngOnInit(): void
   {
+    //Se obtienen las sucursales para poder realizar filtros de coompras de acuerdo a una sucursal
     this.sucursalService.getSucursales().subscribe(val => {
       this.sucursales = val;
     });
 
+    //Se obtienen todas las compras disponibles y se separan en completadas y enProceso
     this.comprasService.getCompras().subscribe(
       compras => {
         this.compras = compras;
@@ -52,11 +55,13 @@ export class ComprasAdquisicionesComponent implements OnInit {
       this.BanderaMostrar = false;
   }
 
+  //Se filtra la lista general de compras para obtener solo las de estatus completada
   filtrarCompletadas(compras: Compra[]): Compra[] {
     const completadas = compras.filter(compra => compra.estatus === "Completada");
     return completadas;
   }
 
+  //Se filtra la lista general de compras para obtener solo las de estatus en Proceso
   filtrarEnProceso(enProceso: Compra[]): Compra[] {
     const EnProces = enProceso.filter(compra => compra.estatus === "En proceso");
     return EnProces;
@@ -82,25 +87,33 @@ export class ComprasAdquisicionesComponent implements OnInit {
     this.dataSource4.filter = filterValue.trim().toLowerCase();
   }
 
+  //Método para obtener las compras de una sucursal elegida por el usuario
   cargarCompraSucursal()
   {
+    //se valida la sucursal elegida por el usuario
     if (this.sucursal.idSucursal)
     {
+      //Se obtienen las compras de sucursal
       this.comprasService.getCompraBySucursal(this.sucursal.idSucursal).subscribe(
         compras => {
+          //Se almacenan en su respectivo arreglo
           this.comprasSuc = compras;
-          console.log(compras);
-          if (compras.length==0) {
+
+          if (compras.length==0) {//Si no se obtienen compras de esa consulta
+            //Implica que no existen compras para esa sucursal
             this.BanderaMostrar = false;
+            //Se deja en blanco el select
             this.sucursal = new Sucursal();
+            //Y se manda un mensaje al usuario
             swal.fire({
               icon: 'warning',
               title: 'Oops...',
               text: 'No se encontró compras de esa sucursal',
             })
           }else{
+            //En caso de obtener compras de esa sucursal se cargan a la Tabla
+            //y la bandera para activar el área de esas compras se activa
             this.BanderaMostrar = true;
-            console.log("llegue hasta aquí");
             this.dataSource4 = new MatTableDataSource(compras);
           }
           });

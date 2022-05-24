@@ -57,10 +57,13 @@ export class ReportesViewComponent implements OnInit {
   //Cargar los datos a la tabla de acuardo a la elección del usuario en el select o el datepicker
   //y despues de  presonar el boton de buscar
   cargarGastosMaxPorSucursal() {
-    if (this.flagDatePicker == false) {//Cuando esta bandera esta en false significa que el usuario usó el select y se toma en cuenta el rango de tiempo selecciondo (meses)
-      this.compraService.gastoMaxPorSucursales(this.meses).subscribe( //Se realiza la consulta en la bd, meses obtiene su valor en un select
+    //Cuando esta bandera esta en false significa que el usuario usó el select y se toma en cuenta el rango de tiempo selecciondo (meses)
+    if (this.flagDatePicker == false) {
+      //Se realiza la consulta en la bd, meses obtiene su valor en un select
+      this.compraService.gastoMaxPorSucursales(this.meses).subscribe(
         datos => {
-          this.dataSource = new MatTableDataSource(datos); //Los datos obtenidos se proyectan en la tabla y en este apartado se cargan dichos datos
+          //Los datos obtenidos se proyectan en la tabla y en este apartado se cargan dichos datos
+          this.dataSource = new MatTableDataSource(datos);
           if (datos.length == 0) { //En caso de que la consulta no genere ningun dato
             swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');//Mandar mensaje de que no se encuentran datos
           }else{
@@ -68,9 +71,12 @@ export class ReportesViewComponent implements OnInit {
           }
         });
     } else {//En caso contrario, en el que la bandera sea true, quiere decir que el usuario  uso el date picker
-      var d1 = this.fechaR1.getFullYear() + "-" + (this.fechaR1.getMonth() + 1) + "-" + this.fechaR1.getDate();//Para realizar la consulta correctamente se le dio un formato de fecha
-      var d2 = this.fechaR2.getFullYear() + "-" + (this.fechaR2.getMonth() + 1) + "-" + this.fechaR2.getDate();//Para realizar la consulta correctamente se le dio un formato de fecha
-      this.compraService.gastoMaxPorSucursalesRangos(d1, d2).subscribe(//Se realiza la consulta  de acuerdo a un rango de fechas obtenidos en el datePicker
+      //Para realizar la consulta correctamente se le dio un formato de fecha
+      var d1 = this.fechaR1.getFullYear() + "-" + (this.fechaR1.getMonth() + 1) + "-" + this.fechaR1.getDate();
+      //Para realizar la consulta correctamente se le dio un formato de fecha
+      var d2 = this.fechaR2.getFullYear() + "-" + (this.fechaR2.getMonth() + 1) + "-" + this.fechaR2.getDate();
+      //Se realiza la consulta  de acuerdo a un rango de fechas obtenidos en el datePicker
+      this.compraService.gastoMaxPorSucursalesRangos(d1, d2).subscribe(
         datos => {
           this.dataSource = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
           if (datos.length == 0) { //Si la consulta no devuelve dato alguno
@@ -82,24 +88,31 @@ export class ReportesViewComponent implements OnInit {
     }
   }
 
+  //Mayores gastos de las sucursales desde siempre
   gastosMaximosHistorico(){
     this.compraService.gastoMaxPorSucursalesHistorico().subscribe(
       datos => {
-        this.dataSource = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
+        //Los datos obtenidos se cargan a la tabla
+        this.dataSource = new MatTableDataSource(datos);
         if (datos.length == 0) { //Si la consulta no devuelve dato alguno
-          swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');//Mensaje de que la consulta no devolvió datos
+          //Mensaje de que la consulta no devolvió datos
+          swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');
         }else{
           swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
         }
       });
   }
 
+  //Metodo para obtener la sumatoria de los gastos de cada sucursal en un periodo de tiempo
   cargarGastosTotalesDeLasSucursales()
   {
-    if (this.flagDatePicker2 == false) {//Cuando esta bandera esta en false significa que el usuario usó el select y se toma en cuenta el rango de tiempo selecciondo (meses)
-      this.compraService.gastoTotalPorSucursales(this.meses).subscribe( //Se realiza la consulta en la bd, meses obtiene su valor en un select
+    //Cuando esta bandera esta en false significa que el usuario usó el select y se toma en cuenta el rango de tiempo selecciondo (meses)
+    if (this.flagDatePicker2 == false) {
+      //Se realiza la consulta en la bd, meses obtiene su valor en un select
+      this.compraService.gastoTotalPorSucursales(this.meses).subscribe(
         datos => {
-          this.dataSource2 = new MatTableDataSource(datos); //Los datos obtenidos se proyectan en la tabla y en este apartado se cargan dichos datos
+          //Los datos obtenidos se proyectan en la tabla y en este apartado se cargan dichos datos
+          this.dataSource2 = new MatTableDataSource(datos);
           if (datos.length == 0) { //En caso de que la consulta no genere ningun dato
             swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');//Mandar mensaje de que no se encuentran datos
           }else{
@@ -107,9 +120,12 @@ export class ReportesViewComponent implements OnInit {
           }
         });
     } else {//En caso contrario, en el que la bandera sea true, quiere decir que el usuario  uso el date picker
-      var d1 = this.fechaR1.getFullYear() + "-" + (this.fechaR1.getMonth() + 1) + "-" + this.fechaR1.getDate();//Para realizar la consulta correctamente se le dio un formato de fecha
-      var d2 = this.fechaR2.getFullYear() + "-" + (this.fechaR2.getMonth() + 1) + "-" + this.fechaR2.getDate();//Para realizar la consulta correctamente se le dio un formato de fecha
-      this.compraService.gastoTotalPorSucursalesRangos(d1, d2).subscribe(//Se realiza la consulta  de acuerdo a un rango de fechas obtenidos en el datePicker
+      //Para realizar la consulta correctamente se le dio un formato de fecha
+      var d1 = this.fechaR1.getFullYear() + "-" + (this.fechaR1.getMonth() + 1) + "-" + this.fechaR1.getDate();
+      //Para realizar la consulta correctamente se le dio un formato de fecha
+      var d2 = this.fechaR2.getFullYear() + "-" + (this.fechaR2.getMonth() + 1) + "-" + this.fechaR2.getDate();
+      //Se realiza la consulta  de acuerdo a un rango de fechas obtenidos en el datePicker
+      this.compraService.gastoTotalPorSucursalesRangos(d1, d2).subscribe(
         datos => {
           this.dataSource2 = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
           if (datos.length == 0) { //Si la consulta no devuelve dato alguno
@@ -121,24 +137,29 @@ export class ReportesViewComponent implements OnInit {
     }
   }
 
+  //Metodo para obtener la sumatoria de los gastos de cada sucursal historicamente
   gastosTotalessHistorico(){
     this.compraService.gastoTotalPorSucursalesHistorico().subscribe(
       datos => {
         this.dataSource2 = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
         if (datos.length == 0) { //Si la consulta no devuelve dato alguno
-          swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');//Mensaje de que la consulta no devolvió datos
+          //Mensaje de que la consulta no devolvió datos
+          swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');
         }else{
           swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
         }
       });
   }
 
+  //Método para cargar compras almacenadas de acuerdo a un periodo de tiempo
   cargarComprasPorTiempo()
   {
-    if (this.flagDatePicker3 == false) {//Cuando esta bandera esta en false significa que el usuario usó el select y se toma en cuenta el rango de tiempo selecciondo (meses)
-      this.compraService.getComprasPorTiempo(this.meses).subscribe( //Se realiza la consulta en la bd, meses obtiene su valor en un select
+    //Cuando esta bandera esta en false significa que el usuario usó el select y se toma en cuenta el rango de tiempo selecciondo (meses)
+    if (this.flagDatePicker3 == false) {
+      this.compraService.getComprasPorTiempo(this.meses).subscribe(//Se realiza la consulta en la bd, meses obtiene su valor en un select
         datos => {
-          this.dataSource3 = new MatTableDataSource(datos); //Los datos obtenidos se proyectan en la tabla y en este apartado se cargan dichos datos
+          //Los datos obtenidos se proyectan en la tabla y en este apartado se cargan dichos datos
+          this.dataSource3 = new MatTableDataSource(datos);
           if (datos.length == 0) { //En caso de que la consulta no genere ningun dato
             swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');//Mandar mensaje de que no se encuentran datos
           }else{
@@ -146,14 +167,18 @@ export class ReportesViewComponent implements OnInit {
           }
         });
     } else {//En caso contrario, en el que la bandera sea true, quiere decir que el usuario  uso el date picker
-      var d1 = this.fechaR1.getFullYear() + "-" + (this.fechaR1.getMonth() + 1) + "-" + this.fechaR1.getDate();//Para realizar la consulta correctamente se le dio un formato de fecha
-      var d2 = this.fechaR2.getFullYear() + "-" + (this.fechaR2.getMonth() + 1) + "-" + this.fechaR2.getDate();//Para realizar la consulta correctamente se le dio un formato de fecha
-      this.compraService.getComprasPorRangos(d1, d2).subscribe(//Se realiza la consulta  de acuerdo a un rango de fechas obtenidos en el datePicker
+      //Para realizar la consulta correctamente se le dio un formato de fecha
+      var d1 = this.fechaR1.getFullYear() + "-" + (this.fechaR1.getMonth() + 1) + "-" + this.fechaR1.getDate();
+      //Para realizar la consulta correctamente se le dio un formato de fecha
+      var d2 = this.fechaR2.getFullYear() + "-" + (this.fechaR2.getMonth() + 1) + "-" + this.fechaR2.getDate();
+      //Se realiza la consulta  de acuerdo a un rango de fechas obtenidos en el datePicker
+      this.compraService.getComprasPorRangos(d1, d2).subscribe(
         datos => {
           console.log(datos);
           this.dataSource3 = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
           if (datos.length == 0) { //Si la consulta no devuelve dato alguno
-            swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');//Mensaje de que la consulta no devolvió datos
+            //Mensaje de que la consulta no devolvió datos
+            swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');
           }else{
             swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
           }
@@ -161,26 +186,19 @@ export class ReportesViewComponent implements OnInit {
     }
   }
 
+  //Método para obtener y cargar todas las compras de la base de datos
   cargarCompras()
   {
     this.compraService.getCompras().subscribe(
       datos => {
-        this.dataSource3 = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
+        //Los datos obtenidos se cargan a la tabla
+        this.dataSource3 = new MatTableDataSource(datos);
         if (datos.length == 0) { //Si la consulta no devuelve dato alguno
-          swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');//Mensaje de que la consulta no devolvió datos
+          //Mensaje de que la consulta no devolvió datos
+          swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');
         }else{
           swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
         }
       });
   }
 }
-
-
-
-  /*cargarGastosMaxPorSucursalRangos()
-  {
-    this.compraService.gastoMaxPorSucursalRangos(this.fechaR1, this.fechaR2).subscribe(
-      datos =>{
-        console.log(datos);
-      });
-  }*/

@@ -54,7 +54,8 @@ export class CompraAdqViewComponent implements OnInit {
         this.compraService.getCompra(id).subscribe(//Se obtiene la compra mediante su id
           (compra) => {
             this.compra = compra;//Se guarda la compra en el objeto compra
-            this.precioFormateado = this.compra.gasto_total.toString();//El gasto total que se registra lo pasamos a un string para darle formato de pesos
+            //El gasto total que se registra lo pasamos a un string para darle formato de pesos
+            this.precioFormateado = this.compra.gasto_total.toString();
             this.precioFormateado = this.currencyPipe.transform(this.precioFormateado, '$');//Se le da formato de pesos
             this.proveedor = this.compra.proveedor;// Se guarda el objeto proveedor en su respectivo objeto
             if (this.proveedor) {//Para evitar problemas internos se evalua la existencia del proveedor
@@ -68,12 +69,13 @@ export class CompraAdqViewComponent implements OnInit {
               this.banderaEditar = true;
             }
             this.solicitud = compra.solicitud;//Se guarda o aisla el objeto soliciutd
-
             if(compra.solicitud.pfdc){//Se evalua si existen productos fuera del catalogo
               this.detalleCompraPFDCService.getDetallesCompra_PFDC(compra.id_compra).subscribe(
                 detalles_ComprasPFDC => {//De existeir se buscan estos productos fuera del catalogo mediante el id_compra
-                  this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);//Se cargan los datos obtenidos a la base de datos
-                  this.pfdcFlag = true;//Se activa esta bandera para mostrar los productos fuera del catalogo en su propia tabla
+                  //Se cargan los datos obtenidos a la base de datos
+                  this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);
+                  //Se activa esta bandera para mostrar los productos fuera del catalogo en su propia tabla
+                  this.pfdcFlag = true;
               });
             }else{
               this.pfdcFlag = false;//De no haber productos fuera del catalogo simplemente no se muestra su tabla
@@ -90,12 +92,14 @@ export class CompraAdqViewComponent implements OnInit {
   //Metodo para descargar el tickt
   descargarTicket() {
     var nombreArchivo = this.compra.ticket; //Se guarda el nombre del ticket de la compra
-    window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);//Se descarga el archivo accediendo a la ruta + el nombre del ticket
+    //Se descarga el archivo accediendo a la ruta + el nombre del ticket
+    window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);
   }
 
   //Metodo para visualizar el ticket en un Dialog
   openDialog() {
-    var ubicacionArchivo = "http://localhost:8080/api/compras/show/archivo/" + this.compra.ticket; //Se establece la ruta para acceder al archivo en cuestion
+    //Se establece la ruta para acceder al archivo en cuestion
+    var ubicacionArchivo = "http://localhost:8080/api/compras/show/archivo/" + this.compra.ticket;
     this.dialog.open(TicketViewComponent, {//Se abre nuevo dialogo
       width: "1000px",
       data: {
