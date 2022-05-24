@@ -52,9 +52,13 @@ export class LoginComponent implements OnInit {
                 for(let i= 0;i<roles.roles.length;i++){
 
                     if(roles.roles[i].idSistema==9){
+                        //Se guarda la sucursal dondese logea
                         localStorage.setItem('sucursalIngresa',JSON.stringify(roles.roles[i].sucursalIngresa));
+                        //Guarda las sucursales que tiene permitido el usuario operar
                         localStorage.setItem('sucursalesPermitidas', JSON.stringify(roles.roles[i].sucursales));
+                        //Se guarda el id de la sucursal donde se logea
                         localStorage.setItem('idSucursal', JSON.stringify(roles.roles[i].idSucursal));
+                        //Se guardan los permisos que tiene el usuario que inicio sesión
                         localStorage.setItem('permisos', JSON.stringify(roles.roles[i].hijos));
                         bandera = true;
                     }

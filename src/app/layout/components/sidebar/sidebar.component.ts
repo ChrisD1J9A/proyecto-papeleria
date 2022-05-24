@@ -67,7 +67,6 @@ permisosUsuario=false//125
       this.permisosU = JSON.parse(localStorage.getItem('permisos'));
       this.permisos()
       this.cuantasSolicitudesPendientesHay();
-
   }
 
   mostrarSidebar(){
@@ -205,6 +204,9 @@ this.permisosAreas=true//130
     }
   }
 
+  //Método que a traves del nombre del permiso comprara si
+  //El usuario cuenta con el permiso de acceder a esa ruta
+  //Para mostrarlo o no en el menú
   tienePermiso(permiso: string){
     let a = this.permisosU.find(perm => perm.nombre == permiso);
     if(a != null){
@@ -214,12 +216,15 @@ this.permisosAreas=true//130
     }
   }
 
-  //Metodo que sirve para saber la cantidad de solicitudes pendientes existen
+  //Metodo que sirve para saber la cantidad de solicitudes pendientes
   cuantasSolicitudesPendientesHay(){
     var pendientes: Solicitud[];
+    //Se obtienen las solicitudes
     this.solicitudService.getSolicitudes().subscribe(
       solis => {
+        //Se filtran las solicitudes pendientes
           pendientes = solis.filter(sol => sol.estatus ==="Pendiente");
+          //Se cuentan cuantas solicitudes pendientes hay y se almacena
           this.solicitudesPendiente = pendientes.length;
       })
   }

@@ -24,7 +24,7 @@ export class UnidadComponent implements OnInit {
     this.unidadService.getUnidades().subscribe( //Obtenemos todas las unidades de la base de datos
       unidades => {
         this.unidades = unidades;//Cargamos estas unidades en el arreglo de unidades
-        this.dataSource = new MatTableDataSource(unidades); //Caragamos los datos a la tabla
+        this.dataSource = new MatTableDataSource(unidades); //Cargamos los datos a la tabla
       });
     this.limpiar(); //Se inicializa el objeto Unidad
   }
