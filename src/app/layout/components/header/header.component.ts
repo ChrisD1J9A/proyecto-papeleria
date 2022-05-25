@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit {
        localStorage.setItem("sucursalIngresa","");
        localStorage.setItem("roles","");
        localStorage.setItem("currentUser","");
+       localStorage.clear();
       this.router.navigate(["/login"]);
     }
 
