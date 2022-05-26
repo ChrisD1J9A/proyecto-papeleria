@@ -41,7 +41,7 @@ export class ProductoFormComponent implements OnInit {
 
   //Mensaje de error si el usuario no ingreso un dato en un campo requerido
   getErrorMessage() {
-    return this.descripcionProducto.hasError('required') ? 'Ingrese/seleccione algún dato' : '';
+    return this.descripcionProducto.hasError('required') ? 'algún dato' : '';
   }
 
   //Metodo mediante el cual se da cierto formato a los input de iva y precio total

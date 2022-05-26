@@ -5,7 +5,7 @@
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Descripción</mat-label>
       <input matInput [(ngModel)]="producto.descripcion" name="descripcion" required>
-      <mat-error *ngIf="descripcionProducto.invalid">{{getErrorMessage()}}</mat-error>
+      <mat-error *ngIf="descripcionProducto.invalid">Ingrese {{getErrorMessage()}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" floatLabel="always">
@@ -43,7 +43,7 @@
           {{unidad.descripcion}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="unidadProducto.invalid">{{getErrorMessage()}}</mat-error>
+      <mat-error *ngIf="unidadProducto.invalid">Seleccione {{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <br><br>
     <div class="btns">

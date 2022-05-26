@@ -110,7 +110,7 @@ export class ProveedorFormComponent implements OnInit {
       swal.fire({//Mensaje para mostrarle al usuario que faltan los datos obligatorios
         icon: 'warning',
         title: 'Oops...',
-        text: 'Ingrese algún dato para continuar',
+        text: 'Ingrese los datos requeridos para continuar',
       });
     }
   }
@@ -148,7 +148,7 @@ export class ProveedorFormComponent implements OnInit {
       swal.fire({//Mensaje de advertencia al usuario de que los datos necesarios no se han ingresado
         icon: 'warning',
         title: 'Oops...',
-        text: 'Ingrese algún dato para continuar',
+        text: 'Ingrese los datos requeridos para continuar',
       })
     }
   }

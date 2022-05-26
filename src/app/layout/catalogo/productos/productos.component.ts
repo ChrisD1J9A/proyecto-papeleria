@@ -49,7 +49,7 @@ export class ProductosComponent implements OnInit {
               if (response) {
                 swal.fire(
                   'Mensaje',
-                  `El producto:  ${response.descripcion} fue dado de baja con éxito`,//Mensaje de confirmacion exitoso
+                  `El producto:  ${producto.descripcion} fue dado de baja con éxito`,//Mensaje de confirmacion exitoso
                   'success'
                 );
                 //  window.location.reload();
@@ -89,7 +89,7 @@ export class ProductosComponent implements OnInit {
               if (response) {
                 swal.fire(
                   'Mensaje',
-                  `El producto:  ${response.descripcion} fue activado con éxito`, //Mensaje exitoso
+                  `El producto:  ${producto.descripcion} fue activado con éxito`, //Mensaje exitoso
                   'success'
                 );
               } else {
