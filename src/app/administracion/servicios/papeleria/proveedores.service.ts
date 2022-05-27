@@ -5,12 +5,13 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map, catchError} from 'rxjs/operators';
 import swal  from 'sweetalert2';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProveedoresService {
-  private urlEndPoint:string = 'http://localhost:8080/api/proveedores';
+  private urlEndPoint:string = environment.apiUrl + 'proveedores';
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(private http: HttpClient, private router: Router) { }

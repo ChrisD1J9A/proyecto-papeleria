@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Detalle_solicitud_PFDC } from '../../modelos/papeleria/detalle_solicitud_PFDC';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DetalleSolicitudPFDCService {
-  private urlEndPoint: string = 'http://localhost:8080/api/detalle_solicitud_PFDC';
+  private urlEndPoint: string = environment.apiUrl + 'detalle_solicitud_PFDC';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }

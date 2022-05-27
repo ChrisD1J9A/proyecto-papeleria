@@ -3,18 +3,19 @@ import { Inventario } from '../../modelos/papeleria/inventario';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventarioService {
-  private urlEndPoint: string = 'http://localhost:8080/api/inventario';
+  private urlEndPoint: string = environment.apiUrl + 'inventario';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }
 
   /**
-   **@return Se crea/almacena un nuevo Inventario en la base de datos 
+   **@return Se crea/almacena un nuevo Inventario en la base de datos
    **/
   public create(inventario: Inventario): Observable<Inventario>
   {

@@ -3,14 +3,14 @@ import { Compra } from '../../modelos/papeleria/compra';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ComprasService {
-  private urlEndPoint: string = 'http://localhost:8080/api/compras';
+  private urlEndPoint: string = environment.apiUrl + 'compras';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
-  private httpHeadersArchivo = new HttpHeaders({ 'Content-Type': 'application/octet-stream' });
 
   constructor(private http: HttpClient) { }
 

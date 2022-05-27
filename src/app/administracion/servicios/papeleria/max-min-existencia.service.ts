@@ -3,12 +3,13 @@ import {MaxMinDeExistencia} from '../../modelos/papeleria/maxMinDeExistencia';
 import { Observable } from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MaxMinExistenciaService {
-  private urlEndPoint:string = 'http://localhost:8080/api/maxMinExistencia';
+  private urlEndPoint:string = environment.apiUrl + 'maxMinExistencia';
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
   constructor(private http: HttpClient) { }
 

@@ -3,12 +3,13 @@ import { Solicitud } from '../../modelos/papeleria/solicitud';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SolicitudesService {
-  private urlEndPoint: string = 'http://localhost:8080/api/solicitudes';
+  private urlEndPoint: string = environment.apiUrl + 'solicitudes';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }

@@ -2,12 +2,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Mail } from '../../modelos/papeleria/Mail';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MailService {
-  private urlEndPoint: string = 'http://localhost:8080/api/correo';
+  private urlEndPoint: string = environment.apiUrl + 'correo';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient,

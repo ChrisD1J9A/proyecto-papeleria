@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Detalle_inventario } from '../../modelos/papeleria/detalle_inventario';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DetalleInventarioService {
-  private urlEndPoint: string = 'http://localhost:8080/api/detalle_inventario';
+  private urlEndPoint: string = environment.apiUrl + 'detalle_inventario';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }
