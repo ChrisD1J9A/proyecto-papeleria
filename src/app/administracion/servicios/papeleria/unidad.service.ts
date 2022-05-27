@@ -64,6 +64,5 @@ export class UnidadService
         swal.fire(e.error.mensaje, e.error.error , 'error');
         return throwError(e);
       }));
-
   }
 }
