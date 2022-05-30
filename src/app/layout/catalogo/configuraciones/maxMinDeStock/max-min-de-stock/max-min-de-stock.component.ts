@@ -16,7 +16,7 @@ import { SucursalService } from 'src/app/administracion/servicios';
 export class MaxMinDeStockComponent implements OnInit {
   maxMinDeStock: MaxMinDeStock = new MaxMinDeStock(); //Objeto de la configuracion maxMinDeStock
   MaxMins: MaxMinDeStock[]; //Arreglo para almacenar las configuraciones
-  titulo: string = "Agregar nueva configuracion de stock"; //Titulo de lapagina html
+  titulo: string; //Titulo de lapagina html
   displayedColumns: string[] = ['id_config_max_min', 'sucursal', 'usuario_modifico', 'max_stock', 'min_stock', 'fecha_creacion', 'fecha_act', 'action']; //Areglo para establecer los encabezados de cada columna de la tabla
   dataSource = new MatTableDataSource(); //Para almacenar las configuraciones en la Tabla
   maxMinFR = new FormControl('', [Validators.required]); //Form control para validar elformulario
@@ -29,6 +29,7 @@ export class MaxMinDeStockComponent implements OnInit {
     private sucursalService: SucursalService) { }
 
   ngOnInit(): void {
+    this.titulo = "Agregar nueva ";
     this.maxMinS.getMaxMinDeStockA().subscribe(//Obetenemos todas las configuraciones existentes
       maxMinss => {
         this.MaxMins = this.filtarSoloActivos(maxMinss);//Aplicamos un filtro para solo obtener las  configuraciones activas
@@ -50,6 +51,7 @@ export class MaxMinDeStockComponent implements OnInit {
     this.maxMinDeStock = new MaxMinDeStock();
     this.sucursal = new Sucursal();
     this.banderaEditar = true;
+    this.titulo = "Agregar nueva ";
   }
 
   //Metodo utilizado  cuando el usuario quiere editar una configuracion de la tabla
@@ -67,9 +69,12 @@ export class MaxMinDeStockComponent implements OnInit {
             if (response) { //Se busca la configuracion en especifica de acuerdo a su id
               this.maxMinDeStock = response //Se carga al objeto asociado con el formulario
               this.banderaEditar = false; //Bandera que desactiva el select de las sucursales
+              this.titulo = "Actualizar "; //Cambiar el titulo de la pagina
             } else { }
           })
         }
+      }else{
+        this.titulo = "Agregar nueva ";
       }
     })
   }
@@ -84,8 +89,8 @@ export class MaxMinDeStockComponent implements OnInit {
           text: 'Ya existe una configuracion para esa sucursal',
         });
       } else {
-        if (this.maxMinDeStock.min_stock > this.maxMinDeStock.max_stock) {//Se valida que el minimo no sea mayor al maximo de existencia
-          swal.fire('', 'El mínimo de existencia no puede ser mayor al máximo', 'info'); //Se lanza el mensaje en caso de ocurrir dicho error
+        if (this.maxMinDeStock.min_stock > this.maxMinDeStock.max_stock) {//Se valida que el minimo no sea mayor al maximo de Stock
+          swal.fire('', 'El mínimo de Stock no puede ser mayor al máximo', 'info'); //Se lanza el mensaje en caso de ocurrir dicho error
         } else {
           swal.fire({//Una vez que se pasaron las validaciones, se pregunta al usuario  si decide guardar la configuracion
             title: '¿Desea guardar este nuevo elemento?',
@@ -203,7 +208,7 @@ export class MaxMinDeStockComponent implements OnInit {
 
   //Mensaje de error en caso de que el valor minimo supere al maximo
   getErrorMessage() {
-    return this.controlMax.hasError('max') ? 'El mínimo de existencia no puede ser mayor al máximo' : '';
+    return this.controlMax.hasError('max') ? 'El mínimo de Stock no puede ser mayor al máximo' : '';
   }
 
   //Metodo que comprueba si existe una configuracion para la sucursal seleccionada por el usuario

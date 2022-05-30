@@ -15,7 +15,7 @@ import { SucursalService } from 'src/app/administracion/servicios';
 export class MaxMinDeExistenciaComponent implements OnInit {
   maxMinDeExistencia: MaxMinDeExistencia = new MaxMinDeExistencia(); //Objeto de la configuracion MaxMinDeExistencia
   MaxMins: MaxMinDeExistencia[];//Lista de configuraciones
-  titulo: string = "Agregar nueva configuracion de existencia";//Titulo para mostrar en el html
+  titulo: string;//Titulo para mostrar en el html
   displayedColumns: string[] = ['id_config_max_min', 'sucursal', 'usuario_modifico', 'max_existencia', 'min_existencia', 'fecha_creacion', 'fecha_act', 'action'];//Encabezado para la tabla de las configuraciones
   dataSource = new MatTableDataSource();//Dónde se cargan los datos para  la tabla
   maxMinFR = new FormControl('', [Validators.required]);//Validacion del formulario
@@ -28,6 +28,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
     private sucursalService: SucursalService) { }
 
   ngOnInit(): void {
+    this.titulo = "Agregar nueva ";
     this.maxMinS.getMaxMinDeExistenciaA().subscribe(//Obetenemos todas las configuraciones existentes
       maxMinss => {
         this.MaxMins = this.filtarSoloActivos(maxMinss); //Aplicamos un filtro para solo obtener las  configuraciones activas
@@ -49,6 +50,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
     this.maxMinDeExistencia = new MaxMinDeExistencia();
     this.sucursal = new Sucursal();
     this.banderaEditar = true;
+    this.titulo = "Agregar nueva ";
   }
 
   //Metodo utilizado  cuando el usuario quiere editar una configuracion de la tabla
@@ -60,6 +62,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
       confirmButtonText: 'Si',
       denyButtonText: `No`,
     }).then((result) => {
+      this.titulo = "Actualizar ";//Titulo para la pagina
       if (result.isConfirmed) {//En el caso de que el usuario decidió proseguir...
         if (id_maxMinDeExistencia) { //Solo se corrobora que se recibe una variable
           this.maxMinS.getMaxMinDeExistencia(id_maxMinDeExistencia).subscribe((response) => {
@@ -67,8 +70,10 @@ export class MaxMinDeExistenciaComponent implements OnInit {
               this.maxMinDeExistencia = response //Se carga al objeto asociado con el formulario
               this.banderaEditar = false; //Bandera que desactiva el select de las sucursales
             } else { }
-          })
+          });
         }
+      }else{
+        this.titulo = "Agregar nueva ";
       }
     })
   }
