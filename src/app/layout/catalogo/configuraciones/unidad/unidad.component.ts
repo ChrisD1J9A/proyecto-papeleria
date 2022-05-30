@@ -149,7 +149,7 @@ export class UnidadComponent implements OnInit {
               if (response) {
                 swal.fire(
                   'Mensaje',
-                  `La unidad:  ${response.descripcion} fue dado de baja con éxito`, //Mensaje de confirmacion
+                  `La unidad:  ${unidad.descripcion} fue dado de baja con éxito`, //Mensaje de confirmacion
                   'success'
                 );
               } else {
@@ -188,7 +188,7 @@ export class UnidadComponent implements OnInit {
               if (response) {
                 swal.fire(
                   'Mensaje',
-                  `La unidad:  ${response.descripcion} fue activada con éxito`,//Menaje exitoso
+                  `La unidad:  ${unidad.descripcion} fue activada con éxito`,//Menaje exitoso
                   'success'
                 );
               } else {
