@@ -69,7 +69,7 @@ export class CompraFViewComponent implements OnInit {
     private currencyPipe: CurrencyPipe,
     private dialog: MatDialog) {
     const currentYear = new Date().getFullYear();
-    this.minDate = new Date(currentYear - 1, 12, 31);
+    this.minDate = new Date(currentYear - 0, 4, 0);
   }
 
   ngOnInit(): void {

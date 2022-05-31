@@ -51,7 +51,7 @@ export class ProveedoresComponent implements OnInit {
               if (response) {
                 swal.fire(
                   'Mensaje',
-                  `El proveedor:  ${response.nombre} fue dado de baja con éxito`, //Mensaje de confirmación exitosa
+                  `El proveedor:  ${proveedor.nombre} fue dado de baja con éxito`, //Mensaje de confirmación exitosa
                   'success'
                 );
               } else {
@@ -90,7 +90,7 @@ export class ProveedoresComponent implements OnInit {
               if (response) {
                 swal.fire(
                   'Mensaje',
-                  `El proveedor:  ${response.nombre} fue activado con éxito`, //Mensaje de actualizacion exitosa
+                  `El proveedor:  ${proveedor.nombre} fue activado con éxito`, //Mensaje de actualizacion exitosa
                   'success'
                 );
               } else {
