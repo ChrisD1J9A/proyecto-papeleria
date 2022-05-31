@@ -20,12 +20,18 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 import { TicketViewComponent } from '../../compras-adquisiciones/compra/ticket/ticket-view.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 
 
 @Component({
   selector: 'app-compra-fview',
   templateUrl: './compra-fview.component.html',
-  styleUrls: ['./compra-fview.component.scss']
+  styleUrls: ['./compra-fview.component.scss'],
+  providers: [
+    { provide: DateAdapter, useClass: AppDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS }
+  ]
 })
 export class CompraFViewComponent implements OnInit {
   compra = new Compra();//Objeto compra

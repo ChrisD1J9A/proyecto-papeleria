@@ -60,9 +60,7 @@ export class InventariosAdquisicionesComponent implements OnInit {
       this.inventarioService.getInventarioBySucursal(this.sucursal.idSucursal).subscribe(
         inventario => {//Obtenemos el inventario mediante el id de la sucursal
           this.inventario = inventario;//almacenamos el inventario en el objeto
-          this.nombreSucursalInventarioActual = this.sucursal.nombreSucursal;//Guardamos el nombre
           //Se cargan los maximos y minimos de la sucursal del seleccionado inventario
-          this.obtenerMaximosMinimosDeLaSucursal(inventario);
           //De ser null el inventario quiere decir que no hay inventario para esa sucursal en la base de datos
           if (inventario == null) {
             this.BanderaMostrar = false; //No muestra el inventario particular
@@ -74,6 +72,8 @@ export class InventariosAdquisicionesComponent implements OnInit {
               text: 'No se encontró un inventario de esa sucursal',//Se informa al usuario de que no hay inventario
             })
           }else{
+            this.obtenerMaximosMinimosDeLaSucursal(inventario);
+            this.nombreSucursalInventarioActual = this.sucursal.nombreSucursal;//Guardamos el nombre
             this.BanderaMostrar = true;//Muestra el inventario de la sucursal
             this.mostrarTodos = false;
             //Se cargan los detalles de ese inventario, se hizo la busqueda en la base de datos mediante el id_inventario
