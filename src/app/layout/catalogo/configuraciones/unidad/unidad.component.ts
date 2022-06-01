@@ -15,12 +15,13 @@ import { ActivatedRoute } from '@angular/router';
 export class UnidadComponent implements OnInit {
   unidad: Unidad = new Unidad(); //Objeto Unidad
   unidades: Unidad[];//Arreglo que almacena las unidades de la base de datos
-  titulo: string = "Agregar nueva Unidad";//titulo del html
+  titulo;//titulo del html
   displayedColumns: string[] = ['id_unidad', 'descripcion', 'estatus', 'action'];//Encabezados de las columnas de la tabla
   dataSource = new MatTableDataSource(); //Tabla de las unidades que provienen de la base de datos
   descripcionUnidad = new FormControl('', [Validators.required]);//Form control para manejo de errores
 
   ngOnInit() {
+    this.titulo= "Agregar nueva Unidad"
     this.unidadService.getUnidades().subscribe( //Obtenemos todas las unidades de la base de datos
       unidades => {
         this.unidades = unidades;//Cargamos estas unidades en el arreglo de unidades
@@ -47,6 +48,7 @@ export class UnidadComponent implements OnInit {
   //Metodo que inicializa el objeto unidad, que sirve para limpiar el formulario  al cual esta asociado este objeto
   public limpiar() {
     this.unidad = new Unidad();
+    this.titulo= "Agregar nueva Unidad"
   }
 
   //Metodo que entra en funcion al momento que el usuario decida editar una unidad existente
@@ -62,6 +64,7 @@ export class UnidadComponent implements OnInit {
         if (id_unidad) { //Valida que si existe el valor
           this.unidadService.getUnidad(id_unidad).subscribe((response) => { //Se consulta en la base de datos
             if (response) { //Si se obtiene
+              this.titulo= "Actualizar Unidad"
               this.unidad = response//Se carga al objeto  Unidad que se asocia al formulario
             } else { }
           })

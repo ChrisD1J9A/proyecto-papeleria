@@ -113,7 +113,7 @@ export class ProductoFormComponent implements OnInit {
       swal.fire({//En caso de que el dato requerido esté vacío
         icon: 'warning',
         title: 'Oops...',
-        text: 'Ingrese algún dato para continuar',
+        text: 'Ingrese los datos requeridos para continuar',
       });
     }
   }

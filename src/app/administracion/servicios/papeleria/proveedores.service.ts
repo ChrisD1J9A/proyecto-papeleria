@@ -34,7 +34,7 @@ export class ProveedoresService {
       return this.http.post<any>(this.urlEndPoint, proveedor, {headers: this.httpHeaders}).pipe(
         catchError (e => {
           console.error(e.error.mensaje);
-          swal.fire(e.error.mensaje, e.error.error , 'error');
+          swal.fire(e.error.mensaje, 'Verifique lo ingresado' , 'error');
           return throwError(e);
         }));
   }

@@ -12,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class ProveedorFormComponent implements OnInit {
   titulo: string = "Agregar nuevo Proveedor";//Titulo de la pagina si se va a agregar un nuevo proveedor
-  titulo2: string = "Editar Producto";//Titulo de la pagina si se va a editar un proveedor
+  titulo2: string = "Editar Proveedor";//Titulo de la pagina si se va a editar un proveedor
   proveedor = new Proveedor();//Objeto proveedor
   proveedores: Proveedor[];//Arreglo de proveedores
   nombreProveedor = new FormControl('', [Validators.required]);//Form control para validar el formulario

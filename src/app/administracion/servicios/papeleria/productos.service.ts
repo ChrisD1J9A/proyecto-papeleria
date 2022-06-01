@@ -34,7 +34,7 @@ export class ProductosService {
       return this.http.post<any>(this.urlEndPoint, producto, {headers: this.httpHeaders}).pipe(
         catchError (e => {
           console.error(e.error.mensaje);
-          swal.fire(e.error.mensaje, e.error.error , 'error');
+          swal.fire(e.error.mensaje, 'Verificar lo ingresado' , 'error');
           return throwError(e);
         }));
   }
