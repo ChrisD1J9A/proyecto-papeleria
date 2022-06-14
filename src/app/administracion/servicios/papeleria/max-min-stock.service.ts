@@ -34,9 +34,9 @@ export class MaxMinStockService {
   /**
    **@return Se consulta la configuracion en la base de datos mediante su id
    **/
-  public getMaxMinDeStock(id): Observable<MaxMinDeStock>
+  public getMaxMinDeStock(id): Observable<any>
   {
-    return this.http.get<MaxMinDeStock>(`${this.urlEndPoint}/${id}`);
+    return this.http.get(`${this.urlEndPoint}/${id}`);
   }
 
   /**

@@ -50,8 +50,8 @@ export class SolicitudesService {
   /**
    **@return Devuelve una solicitud mediante su id en la base de datos
    **/
-  getSolicitud(id): Observable<Solicitud>
+  getSolicitud(id): Observable<any>
   {
-    return this.http.get<Solicitud>(`${this.urlEndPoint}/${id}`);
+    return this.http.get(`${this.urlEndPoint}/${id}`);
   }
 }

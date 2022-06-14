@@ -123,20 +123,20 @@ export class CompraFViewComponent implements OnInit {
       let id = params['id']
       if (id) { //Se valida que exista dicha id
         this.comprasService.getCompra(id).subscribe(
-          (compra) => {//Se busca en la base de datos la compra mediante la id anteriormente cargada
-            this.compra = compra; //Se guarda en el objeto
+          (response) => {//Se busca en la base de datos la compra mediante la id anteriormente cargada
+            this.compra = response.compra; //Se guarda en el objeto
             //El gasto total que se registra lo pasamos a un string para darle formato de pesos
             this.precioFormateado = this.compra.gasto_total.toString();
             this.precioFormateado = this.currencyPipe.transform(this.precioFormateado, '$');
             this.proveedor = this.compra.proveedor; //El proveedor de la compra se aisla en su propio objeto
             //Se aisla tambien el id de la solicitud desde la cual viene la compra
-            this.numeroSolicitud = compra.solicitud.id_solicitud;
+            this.numeroSolicitud = response.compra.solicitud.id_solicitud;
             if (this.proveedor) { //Para evitar errores en consola corroboramos que exista el proveedor
               this.nombreProveedor = this.proveedor.nombre;//Para guardar su nombre y mostrarlo en la vista
             } else {
               this.nombreProveedor = ""; //O dejar en blanco este nombre para que no necesariamente sea null
             }
-            if (compra.estatus == 'Completada') {//En este punto se evalua el estatus de la compra
+            if (response.compra.estatus == 'Completada') {//En este punto se evalua el estatus de la compra
               //De ser una compra Completada implica que la compra no puede ser editada de nuevo,
               //por lo tanto esta bander deja los input en readonly
               this.banderaEditar = false;
@@ -146,8 +146,8 @@ export class CompraFViewComponent implements OnInit {
             }
 
             //Esta variable que pertenece en a la tabla de solicitud de ser true implica que la solicitud contiene productos fuera del catalogo
-            if (compra.solicitud.pfdc) {
-              this.detalleCompraPFDCService.getDetallesCompra_PFDC(compra.id_compra).subscribe(
+            if (response.compra.solicitud.pfdc) {
+              this.detalleCompraPFDCService.getDetallesCompra_PFDC(response.id_compra).subscribe(
                 detalles_ComprasPFDC => {//De tener productos fuera del catalogo, se obtienen los datos respectivos mediante el id_compra
                   this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);//Los datos obtenidos se cargan a la tabla
                   this.detalles_compra = detalles_ComprasPFDC; //se cargan al arreglo respectivo tambien

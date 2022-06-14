@@ -42,9 +42,9 @@ export class InventarioService {
   /**
    **@return Se obtiene un Inventario de la base de datos mediante su id
    **/
-  public getInventario(id): Observable<Inventario>
+  public getInventario(id): Observable<any>
   {
-    return this.http.get<Inventario>(`${this.urlEndPoint}/${id}`);
+    return this.http.get(`${this.urlEndPoint}/${id}`);
   }
 
   /**

@@ -67,7 +67,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
         if (id_maxMinDeExistencia) { //Solo se corrobora que se recibe una variable
           this.maxMinS.getMaxMinDeExistencia(id_maxMinDeExistencia).subscribe((response) => {
             if (response) { //Se busca la configuracion en especifica de acuerdo a su id
-              this.maxMinDeExistencia = response //Se carga al objeto asociado con el formulario
+              this.maxMinDeExistencia = response.maxMinDeExistencia //Se carga al objeto asociado con el formulario
               this.banderaEditar = false; //Bandera que desactiva el select de las sucursales
             } else { }
           });

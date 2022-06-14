@@ -34,9 +34,9 @@ export class MaxMinExistenciaService {
   /**
    **@return Se consulta la configuracion en la base de datos mediante su id
    **/
-  public getMaxMinDeExistencia(id): Observable<MaxMinDeExistencia>
+  public getMaxMinDeExistencia(id): Observable<any>
   {
-    return this.http.get<MaxMinDeExistencia>(`${this.urlEndPoint}/${id}`);
+    return this.http.get(`${this.urlEndPoint}/${id}`);
   }
 
   /**

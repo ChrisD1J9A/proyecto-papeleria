@@ -43,6 +43,7 @@
     </mat-form-field>
     <br>
     <button mat-mini-fab
+            *ngIf="solicitud.estatus==='Pendiente'"
             class="botonAyuda"
             color="primary"
             matTooltip="Para autorizar la solicitud tome en cuenta que la sucursal dónde fue emitida esta solicitud,

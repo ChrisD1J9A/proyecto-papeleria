@@ -52,8 +52,8 @@ export class CompraAdqViewComponent implements OnInit {
       let id = params['id']//Se guarda el mencionado id
       if (id) {//Se valida que exista
         this.compraService.getCompra(id).subscribe(//Se obtiene la compra mediante su id
-          (compra) => {
-            this.compra = compra;//Se guarda la compra en el objeto compra
+          (response) => {
+            this.compra = response.compra;//Se guarda la compra en el objeto compra
             //El gasto total que se registra lo pasamos a un string para darle formato de pesos
             this.precioFormateado = this.compra.gasto_total.toString();
             this.precioFormateado = this.currencyPipe.transform(this.precioFormateado, '$');//Se le da formato de pesos
@@ -63,14 +63,14 @@ export class CompraAdqViewComponent implements OnInit {
             } else {
               this.nombreProveedor = "";
             }
-            if (compra.estatus == 'Completada') {//Dependiendo del estatus la compra se mostrará cierta informacion
+            if (response.compra.estatus == 'Completada') {//Dependiendo del estatus la compra se mostrará cierta informacion
               this.banderaEditar = false;
             } else {
               this.banderaEditar = true;
             }
-            this.solicitud = compra.solicitud;//Se guarda o aisla el objeto soliciutd
-            if(compra.solicitud.pfdc){//Se evalua si existen productos fuera del catalogo
-              this.detalleCompraPFDCService.getDetallesCompra_PFDC(compra.id_compra).subscribe(
+            this.solicitud = response.compra.solicitud;//Se guarda o aisla el objeto soliciutd
+            if(response.compra.solicitud.pfdc){//Se evalua si existen productos fuera del catalogo
+              this.detalleCompraPFDCService.getDetallesCompra_PFDC(response.compra.id_compra).subscribe(
                 detalles_ComprasPFDC => {//De existeir se buscan estos productos fuera del catalogo mediante el id_compra
                   //Se cargan los datos obtenidos a la base de datos
                   this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);

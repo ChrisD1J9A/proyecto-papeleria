@@ -67,7 +67,7 @@ export class MaxMinDeStockComponent implements OnInit {
         if (id_maxMinDeStock) {//Solo se corrobora que se recibe una variable
           this.maxMinS.getMaxMinDeStock(id_maxMinDeStock).subscribe((response) => {
             if (response) { //Se busca la configuracion en especifica de acuerdo a su id
-              this.maxMinDeStock = response //Se carga al objeto asociado con el formulario
+              this.maxMinDeStock = response.maxMinDeStock //Se carga al objeto asociado con el formulario
               this.banderaEditar = false; //Bandera que desactiva el select de las sucursales
               this.titulo = "Actualizar "; //Cambiar el titulo de la pagina
             } else { }

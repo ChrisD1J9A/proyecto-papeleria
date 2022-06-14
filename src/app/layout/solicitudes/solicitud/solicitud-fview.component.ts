@@ -39,8 +39,8 @@ export class SolicitudFViewComponent implements OnInit {
       let id = params['id']//Se obtiene el id de la solicitud en la ruta de navegacion
       if (id) {//Se valida que exista el id
         this.solicitudesService.getSolicitud(id).subscribe(
-          (solicitud) =>//Se busca la solicitud mediante el id_solicitud
-          this.solicitud = solicitud
+          (response) =>//Se busca la solicitud mediante el id_solicitud
+          this.solicitud = response.solicitud
         )
         this.detalleSolicitudService.getDetallesSolicitud(id).subscribe(
           deta_solicitudes => {//Se buscan los detalles de la solicitud acorde al id_solicitud

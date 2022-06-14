@@ -80,9 +80,9 @@ export class SolicitudAdqViewComponent implements OnInit {
       let id = params['id']//Se guarda el id_solicitud que viene en la ruta de navegacion
       if (id) {
         this.solicitudesService.getSolicitud(id).subscribe(
-          (solicitud) => {//SE BUSCA LA Solicitud mediante el id
-            this.solicitud = solicitud;//se guarda la solicitud
-            this.obtenerMaximosMinimosDeLaSucursal(solicitud);//se cargan las configuraciones de la sucursal donde se emite la solicitud
+          (response) => {//SE BUSCA LA Solicitud mediante el id
+            this.solicitud = response.solicitud;//se guarda la solicitud
+            this.obtenerMaximosMinimosDeLaSucursal(response.solicitud);//se cargan las configuraciones de la sucursal donde se emite la solicitud
             if (this.solicitud.estatus === "Pendiente") {//Si el estus es pendiente
               this.flag = false;//Entonces se muestran componentes para una solicitud pendiente
             } else {

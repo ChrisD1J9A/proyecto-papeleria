@@ -42,9 +42,9 @@ export class ComprasService {
   /**
    **@return Se obtiene una Compra mediante su id
    **/
-  getCompra(id): Observable<Compra>
+  getCompra(id): Observable<any>
   {
-    return this.http.get<Compra>(`${this.urlEndPoint}/${id}`);
+    return this.http.get(`${this.urlEndPoint}/${id}`);
   }
 
   /**
