@@ -7,7 +7,7 @@ import { Compra } from '../../../administracion/modelos/papeleria/compra';
 import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
 import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
-import { Detalle_compra_PFDC } from '../../../administracion/modelos/papeleria/detalle_compra_PFDC';
+import { Detalle_compra_pfdc } from '../../../administracion/modelos/papeleria/detalle_compra_PFDC';
 import { DetalleCompraPFDCService } from '../../../administracion/servicios/papeleria/detalle-compra-pfdc.service';
 import { Proveedor } from '../../../administracion/modelos/papeleria/proveedor';
 import { TicketViewComponent } from './ticket/ticket-view.component';
@@ -23,7 +23,7 @@ export class CompraAdqViewComponent implements OnInit {
   proveedor = new Proveedor();//Objeto proveedor
   compras: Compra[];//Arreglo de compras
   detalles_compra: Detalle_compra[];//Arreglo de detalles de compra
-  detalle_compra_PFDC = new Detalle_compra_PFDC();//Objeto de detales de compra con productos fuera del catalogo
+  detalle_compra_PFDC = new Detalle_compra_pfdc();//Objeto de detales de compra con productos fuera del catalogo
   detalles_compra_PFDC = new Array();//Arreglo de detales de compra con productos fuera del catalogo
   dataSource = new MatTableDataSource();//Tabla para los detalles de la compra
   dataSource2 = new MatTableDataSource();//Tabla para los detalles de la compra con productos fuera del catalogo
@@ -70,7 +70,7 @@ export class CompraAdqViewComponent implements OnInit {
             }
             this.solicitud = response.compra.solicitud;//Se guarda o aisla el objeto soliciutd
             if(response.compra.solicitud.pfdc){//Se evalua si existen productos fuera del catalogo
-              this.detalleCompraPFDCService.getDetallesCompra_PFDC(response.compra.id_compra).subscribe(
+              this.detalleCompraPFDCService.getDetallesCompra_pfdc(response.compra.id_compra).subscribe(
                 detalles_ComprasPFDC => {//De existeir se buscan estos productos fuera del catalogo mediante el id_compra
                   //Se cargan los datos obtenidos a la base de datos
                   this.dataSource2 = new MatTableDataSource(detalles_ComprasPFDC);

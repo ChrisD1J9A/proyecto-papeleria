@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Detalle_solicitud_PFDC } from '../../modelos/papeleria/detalle_solicitud_PFDC';
+import { Detalle_solicitud_pfdc } from '../../modelos/papeleria/detalle_solicitud_PFDC';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class DetalleSolicitudPFDCService {
-  private urlEndPoint: string = environment.apiUrl + 'detalle_solicitud_PFDC';
+  private urlEndPoint: string = environment.apiUrl + 'detalle_solicitud_pfdc';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }
@@ -16,32 +16,32 @@ export class DetalleSolicitudPFDCService {
   /**
    **@return Se crea detalles de solicitud con productos fuera del catalogo en la base de datos
    **/
-  public create(detalle_solicitud: Detalle_solicitud_PFDC): Observable<Detalle_solicitud_PFDC>
+  public create(detalle_solicitud: Detalle_solicitud_pfdc): Observable<Detalle_solicitud_pfdc>
   {
-      return this.http.post<Detalle_solicitud_PFDC>(this.urlEndPoint, detalle_solicitud, {headers: this.httpHeaders})
+      return this.http.post<Detalle_solicitud_pfdc>(this.urlEndPoint, detalle_solicitud, {headers: this.httpHeaders})
   }
 
   /**
    **@return Se actualiza detalles de solicitud con productos fuera del catalogo en la base de datos
    **/
-  public update(detalle_solicitud_PFDC: Detalle_solicitud_PFDC[], id_solicitud: number): Observable<Detalle_solicitud_PFDC[]>
+  public update(detalle_solicitud_pfdc: Detalle_solicitud_pfdc[], id_solicitud: number): Observable<Detalle_solicitud_pfdc[]>
   {
-    return this.http.put<Detalle_solicitud_PFDC[]>(`${this.urlEndPoint}/${id_solicitud}`, detalle_solicitud_PFDC, {headers: this.httpHeaders})
+    return this.http.put<Detalle_solicitud_pfdc[]>(`${this.urlEndPoint}/${id_solicitud}`, detalle_solicitud_pfdc, {headers: this.httpHeaders})
   }
 
   /**
    **@return Se obtienen todos detalles de solicitud con productos fuera del catalogo mediante el id de la solicitud
    **/
-  public getDetallesSolicitud_PFDC(id): Observable<Detalle_solicitud_PFDC[]>
+  public getDetallesSolicitud_pfdc(id): Observable<Detalle_solicitud_pfdc[]>
   {
-    return this.http.get<Detalle_solicitud_PFDC[]>(`${this.urlEndPoint}/${id}`);
+    return this.http.get<Detalle_solicitud_pfdc[]>(`${this.urlEndPoint}/${id}`);
   }
 
   /**
    **@return Devuelve todos los detalles de solicitud con productos fuera del catalogo disponibles en la base de datos
    **/
-  public getDetallesSolicitud_PFDC_All(): Observable<Detalle_solicitud_PFDC[]>
+  public getDetallesSolicitud_pfdc_All(): Observable<Detalle_solicitud_pfdc[]>
   {
-    return this.http.get<Detalle_solicitud_PFDC[]>(`${this.urlEndPoint}`);
+    return this.http.get<Detalle_solicitud_pfdc[]>(`${this.urlEndPoint}`);
   }
 }

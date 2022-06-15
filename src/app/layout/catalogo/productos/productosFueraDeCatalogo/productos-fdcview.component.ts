@@ -27,7 +27,7 @@ export class ProductosFDCViewComponent implements OnInit {
 
   //Metodo para consultar y cargar  a la tabla los productos fuera del catalogo
   cargarPfdc() {
-    this.pfdc.getDetallesSolicitud_PFDC_All().subscribe(//Se realiza la consulta al back a traves del service
+    this.pfdc.getDetallesSolicitud_pfdc_All().subscribe(//Se realiza la consulta al back a traves del service
       datos => {
         datos.sort(function(a, b) { //A los datos obtenidos se les aplica un sort para ordenarlos alfabeticamente
           if (a.nombreProducto > b.nombreProducto) {//Es necesario esta parte para especificar que será a traves del nombreProducto el ordenaniento

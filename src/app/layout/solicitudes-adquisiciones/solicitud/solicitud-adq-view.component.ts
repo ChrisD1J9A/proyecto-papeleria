@@ -7,10 +7,10 @@ import { Compra } from '../../../administracion/modelos/papeleria/compra';
 import { Detalle_compra } from '../../../administracion/modelos/papeleria/detalle_compra';
 import { SolicitudesService } from '../../../administracion/servicios/papeleria/solicitudes.service';
 import { DetalleSolicitudService } from '../../../administracion/servicios/papeleria/detalle-solicitud.service';
-import { Detalle_solicitud_PFDC } from '../../../administracion/modelos/papeleria/detalle_solicitud_PFDC';
+import { Detalle_solicitud_pfdc } from '../../../administracion/modelos/papeleria/detalle_solicitud_PFDC';
 import { DetalleSolicitudPFDCService } from '../../../administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
 import { DetalleCompraPFDCService } from '../../../administracion/servicios/papeleria/detalle-compra-pfdc.service';
-import { Detalle_compra_PFDC } from '../../../administracion/modelos/papeleria/detalle_compra_PFDC';
+import { Detalle_compra_pfdc } from '../../../administracion/modelos/papeleria/detalle_compra_PFDC';
 import { ComprasService } from '../../../administracion/servicios/papeleria/compras.service';
 import { DetalleCompraService } from '../../../administracion/servicios/papeleria/detalle-compra.service';
 import { MaxMinStockService } from 'src/app/administracion/servicios/papeleria/max-min-stock.service';
@@ -30,8 +30,8 @@ export class SolicitudAdqViewComponent implements OnInit {
   detalle_solicitud = new Detalle_solicitud();//Objeto detalle solicitud
   detalles_solicitud = new Array();//Arreglo de detalles de solicitud
   detalles_solicitud_pfdc = new Array();//Arreglo de detalles de solicitud con productos fuera del catalogo
-  detalle_solicitud_PFDC = new Detalle_solicitud_PFDC(); //detalle de solicitud con productos fuera del catalogo
-  detalle_compra_pfdc = new Detalle_compra_PFDC(); //detalle de compra con productos fuera del catalogo
+  detalle_solicitud_PFDC = new Detalle_solicitud_pfdc(); //detalle de solicitud con productos fuera del catalogo
+  detalle_compra_pfdc = new Detalle_compra_pfdc(); //detalle de compra con productos fuera del catalogo
   compra = new Compra();//Objeto compra
   detalle_compra = new Detalle_compra();//Objeto de Detalle_compra
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];//Encabezados para las columnas de los detalles de solicitud
@@ -94,7 +94,7 @@ export class SolicitudAdqViewComponent implements OnInit {
             this.dataSource = new MatTableDataSource(deta_solicitudes);//Se cargan los datos a la tabla
             this.detalles_solicitud = deta_solicitudes; //Se guardan los datos en su lista
           });
-        this.detalleSolicitudPFDCService.getDetallesSolicitud_PFDC(id).subscribe(
+        this.detalleSolicitudPFDCService.getDetallesSolicitud_pfdc(id).subscribe(
             detalles_solicitudesPFDC => {//Se obtienen los detalles de la solicitud con productos fuera del catalogo mediate el id
               this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC); //Se cargan los datos a su tabla
               this.detalles_solicitud_pfdc = detalles_solicitudesPFDC;//Se guardan los datos en su lista
@@ -246,7 +246,7 @@ export class SolicitudAdqViewComponent implements OnInit {
         }
         //Si se realizo una solicitud con productos fuera del catalogo se registran los detalles correspondientes
         if(this.solicitud.pfdc===true){
-          var detaSoliPFDC = new Detalle_solicitud_PFDC();
+          var detaSoliPFDC = new Detalle_solicitud_pfdc();
           for(detaSoliPFDC of this.detalles_solicitud_pfdc){
             this.detalle_compra_pfdc.compra = compra;
             this.detalle_compra_pfdc.nombreProducto = detaSoliPFDC.nombreProducto;

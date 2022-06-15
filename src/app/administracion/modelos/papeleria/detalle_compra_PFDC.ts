@@ -1,8 +1,8 @@
 import { Compra } from './compra';
 
-export class Detalle_compra_PFDC
+export class Detalle_compra_pfdc
 {
-  id_detalle_compra_PFDC: number;
+  id_detalle_compra_pfdc: number;
   compra: Compra;
   nombreProducto: string;
   cant_existente: number;

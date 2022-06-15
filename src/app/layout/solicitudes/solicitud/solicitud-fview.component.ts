@@ -5,7 +5,7 @@ import { Solicitud } from '../../../administracion/modelos/papeleria/solicitud';
 import { Detalle_solicitud } from '../../../administracion/modelos/papeleria/detalle_solicitud';
 import { SolicitudesService } from '../../../administracion/servicios/papeleria/solicitudes.service';
 import { DetalleSolicitudService } from '../../../administracion/servicios/papeleria/detalle-solicitud.service';
-import { Detalle_solicitud_PFDC } from '../../../administracion/modelos/papeleria/detalle_solicitud_PFDC';
+import { Detalle_solicitud_pfdc } from '../../../administracion/modelos/papeleria/detalle_solicitud_PFDC';
 import { DetalleSolicitudPFDCService } from '../../../administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -18,8 +18,8 @@ export class SolicitudFViewComponent implements OnInit {
   solicitud = new Solicitud(); //Objecto solicitud
   detalle_solicitud = new Detalle_solicitud();//Objeto detalle solicitud
   detalles_solicitud: Detalle_solicitud[];//Arreglo de detalles de solicitud
-  detalle_solicitud_PFDC = new Detalle_solicitud_PFDC();//Objeto de detalle solicitud con productos fuera del catalogo
-  detalles_solicitud_PFDC: Detalle_solicitud_PFDC[];//Arreglo de de detalles de solicitud con productos fuera del catalogo
+  detalle_solicitud_PFDC = new Detalle_solicitud_pfdc();//Objeto de detalle solicitud con productos fuera del catalogo
+  detalles_solicitud_PFDC: Detalle_solicitud_pfdc[];//Arreglo de de detalles de solicitud con productos fuera del catalogo
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];//Encabezados para las columnas de la tabla de detalles
   dataSource = new MatTableDataSource();//Tabla para detales de solicitud
   dataSource2 = new MatTableDataSource();//Tabla para detales de solicitud con productos fuera del catalogo
@@ -46,7 +46,7 @@ export class SolicitudFViewComponent implements OnInit {
           deta_solicitudes => {//Se buscan los detalles de la solicitud acorde al id_solicitud
             this.dataSource = new MatTableDataSource(deta_solicitudes);//Se carga a la tabla
           });
-        this.detalleSolicitudPFDCService.getDetallesSolicitud_PFDC(id).subscribe(
+        this.detalleSolicitudPFDCService.getDetallesSolicitud_pfdc(id).subscribe(
           detalles_solicitudesPFDC => {//Se obtienen los detalles de solicitud con productos fuera del catalogo
             this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC);//Se carga a la tabla de productos fuera del catalogo
           });

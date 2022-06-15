@@ -8,7 +8,7 @@ import { SolicitudesService } from 'src/app/administracion/servicios/papeleria/s
 import { DetalleSolicitudService } from 'src/app/administracion/servicios/papeleria/detalle-solicitud.service';
 import { Detalle_solicitud } from 'src/app/administracion/modelos/papeleria/detalle_solicitud';
 import { DetalleSolicitudPFDCService } from 'src/app/administracion/servicios/papeleria/detalle-solicitud-pfdc.service';
-import { Detalle_solicitud_PFDC } from 'src/app/administracion/modelos/papeleria/detalle_solicitud_PFDC';
+import { Detalle_solicitud_pfdc } from 'src/app/administracion/modelos/papeleria/detalle_solicitud_PFDC';
 import { ProductosService } from 'src/app/administracion/servicios/papeleria/productos.service';
 import { Producto } from 'src/app/administracion/modelos/papeleria/producto';
 import { Mail } from 'src/app/administracion/modelos/papeleria/Mail';
@@ -38,7 +38,7 @@ export class SolicitudFormComponent implements OnInit {
   date = new Date();//Fecha actual para asignar a la solicitud
   displayedColumns: string[] = ['id_producto', 'unidad', 'descripcion', 'action'];//Datos de cabecera para la tabla
   deta: Detalle_solicitud; //OObjeto detalLe solicitud
-  deta2: Detalle_solicitud_PFDC; //Objeto detalle solicitud de productos fuera del catalogo
+  deta2: Detalle_solicitud_pfdc; //Objeto detalle solicitud de productos fuera del catalogo
   dataSource = new MatTableDataSource();//Tabla de productos del catalogo
   productosSeleccionados = new Set<Producto>();//Lista para almacenar los productos seleccionados del catalogo
   producto = new Producto(); //Objeto producto
