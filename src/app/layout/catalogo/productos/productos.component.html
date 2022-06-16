@@ -1,4 +1,7 @@
 <div class="area-txt">
+  <div class="alert alert-danger" *ngIf="error" role="alert" style="text-align: center; margin-top: 20px;">
+    OCURRIÓ UN ERROR DE COMUNICACIÓN CON EL SERVIDOR, INTÉNTALO MÁS TARDE O COMUNÍCATE CON T.I.
+  </div>
   <h1>Productos</h1>
   <button mat-raised-button class="btn2" color="primary" [routerLink]="['producto-form']"> <mat-icon>add_box</mat-icon> Agregar producto </button>
   <button mat-raised-button

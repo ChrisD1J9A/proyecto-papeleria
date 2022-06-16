@@ -30,6 +30,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import {MatCardModule} from '@angular/material/card';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTableModule} from '@angular/material/table';
 import {MatTabsModule } from '@angular/material/tabs';
 import {MatPaginatorModule} from '@angular/material/paginator';
@@ -162,7 +163,8 @@ import { ProductosFDCViewComponent } from './layout/catalogo/productos/productos
     MatSnackBarModule,
     PdfViewerModule,
     MatTooltipModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     MatDatepickerModule,

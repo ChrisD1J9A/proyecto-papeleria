@@ -91,10 +91,15 @@ export class ProveedorFormComponent implements OnInit {
             this.proveedor.estatus = 1;//El estatus por default 1 (Activo)
             this.proveedoresService.create(this.proveedor).subscribe(//Se almacena en la base de datos
               response => {
-                this.router.navigate(['/layout/proveedores']); //Se redirecciona al componente donde se muestran todos los proveedores de la base de datos
-                this.ngOnInit();
-              })
-            swal.fire('Guardado', `El proveedor ${this.proveedor.nombre} fue guardado con éxito!`, 'success'); //Mensaje de que la inserción ha sido exitosa
+                if(response.proveedor)
+                {
+                  //Mensaje de que la inserción ha sido exitosa
+                  swal.fire('Guardado', `El proveedor ${this.proveedor.nombre} fue guardado con éxito!`, 'success');
+                   //Se redirecciona al componente donde se muestran todos los proveedores de la base de datos
+                  this.router.navigate(['/layout/proveedores']);
+                  this.ngOnInit();
+                }
+              });
           } else if (result.isDenied) {
             swal.fire('El elemento no fue guardado', '', 'info'); //Si el usuario dedice no guardar se muestra este mensaje
           }

@@ -1,4 +1,12 @@
 <div>
+  <div class="alert alert-danger" *ngIf="error" role="alert" style="text-align: center; margin-top: 20px;">
+    OCURRIÓ UN ERROR DE COMUNICACIÓN CON EL SERVIDOR, INTÉNTALO MÁS TARDE O COMUNÍCATE CON T.I.
+  </div>
+  <div class="overlay" *ngIf="banderaCarga==true">
+    <div>
+      <mat-spinner class="spinner"></mat-spinner>
+    </div>
+  </div>
   <form>
     <h1>{{ titulo }}
     </h1>
@@ -10,7 +18,7 @@
     <br>
     <button mat-raised-button color="primary" (click)="create()" *ngIf="!unidad.id_unidad">Guardar</button> &nbsp;
     <button mat-raised-button color="primary" (click)="update()" *ngIf="unidad.id_unidad"> Actualizar </button> &nbsp;
-    <button mat-raised-button color="warn"  (click)="limpiar()" [disabled]="!unidad.descripcion"> Cancelar </button>
+    <button mat-raised-button color="warn" (click)="limpiar()" [disabled]="!unidad.descripcion"> Cancelar </button>
   </form>
 </div>
 

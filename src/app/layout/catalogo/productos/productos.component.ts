@@ -10,6 +10,7 @@ import swal from 'sweetalert2';
   styleUrls: ['./productos.component.scss']
 })
 export class ProductosComponent implements OnInit {
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
   producto = new Producto(); //Obejto producto
   displayedColumns: string[] = ['id_producto', 'descripcion', 'precio_subtotal', 'precio_iva', 'precio_total', 'estatus', 'id_unidad', 'action'];//Encabezados de la tabla de productos
   dataSource = new MatTableDataSource();//Lista donde se almacenaran los productos en la tabla
@@ -17,9 +18,13 @@ export class ProductosComponent implements OnInit {
   constructor(private productosService: ProductosService) { }
 
   ngOnInit(): void {
+    this.error = false;
     this.productosService.getProductos().subscribe(//Se obtieen todos los  productos de la base de datos
-      productos => {
+      (productos) => {
         this.dataSource = new MatTableDataSource(productos); //Se cargan los productos de la bd en la tabla
+      },(err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
       });
   }
 

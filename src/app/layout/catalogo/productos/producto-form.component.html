@@ -1,4 +1,12 @@
 <div>
+  <div class="alert alert-danger" *ngIf="error" role="alert" style="text-align: center; margin-top: 20px;">
+    OCURRIÓ UN ERROR DE COMUNICACIÓN CON EL SERVIDOR, INTÉNTALO MÁS TARDE O COMUNÍCATE CON T.I.
+  </div>
+  <div class="overlay" *ngIf="banderaCarga==true">
+    <div>
+      <mat-spinner class="spinner"></mat-spinner>
+    </div>
+  </div>
   <form>
     <h1 *ngIf="!producto.id_producto">{{ titulo }}</h1>&nbsp;
     <h1 *ngIf="producto.id_producto">{{ titulo2 }}</h1>&nbsp;
@@ -10,7 +18,7 @@
 
     <mat-form-field appearance="fill" floatLabel="always">
       <mat-label>Precio</mat-label>
-      <input matInput name="precio_subtotal" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_subtotal" (input)="precio_input1($event.target.value)" value="{{producto.precio_subtotal | number:'1.2-2'">
+      <input matInput name="precio_subtotal" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_subtotal" (input)="precio_input1($event.target.value)" value="{{producto.precio_subtotal | number:'1.2-2'" onkeypress="return event.charCode >= 46 && event.charCode <= 57">
       <span matPrefix>$&nbsp;</span>
       <span matSuffix *ngIf="bandera==false">pesos</span>
       <span matSuffix *ngIf="bandera==true">.00 pesos</span>
@@ -18,7 +26,7 @@
 
     <mat-form-field appearance="fill" floatLabel="always">
       <mat-label>IVA</mat-label>
-      <input matInput name="precio_iva" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_iva" (input)="precio_input2()" >
+      <input matInput name="precio_iva" type="number" placeholder="0.00" min="0" [(ngModel)]="producto.precio_iva" (input)="precio_input2()" onkeypress="return event.charCode >= 46 && event.charCode <= 57">
       <span matPrefix>$&nbsp;</span>
       <span matSuffix>pesos</span>
     </mat-form-field>

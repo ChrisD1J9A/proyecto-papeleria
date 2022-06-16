@@ -34,7 +34,7 @@ export class UnidadService
       return this.http.post<any>(this.urlEndPoint, unidad, {headers: this.httpHeaders}).pipe(
         catchError (e => {
           console.error(e.error.mensaje);
-          swal.fire(e.error.mensaje, 'Verifique lo ingresado' , 'error');
+          swal.fire(e.error.mensaje, 'Error al ingresar' , 'error');
           return throwError(e);
         }));
   }
@@ -46,7 +46,7 @@ export class UnidadService
   {
     return this.http.get<Unidad>(`${this.urlEndPoint}/${id}`).pipe(
       catchError(e => {
-        this.router.navigate(['/productos'])
+        //this.router.navigate(['/productos'])
         console.error(e.error.mensaje);
         swal.fire('Error al consultar', e.error.mensaje, 'error');
         return throwError(e);
@@ -56,9 +56,9 @@ export class UnidadService
   /**
    **@return Se actualiza de ser existente, un Objeto de tipo Unidad en la base de datos
    **/
-  public update(unidad: Unidad): Observable<Unidad>
+  public update(unidad: Unidad): Observable<any>
   {
-    return this.http.put<Unidad>(`${this.urlEndPoint}/${unidad.id_unidad}`, unidad, {headers: this.httpHeaders}).pipe(
+    return this.http.put(`${this.urlEndPoint}/${unidad.id_unidad}`, unidad, {headers: this.httpHeaders}).pipe(
       catchError (e => {
         console.error(e.error.mensaje);
         swal.fire(e.error.mensaje, e.error.error , 'error');

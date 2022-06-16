@@ -10,12 +10,14 @@ import swal from 'sweetalert2';
   styleUrls: ['./productos-fdcview.component.scss']
 })
 export class ProductosFDCViewComponent implements OnInit {
-  dataSource = new MatTableDataSource();
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
+  dataSource = new MatTableDataSource();//Tabla de los productos fuera del catalogo
   displayedColumns: string[] = ['producto', 'action'];//Encabezados de la tabla de productos fuera del catálogo
 
   constructor(private pfdc: DetalleSolicitudPFDCService, private router: Router,) { }
 
   ngOnInit(): void {
+    this.error = false;
     this.cargarPfdc();
   }
 
@@ -28,7 +30,7 @@ export class ProductosFDCViewComponent implements OnInit {
   //Metodo para consultar y cargar  a la tabla los productos fuera del catalogo
   cargarPfdc() {
     this.pfdc.getDetallesSolicitud_pfdc_All().subscribe(//Se realiza la consulta al back a traves del service
-      datos => {
+      (datos) => {
         datos.sort(function(a, b) { //A los datos obtenidos se les aplica un sort para ordenarlos alfabeticamente
           if (a.nombreProducto > b.nombreProducto) {//Es necesario esta parte para especificar que será a traves del nombreProducto el ordenaniento
             return 1;
@@ -40,6 +42,10 @@ export class ProductosFDCViewComponent implements OnInit {
         });
         //Se realiza un sort para que visualmente sea de mas ayuda al usuario
         this.dataSource = new MatTableDataSource(datos.sort());//Se cargan los datos
+      },
+      (err) => {
+        //En caso de error muestra el mensaje de alerta en el sistema
+        this.error = true;
       });
   }
 }
