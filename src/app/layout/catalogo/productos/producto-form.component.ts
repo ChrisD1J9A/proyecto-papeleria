@@ -73,6 +73,7 @@ export class ProductoFormComponent implements OnInit {
 
   //Método mediante el cual se carga un producto proveniente de la base de datos y poder editarlo en el formulario
   cargarProducto(): void {
+    //Se inicializa el spinner
     this.banderaCarga = true;
     this.activatedRoute.params.subscribe(params => { //Cuando se edita un producto este genera una ruta, al final de esta ruta viene el id_producto
       let id: number = params['id']//Guardamos en una variable dicha id_producto
@@ -89,7 +90,7 @@ export class ProductoFormComponent implements OnInit {
             //En caso de error muestra el mensaje de alerta de la sección
             this.error = true;
           });
-        };
+        }
       }else{
         //Se detiene el spinner
         this.banderaCarga = false;
@@ -138,7 +139,7 @@ export class ProductoFormComponent implements OnInit {
               //Detiene el spinner de carga
               this.banderaCarga = false;
               //Si ocurre un error muestra un mensaje de alerta de error
-              swal.fire('Mensaje','Error al querer insertar el producto','error');
+              swal.fire(err.error.mensaje,'Error al querer insertar el producto','error');
             });
         } else if (result.isDenied) {
           //Se detiene el spinner
@@ -180,7 +181,7 @@ export class ProductoFormComponent implements OnInit {
               //Detiene el spinner de carga
               this.banderaCarga = false;
               //Si ocurre un error muestra un mensaje de alerta de error
-              swal.fire('Mensaje','Error al querer insertar el producto','error');
+              swal.fire(err.error.mensaje,'Error al querer insertar el producto','error');
             });
           swal.fire('Actualizado', `El Producto ${this.producto.descripcion} actualizado con éxito!`, 'success')//Se muestra al usuario un mensaje exitoso
         } else if (result.isDenied) {

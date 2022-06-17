@@ -52,7 +52,9 @@ export class SolicitudFormComponent implements OnInit {
   minStock: number; //configuracion del minimo de stock
   maxExistencia: number;  //configuracion de maximo de existencia
   minExistencia: number; //configuracion de minimo de existencia
-  mail = new Mail();
+  mail = new Mail();//Objeto mail
+  banderaCarga: Boolean;//Bandera para activar un spinner
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
   constructor(private productosService: ProductosService,
     private formBuilder: FormBuilder,
@@ -99,10 +101,16 @@ export class SolicitudFormComponent implements OnInit {
   /*Al iniciar este componente se cargaran al dataSource (para la tabla de productos)
   los productos activos (1) para mostrarlos en el formulario*/
   ngOnInit(): void {
+    this.banderaCarga = false;
+    this.error = false;
     this.productosService.getProductos().subscribe(
       productos => {//Se obtienen todos los productos de la base de datos
         this.pds = productos.filter(p => p.estatus === 1);//se realiza un filtro para obtener solo los productos activos
         this.dataSource = new MatTableDataSource(this.pds);//Se cargan a la tabla
+      },
+      (err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
       });
     this.idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);//Se obtiene la sucursaldesde donde se inicio sesion
     this.obtenerMaximosMinimosDeLaSucursal();//Se obtiene la configuracion de maximos y minimos de la sucursal logeada
@@ -117,6 +125,8 @@ export class SolicitudFormComponent implements OnInit {
   /*Método en dónde una vez que se decida envíar una solicitud,validará los datos y si no hay
   inconvenientes se guarda la solicitud*/
   submit(): void {
+    //Se inicializa el spinner
+    this.banderaCarga = true;
     if (this.productosSeleccionados.size > 0 || this.detalles2.getRawValue().length > 0) {//Validacion que corrobora que al menos un producto este seleccionado, ya sea que sea o no parte del catalogo de productos
       if (this.detalles.valid && this.detalles2.valid) {//Corrobora que los formularios no tengan datos invalidos para el sistema
         this.solicitud = this.solicitudForm.value; //Toma los datos establecidos en el sistema y los asigna al Objeto Solicitud
@@ -165,6 +175,8 @@ export class SolicitudFormComponent implements OnInit {
                   );
                   this.enviarCorreo(solicitud);
                   this.router.navigate(['/layout/solicitudes']) //Se redirecciona a la tabla general de solicitudes en caso de no presentar errores
+                  //Se detiene el spinner
+                  this.banderaCarga = false;
                 } else {
                   swal.fire(
                     'Mensaje',
@@ -172,13 +184,22 @@ export class SolicitudFormComponent implements OnInit {
                     'error'
                   );
                 }
-              })
-
+              },
+              (err) => {
+                //Se detiene el spinner
+                this.banderaCarga = false;
+                //Mensaje de error en caso de no almacenarse la solicitud
+                swal.fire('Mensaje',`Error al envíar la solicitud`,'error');
+              });
           } else if (result.isDenied) {
+            //Se detiene el spinner
+            this.banderaCarga = false;
             swal.fire('La solicitud no fue guardada', '', 'info');//en caso de que el usuario no decidiera continuar resalta este mensaje
           }
         })
       }else{
+        //Se detiene el spinner
+        this.banderaCarga = false;
         swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -186,6 +207,8 @@ export class SolicitudFormComponent implements OnInit {
         });
       }
     }else {
+      //Se detiene el spinner
+      this.banderaCarga = false;
       swal.fire({
         icon: 'error',
         title: 'Oops...',

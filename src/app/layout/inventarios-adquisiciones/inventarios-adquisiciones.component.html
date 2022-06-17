@@ -1,3 +1,11 @@
+<div class="alert alert-danger" *ngIf="error" role="alert" style="text-align: center; margin-top: 20px;">
+  OCURRIÓ UN ERROR DE COMUNICACIÓN CON EL SERVIDOR, INTÉNTALO MÁS TARDE O COMUNÍCATE CON T.I.
+</div>
+<div class="overlay" *ngIf="banderaCarga==true">
+  <div>
+    <mat-spinner class="spinner"></mat-spinner>
+  </div>
+</div>
 <div class="formato1">
   <h1>Inventarios</h1>
 

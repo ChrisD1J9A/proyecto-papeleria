@@ -24,20 +24,32 @@ export class MaxMinDeStockComponent implements OnInit {
   sucursal: Sucursal;//Objeto para almacenar la sucursal
   banderaEditar = true;//Bandera que de ser false oculta el componente select donde se muestran las sucursales
   controlMax = new FormControl();//Form control para el Maximo de Stock
+  banderaCarga: Boolean;//Bandera para activar un spinner
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
   constructor(private maxMinS: MaxMinStockService,
     private sucursalService: SucursalService) { }
 
   ngOnInit(): void {
+    this.banderaCarga = false;
+    this.error = false;
     this.titulo = "Agregar nueva ";
     this.maxMinS.getMaxMinDeStockA().subscribe(//Obetenemos todas las configuraciones existentes
       maxMinss => {
         this.MaxMins = this.filtarSoloActivos(maxMinss);//Aplicamos un filtro para solo obtener las  configuraciones activas
         this.dataSource = new MatTableDataSource(this.MaxMins);//Las configuraciones se cargan  a la tabla
+      },
+      (err) => {
+        //En caso de error muestra el mensaje de alerta en el sistema
+        this.error = true;
       });
     this.sucursalService.getSucursales().subscribe(val => {//Obtenemos las sucursales disponibles
       this.sucursales = val;//Almacenamos esas sucursales en la variable correspondiente
-    });
+    },
+      (err) => {
+        //En caso de error muestra el mensaje de alerta en el sistema
+        this.error = true;
+      });
     this.limpiar();//Para evitar cualquier inconveniente se asignan valores iniciales a variables
   }
 
@@ -56,6 +68,8 @@ export class MaxMinDeStockComponent implements OnInit {
 
   //Metodo utilizado  cuando el usuario quiere editar una configuracion de la tabla
   cargarMaxMins(id_maxMinDeStock) {
+    //Se activa el spinner de carga
+    this.banderaCarga = true;
     swal.fire({ //Pregunta el sistema al usuario  si desea realizar un cambio
       title: '¿Desea editar este elemento?',
       showDenyButton: true,
@@ -68,19 +82,37 @@ export class MaxMinDeStockComponent implements OnInit {
           this.maxMinS.getMaxMinDeStock(id_maxMinDeStock).subscribe((response) => {
             if (response) { //Se busca la configuracion en especifica de acuerdo a su id
               this.maxMinDeStock = response.maxMinDeStock //Se carga al objeto asociado con el formulario
+              //Detiene el spinner de carga
+              this.banderaCarga = false;
               this.banderaEditar = false; //Bandera que desactiva el select de las sucursales
               this.titulo = "Actualizar "; //Cambiar el titulo de la pagina
-            } else { }
-          })
+            } else {
+              //Detiene el spinner de carga
+              this.banderaCarga = false;
+              //Mensaje en dado caso de que no se pudo realizar correctamente la actualizacion
+              swal.fire('Oops', 'Ocurrió un error al intentar actualizar', 'error');
+            }
+          },
+            (err) => {
+              //Detiene el spinner de carga
+              this.banderaCarga = false;
+              //Si ocurre un error muestra un mensaje de alerta de error
+              swal.fire(err.error.mensaje, `Error al querer actualizar la configuracion`, 'error');
+              this.limpiar();
+            });
         }
-      }else{
+      } else {
+        //Detiene el spinner de carga
+        this.banderaCarga = false;
         this.titulo = "Agregar nueva ";
       }
     })
   }
 
-//Metodo utilizado para almacenar o guardar en la base de datos una configuracion nueva
+  //Metodo utilizado para almacenar o guardar en la base de datos una configuracion nueva
   public create(): void {
+    //Se activa el spinner de carga
+    this.banderaCarga = true;
     if (this.maxMinDeStock.max_stock && this.maxMinDeStock.min_stock && this.sucursal.nombreSucursal) {//Se valida si el usuario relleno los datos requieridos
       if (this.comprabarConfigExistente() == true) {//Metodo que comprueba que no existe una configuracion existente para la sucursal seleccionada
         swal.fire({ //En caso que ya exista una configuracion se manda al usuario un mensaje informandole
@@ -88,9 +120,13 @@ export class MaxMinDeStockComponent implements OnInit {
           title: 'Oops...',
           text: 'Ya existe una configuracion para esa sucursal',
         });
+        //Detiene el spinner de carga
+        this.banderaCarga = false;
       } else {
         if (this.maxMinDeStock.min_stock > this.maxMinDeStock.max_stock) {//Se valida que el minimo no sea mayor al maximo de Stock
           swal.fire('', 'El mínimo de Stock no puede ser mayor al máximo', 'info'); //Se lanza el mensaje en caso de ocurrir dicho error
+          //Detiene el spinner de carga
+          this.banderaCarga = false;
         } else {
           swal.fire({//Una vez que se pasaron las validaciones, se pregunta al usuario  si decide guardar la configuracion
             title: '¿Desea guardar este nuevo elemento?',
@@ -106,17 +142,35 @@ export class MaxMinDeStockComponent implements OnInit {
               this.maxMinDeStock.fecha_actualizacion = new Date();//La fecha de actualizacion tambien sería la fecha actual
               this.maxMinDeStock.usuario_modifico = JSON.parse(localStorage.getItem('nombreCUsuario')!);//Obtenemos del local storage el nombre del usuario quien realizó la configuracion
               this.maxMinS.create(this.maxMinDeStock).subscribe(
-                maxMiin => {//Se almacena en la base de datos la nueva configuracion
-                  this.ngOnInit();//El componente regresa a su estado inicial
+                (maxMiin) => {//Se almacena en la base de datos la nueva configuracion
+                  if (maxMiin) {
+                    swal.fire('Guardado', `La configuracion fue guardada con éxito!`, 'success'); //Mensaje de confirmacion
+                    this.ngOnInit();//El componente regresa a su estado inicial
+                  } else {
+                    //Detiene el spinner de carga
+                    this.banderaCarga = false;
+                    //Mensaje en dado caso de que no se pudo realizar correctamente la insersión
+                    swal.fire('Oops', 'Ocurrió un error al insertar', 'error');
+                  }
+                },
+                (err) => {
+                  //Detiene el spinner de carga
+                  this.banderaCarga = false;
+                  //Si ocurre un error muestra un mensaje de alerta de error
+                  swal.fire(err.error.mensaje, `Error al insertar la unidad`, 'error');
                 });
-              swal.fire('Guardado', `La configuracion fue guardada con éxito!`, 'success'); //Mensaje de confirmacion
+
             } else if (result.isDenied) {
+              //Detiene el spinner de carga
+              this.banderaCarga = false;
               swal.fire('El elemento no fue guardado', '', 'info');//Mensaje informando al usuario de que la configuracion no se ha guardao
             }
           });
         }
       }
     } else {//En caso  de que el usuario no relleno o acompleto los datos requeridos se le manda el sig. mensaje
+      //Detiene el spinner de carga
+      this.banderaCarga = false;
       swal.fire({
         icon: 'warning',
         title: 'Oops...',
@@ -127,6 +181,8 @@ export class MaxMinDeStockComponent implements OnInit {
 
   //Metodo utilizado para actualizar una configuracion existente
   update(): void {
+    //Se activa el spinner de carga
+    this.banderaCarga = true;
     if (this.maxMinDeStock.max_stock || this.maxMinDeStock.min_stock) {//Se valida que el usuario relleno los datos requeridos
       swal.fire({
         title: '¿Desea actualizar este elemento?',//Consulta al usuario si desea continuar
@@ -138,15 +194,32 @@ export class MaxMinDeStockComponent implements OnInit {
         if (result.isConfirmed) {
           this.maxMinDeStock.fecha_actualizacion = new Date();//Consulta al usuario si desea continuar
           this.maxMinS.update(this.maxMinDeStock)//Se actualiza la base d e d atos
-            .subscribe(element => {
-              this.ngOnInit();//Y se reestablece el componente a su estatus inicial
-            })
-          swal.fire('Actualizado', `La configuracion se ha actualizado con éxito!`, 'success')//Mensaje de confirmacion
+            .subscribe((maxMinStock) => {
+              if (maxMinStock) {
+                swal.fire('Actualizado', `La configuracion se ha actualizado con éxito!`, 'success')//Mensaje de confirmacion
+                this.ngOnInit();//Y se reestablece el componente a su estatus inicial
+              }else {
+                //Se desactiva el spinner de carga
+                this.banderaCarga = false;
+                //Mensaje en dado caso de que no se pudo realizar correctamente la insersión
+                swal.fire('Oops', 'Ocurrió un error al insertar', 'error');
+              }
+            },
+              (err) => {
+                //Detiene el spinner de carga
+                this.banderaCarga = false;
+                //Si ocurre un error muestra un mensaje de alerta de error
+                swal.fire(err.error.mensaje, `Error al actualizar la configuracion`, 'error');
+              });
         } else if (result.isDenied) {
+          //Detiene el spinner de carga
+          this.banderaCarga = false;
           swal.fire('El elemento no fue actualizado', '', 'info');//Mensaje que sale si el usuario decide no actualizar
         }
       });
     } else {//En caso de tener un dato faltante
+      //Detiene el spinner de carga
+      this.banderaCarga = false;
       swal.fire({
         icon: 'warning',
         title: 'Oops...',
@@ -163,8 +236,9 @@ export class MaxMinDeStockComponent implements OnInit {
 
   //Metodo cuya funcion es dar de baja la configuracion seleccionada en la base de datos
   baja(maxMinSt: MaxMinDeStock): void {
-    swal
-      .fire({
+    //Se activa el spinner de carga
+    this.banderaCarga = true;
+    swal.fire({
         title: '¿Está seguro de dar de baja esta configuracion?',///Metodo cuya funcion es dar de baja la configuracion seleccionada en la base de datos
         icon: 'warning',
         showCancelButton: true,
@@ -186,17 +260,20 @@ export class MaxMinDeStockComponent implements OnInit {
                 );
                 this.ngOnInit();//El componente en cuestion retoma sus valores iniciales
               } else {//Mensaje de error en dato caso de haberlo
-                swal.fire(
-                  'Mensaje',
-                  `Error al dar de baja la configuracion`,
-                  'error'
-                );
+                //Detiene el spinner de carga
+                this.banderaCarga = false;
+                swal.fire('Mensaje',`Error al dar de baja la configuracion`,'error');
               }
             },
             (error) => {
+              //Detiene el spinner de carga
+              this.banderaCarga = false;
               swal.fire('Error', `Error al dar de baja`, 'error');
             }
           );
+        } else {
+          //se desactiva el spinner
+          this.banderaCarga = false;
         }
       });
   }

@@ -87,11 +87,7 @@ export class UnidadComponent implements OnInit {
             //Detiene el spinner de carga
             this.banderaCarga = false;
             //Si ocurre un error muestra un mensaje de alerta de error
-            swal.fire(
-              'Mensaje',
-              `Error al querer actualizar la unidad`,
-              'error'
-            );
+            swal.fire(err.error.mensaje,`Error al querer actualizar la unidad`,'error');
           });
         }
       }else{
@@ -129,11 +125,7 @@ export class UnidadComponent implements OnInit {
               //Detiene el spinner de carga
               this.banderaCarga = false;
               //Si ocurre un error muestra un mensaje de alerta de error
-              swal.fire(
-                'Mensaje',
-                `Error al insertar la unidad`,
-                'error'
-              );
+              swal.fire(err.error.mensaje,`Error al insertar la unidad`,'error');
             });
         } else if (result.isDenied) {
           //Se  desactiva el spinner
@@ -169,7 +161,7 @@ export class UnidadComponent implements OnInit {
               if(response.unidad)
               {
                 this.ngOnInit();//El componente retoma su estado inicial
-                swal.fire('Actualizado', `Unidad ${this.unidad.descripcion} actualizado con éxito!`, 'success');//Mensaje de confirmacion
+                swal.fire('Actualizado', `Unidad ${response.unidad.descripcion} actualizado con éxito!`, 'success');//Mensaje de confirmacion
               }else{
                 swal.fire('Mensaje','Error al actualizar la unidad','error');
               }
@@ -178,7 +170,8 @@ export class UnidadComponent implements OnInit {
               //Detiene el spinner de carga
               this.banderaCarga = false;
               //Si ocurre un error muestra un mensaje de alerta de error
-              swal.fire('Mensaje','Error al actualizar la unidad','error');
+              console.error(err.error.mensaje);
+              swal.fire(err.error.mensaje,'Error al actualizar la unidad','error');
             });
         } else if (result.isDenied) {
           //Desactivar spinner
@@ -217,7 +210,7 @@ export class UnidadComponent implements OnInit {
               if (response.unidad) {
                 swal.fire(
                   'Mensaje',
-                  `La unidad:  ${unidad.descripcion} fue dado de baja con éxito`, //Mensaje de confirmacion
+                  `La unidad:  ${response.unidad.descripcion} fue dado de baja con éxito`, //Mensaje de confirmacion
                   'success'
                 );
                 this.ngOnInit();

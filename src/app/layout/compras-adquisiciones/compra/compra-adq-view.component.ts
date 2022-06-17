@@ -34,6 +34,8 @@ export class CompraAdqViewComponent implements OnInit {
   enlaceTicket = "http://localhost:8080/api/compras/show/archivo/";//Enlace al back del tick, solo hace falta indicar el nombre del ticket
   pfdcFlag: boolean;//Bandera que se activa si hay productosfuera del catalogo en la compra
   precioFormateado: string; //variable que se usa para dar formato de pesos en el input gasto total
+  banderaCarga: Boolean;//Bandera para activar un spinner
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
   constructor(private compraService: ComprasService,
     private detalleCompraService: DetalleCompraService,
@@ -43,6 +45,8 @@ export class CompraAdqViewComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.banderaCarga = false;
+    this.error = false;
     this.cargarCompra();//Metodo para cargar la compra desde la base de datos
   }
 
@@ -69,6 +73,11 @@ export class CompraAdqViewComponent implements OnInit {
               this.banderaEditar = true;
             }
             this.solicitud = response.compra.solicitud;//Se guarda o aisla el objeto soliciutd
+            //Se obtienen los detalles de la compra
+            this.detalleCompraService.getDetallesCompra(id).subscribe(
+              deta_compras => {//Se buscan los detalles de la compra, partiendo de la id_compra
+                this.dataSource = new MatTableDataSource(deta_compras);//Se guardan los resultados obtenidos en la tabla
+              });
             if(response.compra.solicitud.pfdc){//Se evalua si existen productos fuera del catalogo
               this.detalleCompraPFDCService.getDetallesCompra_pfdc(response.compra.id_compra).subscribe(
                 detalles_ComprasPFDC => {//De existeir se buscan estos productos fuera del catalogo mediante el id_compra
@@ -80,10 +89,10 @@ export class CompraAdqViewComponent implements OnInit {
             }else{
               this.pfdcFlag = false;//De no haber productos fuera del catalogo simplemente no se muestra su tabla
             }
-          });
-        this.detalleCompraService.getDetallesCompra(id).subscribe(
-          deta_compras => {//Se buscan los detalles de la compra, partiendo de la id_compra
-            this.dataSource = new MatTableDataSource(deta_compras);//Se guardan los resultados obtenidos en la tabla
+          },
+          (err) => {
+            //En caso de error muestra el mensaje de alerta de la sección
+            this.error = true;
           });
       }
     });

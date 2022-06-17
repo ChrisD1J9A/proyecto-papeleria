@@ -31,10 +31,14 @@ export class ProveedorFormComponent implements OnInit {
 
   rfcProveedor = new FormControl('', [Validators.required]);//Form control para validar el proveedor
   rfcmsg: String; //Variable para mostrar mensaje de validacion para el RFC
+  banderaCarga: Boolean;//Bandera para activar un spinner
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
   constructor(private proveedoresService: ProveedoresService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.banderaCarga = false;
+    this.error = false;
     this.cargarProveedor(); //Metodo para cargar un proveedor en caso de se acceda a este componente para editar un proveedor
   }
 
@@ -59,8 +63,19 @@ export class ProveedorFormComponent implements OnInit {
       let id = params['id'] //Se obtiene el id del proveedor de la ruta
       if (id) {
         this.proveedoresService.getProveedor(id).subscribe(//Se busca en la base de datos mediante el id
-          (proveedor) => this.proveedor = proveedor //Se almacena en el objeto asociado al formulario para que se carguen los datos
-        )
+          (proveedor) => {
+            //Se almacena en el objeto asociado al formulario para que se carguen los datos
+            this.proveedor = proveedor
+          },
+          (err) => {
+            //Se detiene el spinner
+            this.banderaCarga = false;
+            //En caso de error muestra el mensaje de alerta de la sección
+            this.error = true;
+          });
+      } else {
+        //Se detiene el spinner
+        this.banderaCarga = false;
       }
     })
   }
@@ -78,6 +93,8 @@ export class ProveedorFormComponent implements OnInit {
 
   //Metodo para crear un nuevo proveedor
   public create(): void {
+    //se activa el spinner
+    this.banderaCarga = true;
     if (this.proveedor.nombre && this.proveedor.rfc) {//Se valida que los datos requerido u obligatorios sean diferentes de null
       if (this.rfcflag == true) {//Se valida si la estructura del rfc fue la correcta
         swal.fire({
@@ -91,20 +108,36 @@ export class ProveedorFormComponent implements OnInit {
             this.proveedor.estatus = 1;//El estatus por default 1 (Activo)
             this.proveedoresService.create(this.proveedor).subscribe(//Se almacena en la base de datos
               response => {
-                if(response.proveedor)
-                {
+                if (response.proveedor) {
+                  //se desactiva el spinner
+                  this.banderaCarga = false;
                   //Mensaje de que la inserción ha sido exitosa
                   swal.fire('Guardado', `El proveedor ${this.proveedor.nombre} fue guardado con éxito!`, 'success');
-                   //Se redirecciona al componente donde se muestran todos los proveedores de la base de datos
+                  //Se redirecciona al componente donde se muestran todos los proveedores de la base de datos
                   this.router.navigate(['/layout/proveedores']);
                   this.ngOnInit();
+                } else {
+                  //se desactiva el spinner
+                  this.banderaCarga = false;
+                  //Mensaje en dado caso de que no se pudo realizar correctamente la actualizacion
+                  swal.fire('Oops', 'Ocurrió un error al insertar', 'error');
                 }
+              },
+              (err) => {
+                //Detiene el spinner de carga
+                this.banderaCarga = false;
+                //Si ocurre un error muestra un mensaje de alerta de error
+                swal.fire(err.error.mensaje, 'Error al querer insertar el proveedor', 'error');
               });
           } else if (result.isDenied) {
+            //se desactiva el spinner
+            this.banderaCarga = false;
             swal.fire('El elemento no fue guardado', '', 'info'); //Si el usuario dedice no guardar se muestra este mensaje
           }
         });
       } else {
+        //se desactiva el spinner
+        this.banderaCarga = false;
         swal.fire({
           icon: 'warning',
           title: 'Oops...',
@@ -112,7 +145,10 @@ export class ProveedorFormComponent implements OnInit {
         });
       }
     } else {
-      swal.fire({//Mensaje para mostrarle al usuario que faltan los datos obligatorios
+      //se desactiva el spinner
+      this.banderaCarga = false;
+      //Mensaje para mostrarle al usuario que faltan los datos obligatorios
+      swal.fire({
         icon: 'warning',
         title: 'Oops...',
         text: 'Ingrese los datos requeridos para continuar',
@@ -122,8 +158,12 @@ export class ProveedorFormComponent implements OnInit {
 
   //Metodo para actualizar un proveedor
   public update(): void {
+    //se activa el spinner
+    this.banderaCarga = true;
     if (this.proveedor.nombre && this.proveedor.rfc) {//Se valida antes que nada que los datos obligatorios esten rellenados
       if (this.rfcflag == false) {//Se valida si el rfc es correcto
+        //se desactiva el spinner
+        this.banderaCarga = false;
         swal.fire({//Mensaje de que el rfc es inválido
           icon: 'warning',
           title: 'Oops...',
@@ -139,17 +179,25 @@ export class ProveedorFormComponent implements OnInit {
         }).then((result) => {
           if (result.isConfirmed) {
             this.proveedoresService.update(this.proveedor)//Se actualiza el proveedor en la base de datos
-              .subscribe(proveedor => {
-                this.router.navigate(['/layout/proveedores']); //Se redirecciona a la tabla general de proveedores
-                this.ngOnInit();
+              .subscribe((response) => {
+                if (response.proveedor) {
+                  //se desactiva el spinner
+                  this.banderaCarga = false;
+                  swal.fire('Actualizado', `El proveedor ${response.proveedor.nombre} actualizado con éxito!`, 'success');//Mensaje de que la actualizacion fue exitosa
+                  this.router.navigate(['/layout/proveedores']); //Se redirecciona a la tabla general de proveedores
+                  this.ngOnInit();
+                }
               })
-            swal.fire('Actualizado', `El proveedor ${this.proveedor.nombre} actualizado con éxito!`, 'success');//Mensaje de que la actualizacion fue exitosa
           } else if (result.isDenied) {
+            //se desactiva el spinner
+            this.banderaCarga = false;
             swal.fire('El elemento no fue actualizado', '', 'info');//Mensaje de que el proveedor no fue actualizado
           }
         });
       }
     } else {
+      //se desactiva el spinner
+      this.banderaCarga = false;
       swal.fire({//Mensaje de advertencia al usuario de que los datos necesarios no se han ingresado
         icon: 'warning',
         title: 'Oops...',

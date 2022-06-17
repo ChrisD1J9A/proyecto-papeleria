@@ -28,6 +28,8 @@ export class ComprasAdquisicionesComponent implements OnInit {
   dataSource3 = new MatTableDataSource();//Tabla para mostrar todas las compras
   dataSource4 = new MatTableDataSource();//Tabla para mostrar compras de un sucursal
   BanderaMostrar: Boolean;//Bandera para mostrar o no el área de compras de sucursal
+  banderaCarga: Boolean;//Bandera para activar un spinner
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
 
   constructor(private sucursalService: SucursalService,
@@ -37,9 +39,13 @@ export class ComprasAdquisicionesComponent implements OnInit {
 
   ngOnInit(): void
   {
+    this.error = false;
     //Se obtienen las sucursales para poder realizar filtros de coompras de acuerdo a una sucursal
     this.sucursalService.getSucursales().subscribe(val => {
       this.sucursales = val;
+    },(err) => {
+      //En caso de error muestra el mensaje de alerta de la sección
+      this.error = true;
     });
 
     //Se obtienen todas las compras disponibles y se separan en completadas y enProceso
@@ -51,7 +57,10 @@ export class ComprasAdquisicionesComponent implements OnInit {
         this.dataSource1 = new MatTableDataSource(this.enProceso);
         this.dataSource2= new MatTableDataSource(this.completadas);
         this.dataSource3 = new MatTableDataSource(this.compras);
-      })
+      },(err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
+      });
       this.BanderaMostrar = false;
   }
 
@@ -90,6 +99,8 @@ export class ComprasAdquisicionesComponent implements OnInit {
   //Método para obtener las compras de una sucursal elegida por el usuario
   cargarCompraSucursal()
   {
+    //Se inicializa el spinner
+    this.banderaCarga = true;
     //se valida la sucursal elegida por el usuario
     if (this.sucursal.idSucursal)
     {
@@ -109,15 +120,27 @@ export class ComprasAdquisicionesComponent implements OnInit {
               icon: 'warning',
               title: 'Oops...',
               text: 'No se encontró compras de esa sucursal',
-            })
+            });
+            //Se detiene el spinner
+            this.banderaCarga = false;
           }else{
             //En caso de obtener compras de esa sucursal se cargan a la Tabla
             //y la bandera para activar el área de esas compras se activa
             this.BanderaMostrar = true;
             this.dataSource4 = new MatTableDataSource(compras);
+            //Se detiene el spinner
+            this.banderaCarga = false;
           }
+          },(err) => {
+            //En caso de error muestra el mensaje de alerta de la sección
+            this.error = true;
+            //Se detiene el spinner
+            this.banderaCarga = false;
+            swal.fire('Error',`Error al cargar las compras`,'error');
           });
     }else{
+      //Se detiene el spinner
+      this.banderaCarga = false;
       swal.fire({
         icon: 'warning',
         title: 'Oops...',

@@ -22,10 +22,12 @@ export class SolicitudesComponent implements OnInit {
   dataSource3 = new MatTableDataSource();//tabla de solicitudes pendientes
   dataSource4 = new MatTableDataSource();//tabla de solicitudes canceladas
   idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);//Se obtiene el id de la sucursal donde se incio sesion
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
   constructor(private solicitudService: SolicitudesService) { }
 
   ngOnInit(): void {
+    this.error = false;
     this.solicitudService.getSolicitudesBySucursal(this.idSucursal).subscribe(
       solicitudes => {//Se obtienen las solicitudes de la sucursal donde se logeo
         this.solicitudes = solicitudes;
@@ -37,6 +39,9 @@ export class SolicitudesComponent implements OnInit {
         this.dataSource2 = new MatTableDataSource(this.rechazadas);
         this.dataSource3 = new MatTableDataSource(this.pendientes);
         this.dataSource4 = new MatTableDataSource(this.canceladas);
+      },(err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
       });
   }
 

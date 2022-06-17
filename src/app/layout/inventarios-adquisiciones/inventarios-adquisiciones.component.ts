@@ -29,6 +29,8 @@ export class InventariosAdquisicionesComponent implements OnInit {
   nombreSucursalInventarioActual: string;//Variable para almacenar el nombre de la sucursal seleccionada
   maxStock: number; //configuracion de maximo de stock
   minStock: number; //configuracion del minimo de stock
+  banderaCarga: Boolean;//Bandera para activar un spinner
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
   constructor(private sucursalService: SucursalService,
               private inventarioService: InventarioService,
@@ -38,8 +40,16 @@ export class InventariosAdquisicionesComponent implements OnInit {
   //Se obtienen las sucursales para poder mostrarlos en un select
   //Y el usuario seleccione el inventario de una sucursal
   ngOnInit(): void {
+    this.banderaCarga = false;
+    this.error = false;
     this.sucursalService.getSucursales().subscribe(val => {
       this.sucursales = val;
+    },
+    (err) => {
+      //En caso de error muestra el mensaje de alerta de la sección
+      this.error = true;
+      //Mensaje relacionado con el error
+      swal.fire('Error',`Error al cargar el inventario`,'error');
     });
   }
 
@@ -55,6 +65,8 @@ export class InventariosAdquisicionesComponent implements OnInit {
 
 /** Una vez seleccionada la sucursal este metodo buscará el inventario correspondiente y lo mostrara en  su tabla */
   cargarInventario() {
+    //Se inicializa el spinner
+    this.banderaCarga = true;
     this.limpiar();//Limpia las listas para evitar errores
     if (this.sucursal.idSucursal){//Obtenemos la sucursal seleccionada por el usuario
       this.inventarioService.getInventarioBySucursal(this.sucursal.idSucursal).subscribe(
@@ -63,6 +75,8 @@ export class InventariosAdquisicionesComponent implements OnInit {
           //Se cargan los maximos y minimos de la sucursal del seleccionado inventario
           //De ser null el inventario quiere decir que no hay inventario para esa sucursal en la base de datos
           if (inventario == null) {
+            //Se detiene el spinner
+            this.banderaCarga = false;
             this.BanderaMostrar = false; //No muestra el inventario particular
             this.mostrarTodos = false;//No muestra la tabla general de todos los inventarios
             this.sucursal = new Sucursal();//Se limpia la sucursal seleccionada
@@ -89,10 +103,22 @@ export class InventariosAdquisicionesComponent implements OnInit {
                   title: '¡Hecho!',
                   text: 'Inventario cargado', //Mensaje de que el inventario se cargó exitosamente
                 });
+                //Se detiene el spinner
+                this.banderaCarga = false;
               });
           }
+        },
+        (err) => {
+          //Se detiene el spinner
+          this.banderaCarga = false;
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+          //Mensaje relacionado con el error
+          swal.fire('Error',`Error al cargar la sucursal`,'error');
         });
     } else {
+      //Se detiene el spinner
+      this.banderaCarga = false;
       swal.fire({
         icon: 'warning',
         title: 'Oops...',
@@ -104,6 +130,8 @@ export class InventariosAdquisicionesComponent implements OnInit {
 //Metodo para cargar todos los inventarios almacenados en la bd
   cargarTodosInventarios()
   {
+    //Se inicializa el spinner
+    this.banderaCarga = true;
     this.limpiar(); //Limpia las tablas antes de almacenar nueva informacion
     //Se hace una consulta en la bd de todos los inventarios
     this.detalleInvenarioService.getTodosInventarios().subscribe(
@@ -123,6 +151,16 @@ export class InventariosAdquisicionesComponent implements OnInit {
           title: '¡Hecho!',
           text: 'Inventarios cargados',//Mensaje de confirmacion
         });
+        //Se detiene el spinner
+        this.banderaCarga = false;
+      },
+      (err) => {
+        //Se detiene el spinner
+        this.banderaCarga = false;
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
+        //Mensaje relacionado con el error
+        swal.fire('Error',`Error al cargar las sucursales`,'error');
       }
     )
   }

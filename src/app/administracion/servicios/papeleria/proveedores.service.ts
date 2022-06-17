@@ -31,25 +31,15 @@ export class ProveedoresService {
    **/
   public create(proveedor: Proveedor): Observable<any>
   {
-      return this.http.post<any>(this.urlEndPoint, proveedor, {headers: this.httpHeaders}).pipe(
-        catchError (e => {
-          console.error(e.error.mensaje);
-          swal.fire(e.error.mensaje, 'Verifique lo ingresado' , 'error');
-          return throwError(e);
-        }));
+      return this.http.post<any>(this.urlEndPoint, proveedor, {headers: this.httpHeaders});
   }
 
   /**
    **@return Hace un update de un proveedor en la base de datos y devuelve el mismo actualizado
    **/
-  public update(proveedor: Proveedor): Observable<Proveedor>
+  public update(proveedor: Proveedor): Observable<any>
   {
-    return this.http.put<Proveedor>(`${this.urlEndPoint}/${proveedor.id_proveedor}`, proveedor, {headers: this.httpHeaders}).pipe(
-      catchError (e => {
-        console.error(e.error.mensaje);
-        swal.fire(e.error.mensaje, e.error.error , 'error');
-        return throwError(e);
-      }));
+    return this.http.put<Proveedor>(`${this.urlEndPoint}/${proveedor.id_proveedor}`, proveedor, {headers: this.httpHeaders});
   }
 
   /**

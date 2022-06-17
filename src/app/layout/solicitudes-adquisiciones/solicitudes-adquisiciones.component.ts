@@ -18,10 +18,12 @@ export class SolicitudesAdquisicionesComponent implements OnInit {
   dataSource1 = new MatTableDataSource();//Tabla de solicitudes aceptadas
   dataSource2 = new MatTableDataSource();//Tabla de solicitudes rechazadas
   dataSource3 = new MatTableDataSource();//Tabla de solicitudes pendientes
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
   constructor(private solicitudService: SolicitudesService) { }
 
   ngOnInit(): void {
+    this.error = false;
     this.solicitudService.getSolicitudes().subscribe(
       solicitudes => {//Se obtienen las solicitudes de la base de datos y se realizan filtros para cada tipo de solicitud
         this.solicitudes = solicitudes
@@ -31,6 +33,9 @@ export class SolicitudesAdquisicionesComponent implements OnInit {
         this.dataSource1 = new MatTableDataSource(this.aceptadas);
         this.dataSource2 = new MatTableDataSource(this.rechazadas);
         this.dataSource3 = new MatTableDataSource(this.pendientes);
+      },(err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
       });
   }
 

@@ -47,6 +47,8 @@ export class SolicitudAdqViewComponent implements OnInit {
   maxExistencia: number;  //configuracion de maximo de existencia
   minExistencia: number; //configuracion de minimo de existencia
   mail = new Mail(); //Objeto mail, usado para tener una estructura al momento de enviar un correo
+  banderaCarga: Boolean;//Bandera para activar un spinner
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
   constructor(private solicitudesService: SolicitudesService,
               private detalleSolicitudService: DetalleSolicitudService,
@@ -61,6 +63,8 @@ export class SolicitudAdqViewComponent implements OnInit {
               private mailService: MailService) { }
 
   ngOnInit(): void {
+    this.banderaCarga = false;
+    this.error = false;
     this.cargarSolicitud();//Metodo mediante el cual se carga la solicitud
   }
 
@@ -88,17 +92,23 @@ export class SolicitudAdqViewComponent implements OnInit {
             } else {
               this.flag = true;//Entonces se muestran componentes para una solicitud que no es pendiente(Rechazada o aceptada)
             }
+            this.detalleSolicitudService.getDetallesSolicitud(id).subscribe(
+              deta_solicitudes => {//Se obtienen los detalles de la solicitud mediate el id
+                this.dataSource = new MatTableDataSource(deta_solicitudes);//Se cargan los datos a la tabla
+                this.detalles_solicitud = deta_solicitudes; //Se guardan los datos en su lista
+              });
+            this.detalleSolicitudPFDCService.getDetallesSolicitud_pfdc(id).subscribe(
+                detalles_solicitudesPFDC => {//Se obtienen los detalles de la solicitud con productos fuera del catalogo mediate el id
+                  this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC); //Se cargan los datos a su tabla
+                  this.detalles_solicitud_pfdc = detalles_solicitudesPFDC;//Se guardan los datos en su lista
+            });
+          },
+          (err) => {
+            //En caso de error muestra el mensaje de alerta de la sección
+            this.error = true;
+            //Mensaje relacionado con el error
+            swal.fire('Error',`Error al cargar la solicitud`,'error');
           });
-        this.detalleSolicitudService.getDetallesSolicitud(id).subscribe(
-          deta_solicitudes => {//Se obtienen los detalles de la solicitud mediate el id
-            this.dataSource = new MatTableDataSource(deta_solicitudes);//Se cargan los datos a la tabla
-            this.detalles_solicitud = deta_solicitudes; //Se guardan los datos en su lista
-          });
-        this.detalleSolicitudPFDCService.getDetallesSolicitud_pfdc(id).subscribe(
-            detalles_solicitudesPFDC => {//Se obtienen los detalles de la solicitud con productos fuera del catalogo mediate el id
-              this.dataSource2 = new MatTableDataSource(detalles_solicitudesPFDC); //Se cargan los datos a su tabla
-              this.detalles_solicitud_pfdc = detalles_solicitudesPFDC;//Se guardan los datos en su lista
-        });
       }
     });
   }
@@ -125,7 +135,11 @@ export class SolicitudAdqViewComponent implements OnInit {
 
   //Metodo para guardar/Actualizar la solicitud
   guardarSolicitud(): void {
+    //Se inicializa el spinner
+    this.banderaCarga = true;
     if (this.validarDetalles()) {//Se valida los input donde se ingresó la cantidad autorizada
+      //Se detiene el spinner
+      this.banderaCarga = false;
       swal.fire('Para aceptar la solicitud debe de ingresar un valor diferente de cero o válido en la cantidad que autoriza', '', 'info');
     } else {
       if (this.solicitud.observacion_aprobacion_rechazo) {//Se evalua que el campo requiro sea diferente de nulo
@@ -159,20 +173,28 @@ export class SolicitudAdqViewComponent implements OnInit {
                       this.crearCompra();//Se crea una compra para la solicitud actual
                       this.enviarCorreo(solicitud);//Se manda un correo notificando el estatus de la sol}
                       this.router.navigate(['/layout/solicitudes-adquisiciones']);//Se redirecciona  a las solicitudes
+                      //Se detiene el spinner
+                      this.banderaCarga = false;
                     } else {
-                      swal.fire(
-                        'Mensaje',
-                        `Error al aceptar la solicitud`,
-                        'error'
-                      );
+                      swal.fire('Mensaje',`Error al aceptar la solicitud`,'error');
                     }
                   })
-              })
+              },
+              (err) => {
+                //Se detiene el spinner
+                this.banderaCarga = false;
+                //Mensaje de error en caso de no almacenarse la solicitud
+                swal.fire('Error',`Error al aceptar la solicitud`,'error');
+              });
           } else if (result.isDenied) {
+            //Se detiene el spinner
+            this.banderaCarga = false;
             swal.fire('La solicitud no fue guardada', '', 'info');
           }
         })
       } else {
+        //Se detiene el spinner
+        this.banderaCarga = false;
         swal.fire('Deje algún comentario para continuar', '', 'info')
       }
     }
@@ -180,43 +202,53 @@ export class SolicitudAdqViewComponent implements OnInit {
 
   //Método utilizado para rechazar una solicitud
   rechazarSolicitud(): void {
+    //Se inicializa el spinner
+    this.banderaCarga = true;
     //El unico requisito que se requiere para rechazar una solicitud es que el usuario deje un comentario y aqui se evalua
     if (this.solicitud.observacion_aprobacion_rechazo) {
-      this.solicitud.estatus = "Rechazada";//El estatus cambia a Rechazada
-      this.solicitud.fecha_rechazo = new Date();//Se establece la fecha del rechazp
-      //Se obtiene el nombre del usuario logeado para registrarlo como la persona quien rechaza la solicitud
-      this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);
       swal.fire({
         title: '¿Está seguro de rechazar esta solicitud? ',//Se consulta al usuario antes de continuar
         showDenyButton: true,
         showCancelButton: false,
         confirmButtonText: 'Si',
-        denyButtonText: `Seguir`,
+        denyButtonText: `No, seguir viendo`,
       }).then((result) => {
         if (result.isConfirmed) {
+          this.solicitud.estatus = "Rechazada";//El estatus cambia a Rechazada
+          this.solicitud.fecha_rechazo = new Date();//Se establece la fecha del rechazp
+          //Se obtiene el nombre del usuario logeado para registrarlo como la persona quien rechaza la solicitud
+          this.solicitud.usuario_aprob = JSON.parse(localStorage.getItem('nombreCUsuario')!);
           this.solicitudesService.update(this.solicitud).subscribe(//Se realiza la actualizacion en la base de datos
             solicitud => {
               if (solicitud) {
                 //Se notifica al usuario de que el rechazo se efectuó exitosamente
-                swal.fire(
-                  'Mensaje',
-                  `La solicitud:  ${solicitud.id_solicitud} fue rechazada con éxito`,
-                  'success'
-                );
+                swal.fire('Mensaje',`La solicitud:  ${solicitud.id_solicitud} fue rechazada con éxito`,'success');
                 this.enviarCorreo(solicitud);//Se envia un correo electronico notificando el estatus de la solicitud
                 //Se redirecciona a la tabla donde se muestran todas las solicitudes
                 this.router.navigate(['/layout/solicitudes-adquisiciones']);
+                //Se detiene el spinner
+                this.banderaCarga = false;
               } else {
-                swal.fire(
-                  'Mensaje',
-                  `Error al rechazar la solicitud`,//Error en caso de haberlo
-                  'error'
-                );
+                //Se detiene el spinner
+                this.banderaCarga = false;
+                //Error en caso de haberlo
+                swal.fire('Mensaje',`Error al rechazar la solicitud`,'error');
               }
-            })
+            },
+            (err) => {
+              //Se detiene el spinner
+              this.banderaCarga = false;
+              //Mensaje de error en caso de no almacenarse la solicitud
+              swal.fire(err,`Error al rechazar la solicitud`,'error');
+            });
+        }else{
+          //Se detiene el spinner
+          this.banderaCarga = false;
         }
       })
     } else {
+      //Se detiene el spinner
+      this.banderaCarga = false;
       swal.fire('Deje un comentario para continuar', '', 'info');//Mensaje de aviso
     }
   }
@@ -259,6 +291,10 @@ export class SolicitudAdqViewComponent implements OnInit {
               });
           }
         }
+      },
+      (err) => {
+        //Mensaje de error en caso de no almacenarse la solicitud
+        swal.fire(err,`Error al rechazar la solicitud`,'error');
       });
   }
 

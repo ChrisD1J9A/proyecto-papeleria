@@ -8,6 +8,7 @@ import { MaxMinStockService } from 'src/app/administracion/servicios/papeleria/m
 import { MaxMinExistenciaService } from 'src/app/administracion/servicios/papeleria/max-min-existencia.service';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import  swal from 'sweetalert2';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class InventarioComponent implements OnInit {
   dataSource2 = new MatTableDataSource();//Tabla para los productos con stock bajo
   maxStock: number; //configuracion de maximo de stock
   minStock: number; //configuracion del minimo de stock
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
 
   constructor(private inventarioService: InventarioService,
@@ -38,6 +40,7 @@ export class InventarioComponent implements OnInit {
               private maxMinExistenciaService: MaxMinExistenciaService) { }
 
   ngOnInit(): void {
+    this.error = false;
     this.cargarInventario();//Metodo mediante el cual se carga el inventario de la base de datos
   }
 
@@ -62,6 +65,12 @@ export class InventarioComponent implements OnInit {
               //console.log(this.inventarioBajo);
             });
         }
+      },
+      (err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
+        //Mensaje relacionado con el error
+        swal.fire('Error',`Error al cargar las sucursales`,'error');
       });
   }
 

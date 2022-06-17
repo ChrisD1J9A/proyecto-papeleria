@@ -31,12 +31,7 @@ export class UnidadService
    **/
   public create(unidad: Unidad): Observable<any>
   {
-      return this.http.post<any>(this.urlEndPoint, unidad, {headers: this.httpHeaders}).pipe(
-        catchError (e => {
-          console.error(e.error.mensaje);
-          swal.fire(e.error.mensaje, 'Error al ingresar' , 'error');
-          return throwError(e);
-        }));
+      return this.http.post<any>(this.urlEndPoint, unidad, {headers: this.httpHeaders});
   }
 
   /**
@@ -50,7 +45,7 @@ export class UnidadService
         console.error(e.error.mensaje);
         swal.fire('Error al consultar', e.error.mensaje, 'error');
         return throwError(e);
-      }));;
+      }));
   }
 
   /**
@@ -58,11 +53,6 @@ export class UnidadService
    **/
   public update(unidad: Unidad): Observable<any>
   {
-    return this.http.put(`${this.urlEndPoint}/${unidad.id_unidad}`, unidad, {headers: this.httpHeaders}).pipe(
-      catchError (e => {
-        console.error(e.error.mensaje);
-        swal.fire(e.error.mensaje, e.error.error , 'error');
-        return throwError(e);
-      }));
+    return this.http.put(`${this.urlEndPoint}/${unidad.id_unidad}`, unidad, {headers: this.httpHeaders});
   }
 }

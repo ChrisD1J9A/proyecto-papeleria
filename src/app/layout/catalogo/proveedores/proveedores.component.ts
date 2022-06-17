@@ -10,6 +10,7 @@ import swal from 'sweetalert2';
   styleUrls: ['./proveedores.component.scss']
 })
 export class ProveedoresComponent implements OnInit {
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
   proveedor = new Proveedor(); //Objeto proveedor
   proveedores: Proveedor[];//Arreglo de proveedores
   displayedColumns: string[] = ['id_proveedor', 'nombre', 'direccion', 'telefono', 'rfc', 'estatus', 'action'];//Encabezados para las columnas de la tabla de proveedores
@@ -18,10 +19,15 @@ export class ProveedoresComponent implements OnInit {
   constructor(private proveedoresService: ProveedoresService) { }
 
   ngOnInit(): void {
+    this.error = false;
     this.proveedoresService.getProveedores().subscribe(//Se obtiene de la base de datos los proveedores
-      proveedores => {
+      (proveedores) => {
         this.proveedores = proveedores;//Se almacenan los datos obtenidos en el respectivo array
         this.dataSource = new MatTableDataSource(proveedores);//Los datos ademas se agregan a la tabla
+      },
+      (err) => {
+        //En caso de error muestra el mensaje de alerta en el sistema
+        this.error = true;
       });
   }
 

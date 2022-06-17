@@ -31,12 +31,7 @@ export class ProductosService {
    **/
   public create(producto: Producto): Observable<any>
   {
-      return this.http.post<any>(this.urlEndPoint, producto, {headers: this.httpHeaders}).pipe(
-        catchError (e => {
-          console.error(e.error.mensaje);
-          swal.fire(e.error.mensaje, 'Verificar lo ingresado' , 'error');
-          return throwError(e);
-        }));
+      return this.http.post<any>(this.urlEndPoint, producto, {headers: this.httpHeaders});
   }
 
   /**
@@ -44,12 +39,7 @@ export class ProductosService {
    **/
   public update(producto: Producto): Observable<Producto>
   {
-    return this.http.put<Producto>(`${this.urlEndPoint}/${producto.id_producto}`, producto, {headers: this.httpHeaders}).pipe(
-      catchError (e => {
-        console.error(e.error.mensaje);
-        swal.fire(e.error.mensaje, e.error.error , 'error');
-        return throwError(e);
-      }));
+    return this.http.put<Producto>(`${this.urlEndPoint}/${producto.id_producto}`, producto, {headers: this.httpHeaders});
   }
 
   /**

@@ -62,6 +62,8 @@ export class CompraFViewComponent implements OnInit {
   minExistencia: number; //configuracion de minimo de existencia
   numeroSolicitud: number;//Variable para almacenar el id de la solicitud al que pertenece la compra
   precioFormateado: string; //variable que se usa para dar formato de pesos en el input gasto total
+  banderaCarga: Boolean;//Bandera para activar un spinner
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
   constructor(private comprasService: ComprasService,
     private detalleCompraService: DetalleCompraService,
@@ -79,10 +81,16 @@ export class CompraFViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.banderaCarga = false;
+    this.error = false;
     this.cargarCompra();//Metodo para cargar la compra
     this.proveedoresService.getProveedores().subscribe(//obtener los proveedores de la base de datos
       proveedores => {
         this.proveedores = proveedores.filter(p => p.estatus == 1);
+      },
+      (err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
       });
     //Obtener las configuraciones de maximos y minimos de la sucursal al que le pertenece la compra
     this.obtenerMaximosMinimosDeLaSucursal();
@@ -145,6 +153,13 @@ export class CompraFViewComponent implements OnInit {
               this.banderaEditar = true;
             }
 
+            //Se obtienen los detalles de la compra mediante el id_compra, los productos y las cantidades solicitadas, autorizada y compradas
+            this.detalleCompraService.getDetallesCompra(id).subscribe(
+              deta_compra => {
+                this.dataSource = new MatTableDataSource(deta_compra);//Se cargan los datos a su tabla
+                this.detalles_compra = deta_compra;//se cargan los datos tambien a su respectivo array
+              });
+
             //Esta variable que pertenece en a la tabla de solicitud de ser true implica que la solicitud contiene productos fuera del catalogo
             if (response.compra.solicitud.pfdc) {
               this.detalleCompraPFDCService.getDetallesCompra_pfdc(response.compra.id_compra).subscribe(
@@ -157,12 +172,12 @@ export class CompraFViewComponent implements OnInit {
             } else {//De ser false, implica que los productos de la solicitud son completamente dentro del catálogo de productos
               this.pfdcFlag = false;//La bandera se pone false implicando que no se muestre la tabla de productos fuera del catalogo
             }
-          });
-          //Se obtienen los detalles de la compra mediante el id_compra, los productos y las cantidades solicitadas, autorizada y compradas
-        this.detalleCompraService.getDetallesCompra(id).subscribe(
-          deta_compra => {
-            this.dataSource = new MatTableDataSource(deta_compra);//Se cargan los datos a su tabla
-            this.detalles_compra = deta_compra;//se cargan los datos tambien a su respectivo array
+          },
+          (err) => {
+            //En caso de error muestra el mensaje de alerta de la sección
+            this.error = true;
+            //Mensaje relacionado con el error
+            swal.fire('Error',`Error al cargar la compra`,'error');
           });
       }
     });
@@ -211,7 +226,11 @@ export class CompraFViewComponent implements OnInit {
 
   //Método mediante el cual se guarda la compra
   guardarCompra() {
+    //Se inicializa el spinner
+    this.banderaCarga = true;
     if (this.validarDetalles()) {//Se valida que no exista errores en los input de cantidad comprada
+      //Se detiene el spinner
+      this.banderaCarga = false;
       //Mensaje de error
       swal.fire('Para guardar la compra debe de ingresar un valor diferente de cero o válido en la cantidad comprada', '', 'info');
     } else {
@@ -249,6 +268,8 @@ export class CompraFViewComponent implements OnInit {
                         `La compra:  ${compra.id_compra} fue guardada con éxito`, //Mensaje de que la compra se guardo exitosamente
                         'success'
                       );
+                      //Se detiene el spinner
+                      this.banderaCarga = false;
                       this.router.navigate(['/layout/compras']);//Se redirecciona a donde estan todas las compras
                     } else {
                       swal.fire(
@@ -258,18 +279,27 @@ export class CompraFViewComponent implements OnInit {
                       );
                     }
                   });
+              },
+              (err) => {
+                //Se detiene el spinner
+                this.banderaCarga = false;
+                //Mensaje relacionado con el error
+                swal.fire('Error',`Error al guardar la compra`,'error');
               });
           } else if (result.isDenied) {
+            //Se detiene el spinner
+            this.banderaCarga = false;
             swal.fire('La compra no fue guardada', '', 'info');//Si el usuario decide no proceder aparece este mensaje
           }
-        }
-        );
+        });
       } else {
+        //Se detiene el spinner
+        this.banderaCarga = false;
         swal.fire({
           icon: 'error',
           title: 'Oops...',
           text: 'Rellene los campos necesarios para continuar'//Mensaje que indica al usuario que rellene los campos requeridos
-        })
+        });
       }
     }
   }
