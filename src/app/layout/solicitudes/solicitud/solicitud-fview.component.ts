@@ -94,7 +94,7 @@ export class SolicitudFViewComponent implements OnInit {
             //Mensaje de error en caso de no almacenarse la solicitud
             swal.fire(err,`Error al envíar la solicitud`,'error');
           });
-      } else if (result.isDenied) {
+      } else {
         //Se detiene el spinner
         this.banderaCarga = false;
         swal.fire('La solicitud no fue guardada', '', 'info'); //De no continuar el usuario aparece este mensaje

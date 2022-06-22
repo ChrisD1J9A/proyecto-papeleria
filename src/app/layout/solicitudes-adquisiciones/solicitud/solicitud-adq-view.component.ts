@@ -186,7 +186,7 @@ export class SolicitudAdqViewComponent implements OnInit {
                 //Mensaje de error en caso de no almacenarse la solicitud
                 swal.fire('Error',`Error al aceptar la solicitud`,'error');
               });
-          } else if (result.isDenied) {
+          } else {
             //Se detiene el spinner
             this.banderaCarga = false;
             swal.fire('La solicitud no fue guardada', '', 'info');

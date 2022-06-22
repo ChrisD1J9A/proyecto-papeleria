@@ -129,7 +129,7 @@ export class ProveedorFormComponent implements OnInit {
                 //Si ocurre un error muestra un mensaje de alerta de error
                 swal.fire(err.error.mensaje, 'Error al querer insertar el proveedor', 'error');
               });
-          } else if (result.isDenied) {
+          } else {
             //se desactiva el spinner
             this.banderaCarga = false;
             swal.fire('El elemento no fue guardado', '', 'info'); //Si el usuario dedice no guardar se muestra este mensaje
@@ -188,7 +188,7 @@ export class ProveedorFormComponent implements OnInit {
                   this.ngOnInit();
                 }
               })
-          } else if (result.isDenied) {
+          } else {
             //se desactiva el spinner
             this.banderaCarga = false;
             swal.fire('El elemento no fue actualizado', '', 'info');//Mensaje de que el proveedor no fue actualizado

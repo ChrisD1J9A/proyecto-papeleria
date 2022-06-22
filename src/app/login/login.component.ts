@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   returnUrl!: string;
   usuario :Usuario = new Usuario();
-  error = '';
+  error: boolean;
   sucursal= '';
   sucursales!: Sucursal[];
   constructor(
@@ -33,8 +33,10 @@ export class LoginComponent implements OnInit {
 
       this.sucursalService.getSucursales().subscribe(val=>{
           this.sucursales=val;
-
-      })
+      }, (err)=>{
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
+      });
       // get return url from route parameters or default to '/'
       this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }

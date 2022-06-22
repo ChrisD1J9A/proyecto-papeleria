@@ -286,7 +286,7 @@ export class CompraFViewComponent implements OnInit {
                 //Mensaje relacionado con el error
                 swal.fire('Error',`Error al guardar la compra`,'error');
               });
-          } else if (result.isDenied) {
+          } else {
             //Se detiene el spinner
             this.banderaCarga = false;
             swal.fire('La compra no fue guardada', '', 'info');//Si el usuario decide no proceder aparece este mensaje

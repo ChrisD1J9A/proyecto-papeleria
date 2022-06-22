@@ -1,5 +1,7 @@
 <mat-card style="text-align: center;">
-
+  <div class="alert alert-danger" *ngIf="error" role="alert" style="text-align: center; margin-top: 20px;">
+    OCURRIÓ UN ERROR DE COMUNICACIÓN CON EL SERVIDOR, INTÉNTALO MÁS TARDE O COMUNÍCATE CON T.I.
+  </div>
     <img src="./assets/img/logoSofipa.png" width="50%">
 
     <mat-card-content>
@@ -59,7 +61,7 @@
                                 sucursal.nombreSucursal }}</mat-option>
                         </mat-select>
 
-                        
+
                     </mat-form-field>
                 </div>
             </div>

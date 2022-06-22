@@ -127,7 +127,7 @@ export class UnidadComponent implements OnInit {
               //Si ocurre un error muestra un mensaje de alerta de error
               swal.fire(err.error.mensaje,`Error al insertar la unidad`,'error');
             });
-        } else if (result.isDenied) {
+        } else {
           //Se  desactiva el spinner
           this.banderaCarga=false;
           swal.fire('El elemento no fue guardado', '', 'info');//Mensaje de que no se guardo la nueva unidad
@@ -173,7 +173,7 @@ export class UnidadComponent implements OnInit {
               console.error(err.error.mensaje);
               swal.fire(err.error.mensaje,'Error al actualizar la unidad','error');
             });
-        } else if (result.isDenied) {
+        } else {
           //Desactivar spinner
           this.banderaCarga = false;
           swal.fire('El elemento no fue actualizado', '', 'info');//Mensaje  de no  guardado

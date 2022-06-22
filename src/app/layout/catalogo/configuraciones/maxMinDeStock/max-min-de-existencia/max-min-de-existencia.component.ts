@@ -165,7 +165,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
                   //Si ocurre un error muestra un mensaje de alerta de error
                   swal.fire(err.error.mensaje, `Error al insertar la unidad`, 'error');
                 });
-            } else if (result.isDenied) {
+            } else {
               //Detiene el spinner de carga
               this.banderaCarga = false;
               swal.fire('El elemento no fue guardado', '', 'info'); //Mensaje informando al usuario de que la configuracion no se ha guardao
@@ -216,7 +216,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
                 //Si ocurre un error muestra un mensaje de alerta de error
                 swal.fire(err.error.mensaje, `Error al actualizar la configuracion`, 'error');
               });
-        } else if (result.isDenied) {
+        } else {
           //Detiene el spinner de carga
           this.banderaCarga = false;
           swal.fire('El elemento no fue actualizado', '', 'info'); //Mensaje que sale si el usuario decide no actualizar

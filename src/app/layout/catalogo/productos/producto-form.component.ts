@@ -141,7 +141,7 @@ export class ProductoFormComponent implements OnInit {
               //Si ocurre un error muestra un mensaje de alerta de error
               swal.fire(err.error.mensaje,'Error al querer insertar el producto','error');
             });
-        } else if (result.isDenied) {
+        } else {
           //Se detiene el spinner
           this.banderaCarga = false;
           //Si el usuario no decide guardar el producto se envia un mensaje confirmando su desicion
@@ -184,7 +184,7 @@ export class ProductoFormComponent implements OnInit {
               swal.fire(err.error.mensaje,'Error al querer insertar el producto','error');
             });
           swal.fire('Actualizado', `El Producto ${this.producto.descripcion} actualizado con éxito!`, 'success')//Se muestra al usuario un mensaje exitoso
-        } else if (result.isDenied) {
+        } else {
           //Detiene el spinner de carga
           this.banderaCarga = false;
           swal.fire('El elemento no fue actualizado', '', 'info'); //Si el usuario decideno actualizar

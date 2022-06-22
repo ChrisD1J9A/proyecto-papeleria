@@ -191,7 +191,7 @@ export class SolicitudFormComponent implements OnInit {
                 //Mensaje de error en caso de no almacenarse la solicitud
                 swal.fire('Mensaje',`Error al envíar la solicitud`,'error');
               });
-          } else if (result.isDenied) {
+          } else {
             //Se detiene el spinner
             this.banderaCarga = false;
             swal.fire('La solicitud no fue guardada', '', 'info');//en caso de que el usuario no decidiera continuar resalta este mensaje
