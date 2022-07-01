@@ -5,7 +5,7 @@ export class Compra{
   id_compra: number;
   solicitud: Solicitud;
   proveedor: Proveedor;
-  id_sucursal: number;
+  idSucursal: number;
   nombre_sucursal: string;
   usuario: string;
   fecha_creacion: Date;

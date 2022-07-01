@@ -259,7 +259,7 @@ export class SolicitudAdqViewComponent implements OnInit {
     var detallesoli = new Detalle_solicitud();//Objeto Detalle_solicitud
     this.compra.solicitud = this.solicitud; //La nueva compra se le asocia la solicitud que se acepta
     this.compra.estatus = 'En proceso';//La compra nueva por default se deja el estatus en proceso
-    this.compra.id_sucursal = this.solicitud.id_sucursal;//Se le asigna a la copra el id_de la sucursal al que le pertenece
+    this.compra.idSucursal = this.solicitud.idSucursal;//Se le asigna a la copra el id_de la sucursal al que le pertenece
     this.compra.nombre_sucursal = this.solicitud.nombre_sucursal;//Tambien el nombre
     this.comprasService.create(this.compra).subscribe(
       compra => {//Se registra la compra en la base de datos

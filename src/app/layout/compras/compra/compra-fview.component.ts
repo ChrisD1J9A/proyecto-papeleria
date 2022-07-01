@@ -314,13 +314,13 @@ export class CompraFViewComponent implements OnInit {
   //En este metodo se crea o se actualiza el inventario de la secursal
   crearActualizarInventario(detalles_c: Detalle_compra[]) {
     var deta_compra = new Detalle_compra()//Se crea una variable para el detalle compra
-    this.inventarioService.getInventarioBySucursal(this.compra.id_sucursal).subscribe(
+    this.inventarioService.getInventarioBySucursal(this.compra.idSucursal).subscribe(
       inventarioConsulta => {//Se consulta a la base de datos si existe un inventario de la sucursal
         if (inventarioConsulta === null) {//En caso de que aún no exista un inventario de la sucursal en curso
           var deta_invent = new Detalle_inventario();//Se declara un objeto detalle inventario
           var invent = new Inventario();//Se declara un objeto inventario
           invent.nombre_sucursal = this.compra.nombre_sucursal; //al inventario se ingresa el nombre de la sucursal
-          invent.id_sucursal = this.compra.id_sucursal;//Se ingresa tambien el id de la sucursal
+          invent.id_sucursal = this.compra.idSucursal;//Se ingresa tambien el id de la sucursal
           invent.fecha_ultima_actualizacion = new Date(); //Se establece la fecha de actualizacion
           this.inventarioService.create(invent).subscribe(
             inventarionuevo => {//Se crea/registra el inventario en la base de datos

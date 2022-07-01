@@ -14,7 +14,7 @@ export class DetalleSolicitudService {
   constructor(private http: HttpClient) { }
 
   /**
-   **@return Se crean o almacenan detalles de solicitud de la base de datos mediante
+   **@return Se crean o almacenan detalles de solicitud de la base de datos 
    **/
   public create(detalle_solicitud: Detalle_solicitud): Observable<Detalle_solicitud>
   {

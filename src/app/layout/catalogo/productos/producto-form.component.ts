@@ -54,6 +54,7 @@ export class ProductoFormComponent implements OnInit {
 
   //Metodo mediante el cual se da cierto formato a los input de iva y precio total
   precio_input1(n: any) {
+    this.producto.precio_subtotal.toFixed(2);
     this.producto.precio_iva = n * 0.16;//Se aplica el porcentaje de iva a la cantidad ingresada pro el  usuario
     this.producto.precio_iva = parseFloat((Math.round(this.producto.precio_iva * 100) / 100).toFixed(2));//Se aplica un formato de solo  dos decimales
     this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva);//Para el precio total se suma la cantidad ingresada por el usuario  + el iva
@@ -69,6 +70,16 @@ export class ProductoFormComponent implements OnInit {
   precio_input2() {//Recibe un numero
     this.producto.precio_total = (this.producto.precio_subtotal + this.producto.precio_iva); //Suma el precio del producto mas el iva que el usuario edito
     this.producto.precio_total = parseFloat((Math.round(this.producto.precio_total * 100) / 100).toFixed(2)); //Esta parte es para darle formato de pesos y redondear a dos decimales
+  }
+
+  formatoDePesos(n)
+  {
+    n.target.value = this.producto.precio_subtotal.toFixed(2);
+  }
+
+  formatoDePesos2(n)
+  {
+    n.target.value = this.producto.precio_iva.toFixed(2);
   }
 
   //Método mediante el cual se carga un producto proveniente de la base de datos y poder editarlo en el formulario

@@ -131,7 +131,7 @@ export class SolicitudFormComponent implements OnInit {
       if (this.detalles.valid && this.detalles2.valid) {//Corrobora que los formularios no tengan datos invalidos para el sistema
         this.solicitud = this.solicitudForm.value; //Toma los datos establecidos en el sistema y los asigna al Objeto Solicitud
         this.solicitud.estatus = "Pendiente";//Como será una nueva solicitud, su estatus será el de pendiente
-        this.solicitud.id_sucursal = this.idSucursal; //Se le asigna el id de la sucursal
+        this.solicitud.idSucursal = this.idSucursal; //Se le asigna el id de la sucursal
         this.solicitud.nombre_sucursal = this.nombreSucursal; //se le asigna el nombre de la sucursal
         if (this.detalles2.getRawValue().length >= 1) { //Corrobora si hay uno o mas productos que no formen parte del catalogo de productos...
           this.solicitud.pfdc = true; //se le asigna un true en caso de haber un producto fuera del catalogo

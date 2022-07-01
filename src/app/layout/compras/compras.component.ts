@@ -22,6 +22,7 @@ export class ComprasComponent implements OnInit {
     this.error = false;
     this.comprasService.getCompraBySucursal(this.idSucursal).subscribe(//Se buscan las compras pertenecientes a la sucursal desde donde se ingresa al iniciar sesion
       compras => {
+        console.log(compras);
         this.compras = compras;//Las compras se cargan al arreglo
         this.dataSource = new MatTableDataSource(this.compras);//tambien se cargan a la tabla
       },(err) => {
