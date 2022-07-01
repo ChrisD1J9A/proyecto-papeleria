@@ -28,6 +28,7 @@ export class ReportesViewComponent implements OnInit {
   date: Date; //Variable para establecer en el datePicker que la fecha maxima a poder elegir sea la actual
   fechaR1: Date;//Variable para almacenar el rango de fecha inicial en el datePicker
   fechaR2: Date;//Variable para almacenar el rango de fecha final en el datePicker
+  error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
   constructor(private compraService: ComprasService) { }
 
@@ -35,6 +36,7 @@ export class ReportesViewComponent implements OnInit {
     this.flagDatePicker = false;
     this.flagDatePicker2 = false;
     this.flagDatePicker3 = false;
+    this.error = false;
     this.date = new Date();
   }
 
@@ -69,6 +71,12 @@ export class ReportesViewComponent implements OnInit {
           }else{
             swal.fire('Ok', 'Datos obtenidos', 'success'); //Mensasje de obtención de datos exitoso
           }
+        },
+        (err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+          //Mensaje relacionado con el error
+          swal.fire('Error',`Error al cargar los datos`,'error');
         });
     } else {//En caso contrario, en el que la bandera sea true, quiere decir que el usuario  uso el date picker
       //Para realizar la consulta correctamente se le dio un formato de fecha
@@ -84,6 +92,12 @@ export class ReportesViewComponent implements OnInit {
           }else{
             swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
           }
+        },
+        (err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+          //Mensaje relacionado con el error
+          swal.fire('Error',`Error al cargar los datos`,'error');
         });
     }
   }
@@ -100,6 +114,12 @@ export class ReportesViewComponent implements OnInit {
         }else{
           swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
         }
+      },
+      (err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
+        //Mensaje relacionado con el error
+        swal.fire('Error',`Error al cargar los datos`,'error');
       });
   }
 
@@ -118,6 +138,12 @@ export class ReportesViewComponent implements OnInit {
           }else{
             swal.fire('Ok', 'Datos obtenidos', 'success'); //Mensasje de obtención de datos exitoso
           }
+        },
+        (err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+          //Mensaje relacionado con el error
+          swal.fire('Error',`Error al cargar los datos`,'error');
         });
     } else {//En caso contrario, en el que la bandera sea true, quiere decir que el usuario  uso el date picker
       //Para realizar la consulta correctamente se le dio un formato de fecha
@@ -133,6 +159,12 @@ export class ReportesViewComponent implements OnInit {
           }else{
             swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
           }
+        },
+        (err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+          //Mensaje relacionado con el error
+          swal.fire('Error',`Error al cargar los datos`,'error');
         });
     }
   }
@@ -148,6 +180,12 @@ export class ReportesViewComponent implements OnInit {
         }else{
           swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
         }
+      },
+      (err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
+        //Mensaje relacionado con el error
+        swal.fire('Error',`Error al cargar los datos`,'error');
       });
   }
 
@@ -165,6 +203,12 @@ export class ReportesViewComponent implements OnInit {
           }else{
             swal.fire('Ok', 'Datos obtenidos', 'success'); //Mensasje de obtención de datos exitoso
           }
+        },
+        (err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+          //Mensaje relacionado con el error
+          swal.fire('Error',`Error al cargar los datos`,'error');
         });
     } else {//En caso contrario, en el que la bandera sea true, quiere decir que el usuario  uso el date picker
       //Para realizar la consulta correctamente se le dio un formato de fecha
@@ -182,6 +226,12 @@ export class ReportesViewComponent implements OnInit {
           }else{
             swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
           }
+        },
+        (err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+          //Mensaje relacionado con el error
+          swal.fire('Error',`Error al cargar los datos`,'error');
         });
     }
   }
@@ -199,6 +249,12 @@ export class ReportesViewComponent implements OnInit {
         }else{
           swal.fire('Ok', 'Datos obtenidos', 'success');//Mensaje de consulta exitosa
         }
+      },
+      (err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
+        //Mensaje relacionado con el error
+        swal.fire('Error',`Error al cargar los datos`,'error');
       });
   }
 }

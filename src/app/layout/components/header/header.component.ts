@@ -18,9 +18,13 @@ export class HeaderComponent implements OnInit {
       console.log(this.usuario.username);
 
      }
+
+    //Método para ocultar o mostrar el menú
     toggleSidebar() {
         this.toggleSidebarForMe.emit();
     }
+
+    //Metodo para cerrar la sesión
     cerrarSesion(){
       Swal.fire("cerrando sesion")
       Swal.close();
