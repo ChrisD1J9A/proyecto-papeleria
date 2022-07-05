@@ -2,7 +2,16 @@
   OCURRIÓ UN ERROR DE COMUNICACIÓN CON EL SERVIDOR, INTÉNTALO MÁS TARDE O COMUNÍCATE CON T.I.
 </div>
 <div class="area-txt">
+  <br>
   <h1>Inventario</h1>
+  <button mat-mini-fab
+          class="helpbutton"
+          color="primary"
+          matTooltip="En este apartado podrá visualizar el inventario de su sucursal y verificar si existen
+                      productos con stock bajo">
+    <mat-icon>help</mat-icon>
+  </button>
+  <br><br>
   <div *ngIf="inventario">
 
     <mat-form-field appearance="fill" class="largeInput">

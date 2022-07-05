@@ -97,7 +97,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
               //Detiene el spinner de carga
               this.banderaCarga = false;
               //Si ocurre un error muestra un mensaje de alerta de error
-              swal.fire(err.error.mensaje, `Error al querer actualizar la configuracion`, 'error');
+              swal.fire(err.error.mensaje, `Error al querer actualizar la configuración`, 'error');
               this.limpiar();
             });
         }
@@ -126,7 +126,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
         swal.fire({ //En caso que ya exista una configuracion se manda al usuario un mensaje informandole
           icon: 'warning',
           title: 'Oops...',
-          text: 'Ya existe una configuracion para esa sucursal',
+          text: 'Ya existe una configuración para esa sucursal',
         });
       } else {
         if (this.maxMinDeExistencia.min_existencia > this.maxMinDeExistencia.max_existencia) {//Se valida que el minimo no sea mayor al maximo de existencia
@@ -150,7 +150,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
               this.maxMinS.create(this.maxMinDeExistencia).subscribe(
                 (maxMinE) => { //Se almacena en la base de datos la nueva configuracion
                   if (maxMinE) {
-                    swal.fire('Guardado', `La configuracion fue guardada con éxito!`, 'success'); //Mensaje de confirmacion
+                    swal.fire('Guardado', `¡La configuración fue guardada con éxito!`, 'success'); //Mensaje de confirmacion
                     this.ngOnInit(); //El componente regresa a su estado inicial
                   } else {
                     //Detiene el spinner de carga
@@ -201,7 +201,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
           this.maxMinS.update(this.maxMinDeExistencia) //Se actualiza la base d e d atos
             .subscribe((maxMinE) => {
               if (maxMinE) {
-                swal.fire('Actualizado', `La configuracion se ha actualizado con éxito!`, 'success') //Mensaje de confirmacion
+                swal.fire('Actualizado', `¡La configuración se ha actualizado con éxito!`, 'success') //Mensaje de confirmacion
                 this.ngOnInit(); //Y se reestablece el componente a su estatus inicial
               } else {
                 //Se desactiva el spinner de carga
@@ -214,7 +214,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
                 //Detiene el spinner de carga
                 this.banderaCarga = false;
                 //Si ocurre un error muestra un mensaje de alerta de error
-                swal.fire(err.error.mensaje, `Error al actualizar la configuracion`, 'error');
+                swal.fire(err.error.mensaje, `Error al actualizar la configuración`, 'error');
               });
         } else {
           //Detiene el spinner de carga
@@ -253,13 +253,13 @@ export class MaxMinDeExistenciaComponent implements OnInit {
             (response) => { //Se actualiza la base de datos
               if (response) { //Si actualiza correctamente
                 //Mensaje de confirmacion
-                swal.fire('Mensaje', `La configuracion de la sucursal:  ${response.sucursal} fue dada de baja con éxito`, 'success');
+                swal.fire('Mensaje', `La configuración de la sucursal:  ${response.sucursal} fue dada de baja con éxito`, 'success');
                 this.ngOnInit(); //El componente en cuestion retoma sus valores iniciales
               } else {
                 //Detiene el spinner de carga
                 this.banderaCarga = false;
                 //Mensaje de error en dato caso de haberlo
-                swal.fire('Mensaje', `Error al dar de baja la configuracion`, 'error');
+                swal.fire('Mensaje', `Error al dar de baja la configuración`, 'error');
               }
             },
             (error) => {

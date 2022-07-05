@@ -180,7 +180,7 @@ export class SolicitudFormComponent implements OnInit {
                 } else {
                   swal.fire(
                     'Mensaje',
-                    `Error al envíar la solicitud`, //Mensaje de error en caso de no almacenarse la solicitud
+                    `Error al enviar la solicitud`, //Mensaje de error en caso de no almacenarse la solicitud
                     'error'
                   );
                 }
@@ -189,7 +189,7 @@ export class SolicitudFormComponent implements OnInit {
                 //Se detiene el spinner
                 this.banderaCarga = false;
                 //Mensaje de error en caso de no almacenarse la solicitud
-                swal.fire('Mensaje',`Error al envíar la solicitud`,'error');
+                swal.fire('Mensaje',`Error al enviar la solicitud`,'error');
               });
           } else {
             //Se detiene el spinner
@@ -212,7 +212,7 @@ export class SolicitudFormComponent implements OnInit {
       swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Debe de elegir al menos un producto!', //En caso de que el usuario no seleccionó o agrego algún producto
+        text: '¡Debe de elegir al menos un producto!', //En caso de que el usuario no seleccionó o agrego algún producto
       });
     }
   }

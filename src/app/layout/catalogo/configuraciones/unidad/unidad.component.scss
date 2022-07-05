@@ -27,6 +27,11 @@ table {
   margin-right: 8px;
 }
 
+.area-txt
+{
+  margin-left: 20px;
+}
+
 .spinner{
   position: absolute;
   top: 50%;
@@ -45,4 +50,12 @@ table {
   top: 0;
   left: 0;
   position: fixed;
+}
+
+h1{
+  display: inline;
+}
+
+.helpbutton{
+  margin-left: 10px;
 }

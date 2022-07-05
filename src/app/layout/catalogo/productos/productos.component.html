@@ -2,7 +2,15 @@
   <div class="alert alert-danger" *ngIf="error" role="alert" style="text-align: center; margin-top: 20px;">
     OCURRIÓ UN ERROR DE COMUNICACIÓN CON EL SERVIDOR, INTÉNTALO MÁS TARDE O COMUNÍCATE CON T.I.
   </div>
+  <br>
   <h1>Productos</h1>
+  <button mat-mini-fab
+          class="helpbutton"
+          color="primary"
+          matTooltip="En este apartado podrá visualizar el catálogo de productos; Agregar, editar y dar de baja productos">
+    <mat-icon>help</mat-icon>
+  </button>
+  <br><br>
   <button mat-raised-button class="btn2" color="primary" [routerLink]="['producto-form']"> <mat-icon>add_box</mat-icon> Agregar producto </button>
   <button mat-raised-button
           color="warn"
@@ -14,7 +22,7 @@
 
   <br>
   <br>
-  <h1>Tabla de productos</h1>
+  <h1>Tabla de productos</h1><br>
   <mat-form-field appearance="standard">
     <mat-label>Buscar </mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo boligrafo" #input>
@@ -85,6 +93,6 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
+    <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido completarse</td>
   </tr>
 </table>

@@ -186,7 +186,8 @@
     <mat-label>Observaciones </mat-label>
     <textarea matInput [(ngModel)]="compra.observaciones" name="observaciones" readonly="{{banderaEditar==false}}"></textarea>
   </mat-form-field>
-
+  <br>
+  <p *ngIf="banderaEditar==true">*Campos obligatorios</p>
   <div class="botones">
     <button type="button"
             mat-raised-button

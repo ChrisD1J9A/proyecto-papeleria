@@ -2,7 +2,16 @@
   OCURRIÓ UN ERROR DE COMUNICACIÓN CON EL SERVIDOR, INTÉNTALO MÁS TARDE O COMUNÍCATE CON T.I.
 </div>
 <div class="area-txt">
+  <br>
   <h1>Compras</h1>
+  <button mat-mini-fab
+          class="helpbutton"
+          color="primary"
+          matTooltip="En este apartado podrá visualizar las compras pendientes o completadas y acceder a
+                      cada una de ellas para obtener una mejor vista">
+    <mat-icon>help</mat-icon>
+  </button>
+  <br><br>
 </div>
 
 <br>
@@ -57,6 +66,6 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
+    <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido completarse</td>
   </tr>
 </table>

@@ -10,6 +10,7 @@
   <form>
     <h1 *ngIf="!producto.id_producto">{{ titulo }}</h1>&nbsp;
     <h1 *ngIf="producto.id_producto">{{ titulo2 }}</h1>&nbsp;
+    <p>*Campos obligatorios</p>
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Descripción</mat-label>
       <input matInput [(ngModel)]="producto.descripcion" name="descripcion" required>

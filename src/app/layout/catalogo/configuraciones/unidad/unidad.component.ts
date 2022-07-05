@@ -115,7 +115,7 @@ export class UnidadComponent implements OnInit {
               if(response.unidad){//Se corrobora que se realizó la insersión
                 this.ngOnInit();//El componente vuelve a su estado inicial
                 //Mensaje de confirmacion
-                swal.fire('Guardado', `La unidad ${response.unidad.descripcion} fue guardada con éxito!`, 'success');
+                swal.fire('Guardado', `¡La unidad ${response.unidad.descripcion} fue guardada con éxito!`, 'success');
               }else{
                 //Mensaje en dado caso de que no se pudo realizar correctamente la insersión
                 swal.fire('Oops', 'Ocurrió un error al insertar', 'error');

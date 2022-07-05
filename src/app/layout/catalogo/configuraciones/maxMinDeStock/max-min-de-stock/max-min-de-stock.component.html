@@ -8,8 +8,15 @@
     </div>
   </div>
   <form>
-    <h1>{{ titulo }} configuracion de stock
-    </h1>
+    <br>
+    <h1>{{ titulo }} configuración de stock</h1>
+    <button mat-mini-fab
+            class="helpbutton"
+            color="primary"
+            matTooltip="En este apartado se podrá agregar, editar y dar de baja la configuración de Máximos y mínimos de Stock">
+      <mat-icon>help</mat-icon>
+    </button>
+    <br><br>
     <p *ngIf="banderaEditar==false"  class="inLine">Sucursal: {{maxMinDeStock.sucursal}} </p>
     <br>
     <mat-form-field appearance="fill" class="espaciado" *ngIf="banderaEditar==true">
@@ -40,7 +47,7 @@
 <div class="tablaareatexto">
   <br>
   <br>
-  <h1>Tabla de maximos y  minimos</h1>
+  <h1>Tabla de maximos y  mínimos</h1>
   <mat-form-field appearance="standard">
     <mat-label>Filtrar por </mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo maximo 1" #input>
@@ -60,7 +67,7 @@
   </ng-container>
 
   <ng-container matColumnDef="usuario_modifico">
-    <th mat-header-cell *matHeaderCellDef> Usuario quien modifico </th>
+    <th mat-header-cell *matHeaderCellDef> Usuario quien modificó </th>
     <td mat-cell *matCellDef="let maxMinDeStock"> {{maxMinDeStock.usuario_modifico}} </td>
   </ng-container>
 
@@ -75,12 +82,12 @@
   </ng-container>
 
   <ng-container matColumnDef="fecha_creacion">
-    <th mat-header-cell *matHeaderCellDef> fecha_creacion </th>
+    <th mat-header-cell *matHeaderCellDef> fecha de creación </th>
     <td mat-cell *matCellDef="let maxMinDeStock"> {{maxMinDeStock.fecha_creacion | date: 'dd/MM/yyyy'}} </td>
   </ng-container>
 
   <ng-container matColumnDef="fecha_act">
-    <th mat-header-cell *matHeaderCellDef> fecha_actualizacion </th>
+    <th mat-header-cell *matHeaderCellDef> fecha de actualización </th>
     <td mat-cell *matCellDef="let maxMinDeStock"> {{maxMinDeStock.fecha_actualizacion | date: 'dd/MM/yyyy'}} </td>
   </ng-container>
 
@@ -106,6 +113,6 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido acompletarse</td>
+    <td class="mat-cell" colspan="4">Su busqueda "{{input.value}}" no ha podido completarse</td>
   </tr>
 </table>

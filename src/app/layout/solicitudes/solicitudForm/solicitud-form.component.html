@@ -43,7 +43,7 @@
     <button mat-mini-fab
             color="primary"
             matTooltip="Esta sucursal sólo tiene permitido relizar una solicitud de un máximo de {{maxExistencia}} artículos por producto y
-                        debe de tener un minimo de {{minExistencia}} artículos por producto en existencia">
+                        debe de tener un mínimo de {{minExistencia}} artículos por producto en existencia">
       <mat-icon>help</mat-icon>
     </button>
 
@@ -131,14 +131,14 @@
     </div>
   </div>
 
-  <label for="productoDesconocido">Agregar un producto fuera del catalogo de productos </label>
+  <label for="productoDesconocido">Agregar un producto fuera del catálogo de productos </label>
   <button mat-mini-fab
           color="warn"
           class="btn1"
           name="productoDesconocido"
           (click)="agregarProductoFueraDelCatalogo()"
           matTooltip="En caso de no encontrar algún producto en la tabla (Catálogo de productos),
-                      con este botón podrá especificar el prodcuto que desee solicitar">
+                      con este botón podrá especificar el producto que desee solicitar">
     <mat-icon>add_circle</mat-icon>
   </button>
   <br>
@@ -183,7 +183,7 @@
     </ng-container>
 
     <ng-container matColumnDef="descripcion">
-      <th mat-header-cell *matHeaderCellDef> Descripcion </th>
+      <th mat-header-cell *matHeaderCellDef> Descripción </th>
       <td mat-cell *matCellDef="let producto"> {{producto.descripcion}} </td>
     </ng-container>
 

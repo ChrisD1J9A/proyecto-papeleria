@@ -137,7 +137,7 @@ export class ProductoFormComponent implements OnInit {
               if(response.producto)
               {
                 //Se muestra un mensaje exitoso
-                swal.fire('Guardado', `El producto ${this.producto.descripcion} fue guardado con éxito!`, 'success')
+                swal.fire('Guardado', `¡El producto ${this.producto.descripcion} fue guardado con éxito!`, 'success')
                 //Se redirige al apartado donde se encuentran todos los productos
                 this.router.navigate(['/layout/productos']);
                 this.ngOnInit();//Se deja este componente en su estado inicial
@@ -194,7 +194,7 @@ export class ProductoFormComponent implements OnInit {
               //Si ocurre un error muestra un mensaje de alerta de error
               swal.fire(err.error.mensaje,'Error al querer insertar el producto','error');
             });
-          swal.fire('Actualizado', `El Producto ${this.producto.descripcion} actualizado con éxito!`, 'success')//Se muestra al usuario un mensaje exitoso
+          swal.fire('Actualizado', `¡El Producto ${this.producto.descripcion} actualizado con éxito!`, 'success')//Se muestra al usuario un mensaje exitoso
         } else {
           //Detiene el spinner de carga
           this.banderaCarga = false;

@@ -7,8 +7,16 @@
   </div>
 </div>
 <div class="formato1">
+  <br>
   <h1>Inventarios</h1>
-
+  <button mat-mini-fab
+          class="helpbutton"
+          color="primary"
+          matTooltip="En este apartado podrá visualizar el inventario de todas las sucursales o
+                      podrá filtrar el inventario de una sucursal en particular">
+    <mat-icon>help</mat-icon>
+  </button>
+  <br><br>
   <mat-form-field appearance="fill" class="espaciado">
     <mat-label>Sucursal</mat-label>
     <mat-select placeholder="Sucursal" name="sucursal" [(ngModel)]="sucursal" required>

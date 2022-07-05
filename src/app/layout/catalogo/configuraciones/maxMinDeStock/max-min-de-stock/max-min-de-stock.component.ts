@@ -97,7 +97,7 @@ export class MaxMinDeStockComponent implements OnInit {
               //Detiene el spinner de carga
               this.banderaCarga = false;
               //Si ocurre un error muestra un mensaje de alerta de error
-              swal.fire(err.error.mensaje, `Error al querer actualizar la configuracion`, 'error');
+              swal.fire(err.error.mensaje, `Error al querer actualizar la configuración`, 'error');
               this.limpiar();
             });
         }
@@ -118,7 +118,7 @@ export class MaxMinDeStockComponent implements OnInit {
         swal.fire({ //En caso que ya exista una configuracion se manda al usuario un mensaje informandole
           icon: 'warning',
           title: 'Oops...',
-          text: 'Ya existe una configuracion para esa sucursal',
+          text: 'Ya existe una configuración para esa sucursal',
         });
         //Detiene el spinner de carga
         this.banderaCarga = false;
@@ -144,7 +144,7 @@ export class MaxMinDeStockComponent implements OnInit {
               this.maxMinS.create(this.maxMinDeStock).subscribe(
                 (maxMiin) => {//Se almacena en la base de datos la nueva configuracion
                   if (maxMiin) {
-                    swal.fire('Guardado', `La configuracion fue guardada con éxito!`, 'success'); //Mensaje de confirmacion
+                    swal.fire('Guardado', `¡La configuración fue guardada con éxito!`, 'success'); //Mensaje de confirmacion
                     this.ngOnInit();//El componente regresa a su estado inicial
                   } else {
                     //Detiene el spinner de carga
@@ -196,7 +196,7 @@ export class MaxMinDeStockComponent implements OnInit {
           this.maxMinS.update(this.maxMinDeStock)//Se actualiza la base d e d atos
             .subscribe((maxMinStock) => {
               if (maxMinStock) {
-                swal.fire('Actualizado', `La configuracion se ha actualizado con éxito!`, 'success')//Mensaje de confirmacion
+                swal.fire('Actualizado', `¡La configuración se ha actualizado con éxito!`, 'success')//Mensaje de confirmacion
                 this.ngOnInit();//Y se reestablece el componente a su estatus inicial
               }else {
                 //Se desactiva el spinner de carga
@@ -209,7 +209,7 @@ export class MaxMinDeStockComponent implements OnInit {
                 //Detiene el spinner de carga
                 this.banderaCarga = false;
                 //Si ocurre un error muestra un mensaje de alerta de error
-                swal.fire(err.error.mensaje, `Error al actualizar la configuracion`, 'error');
+                swal.fire(err.error.mensaje, `Error al actualizar la configuración`, 'error');
               });
         } else {
           //Detiene el spinner de carga
@@ -239,7 +239,7 @@ export class MaxMinDeStockComponent implements OnInit {
     //Se activa el spinner de carga
     this.banderaCarga = true;
     swal.fire({
-        title: '¿Está seguro de dar de baja esta configuracion?',///Metodo cuya funcion es dar de baja la configuracion seleccionada en la base de datos
+        title: '¿Está seguro de dar de baja esta configuración?',///Metodo cuya funcion es dar de baja la configuracion seleccionada en la base de datos
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -255,14 +255,14 @@ export class MaxMinDeStockComponent implements OnInit {
               if (response) {//Si actualiza correctamente
                 swal.fire(//Mensaje de confirmacion
                   'Mensaje',
-                  `La configuracion de la sucursal:  ${response.sucursal} fue dada de baja con éxito`,
+                  `La configuración de la sucursal:  ${response.sucursal} fue dada de baja con éxito`,
                   'success'
                 );
                 this.ngOnInit();//El componente en cuestion retoma sus valores iniciales
               } else {//Mensaje de error en dato caso de haberlo
                 //Detiene el spinner de carga
                 this.banderaCarga = false;
-                swal.fire('Mensaje',`Error al dar de baja la configuracion`,'error');
+                swal.fire('Mensaje',`Error al dar de baja la configuración`,'error');
               }
             },
             (error) => {

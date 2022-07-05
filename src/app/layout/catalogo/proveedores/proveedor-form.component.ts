@@ -49,7 +49,7 @@ export class ProveedorFormComponent implements OnInit {
 
   //Metodo utilizado para mostrar mensaje de validacion del RFC
   getErrorMessage2() {
-    return this.rfcProveedor.hasError('required') ? 'Igrese algún dato' : '';
+    return this.rfcProveedor.hasError('required') ? 'Ingrese algún dato' : '';
   }
 
   //Metodo utilizado para mostrar mensaje de validacion del RFC
@@ -112,7 +112,7 @@ export class ProveedorFormComponent implements OnInit {
                   //se desactiva el spinner
                   this.banderaCarga = false;
                   //Mensaje de que la inserción ha sido exitosa
-                  swal.fire('Guardado', `El proveedor ${this.proveedor.nombre} fue guardado con éxito!`, 'success');
+                  swal.fire('Guardado', `¡El proveedor ${this.proveedor.nombre} fue guardado con éxito!`, 'success');
                   //Se redirecciona al componente donde se muestran todos los proveedores de la base de datos
                   this.router.navigate(['/layout/proveedores']);
                   this.ngOnInit();
@@ -183,7 +183,7 @@ export class ProveedorFormComponent implements OnInit {
                 if (response.proveedor) {
                   //se desactiva el spinner
                   this.banderaCarga = false;
-                  swal.fire('Actualizado', `El proveedor ${response.proveedor.nombre} actualizado con éxito!`, 'success');//Mensaje de que la actualizacion fue exitosa
+                  swal.fire('Actualizado', `¡El proveedor ${response.proveedor.nombre} actualizado con éxito!`, 'success');//Mensaje de que la actualizacion fue exitosa
                   this.router.navigate(['/layout/proveedores']); //Se redirecciona a la tabla general de proveedores
                   this.ngOnInit();
                 }
