@@ -23,7 +23,7 @@
     </h1>
     <mat-form-field appearance="fill">
       <mat-label>Descripción</mat-label>
-      <input matInput [(ngModel)]="unidad.descripcion" name="descripcion" required>
+      <input matInput [(ngModel)]="unidad.descripcion" name="descripcion" required onkeypress='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'>
       <mat-error *ngIf="descripcionUnidad.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <br>
@@ -37,6 +37,7 @@
   <br>
   <br>
   <h1>Tabla de unidades</h1>
+  <br>
   <mat-form-field appearance="standard">
     <mat-label>Buscar </mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo Caja" #input>

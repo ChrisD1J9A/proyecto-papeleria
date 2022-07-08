@@ -29,12 +29,13 @@
 
     <mat-form-field appearance="fill" class="espaciado">
       <mat-label>Máximo de stock</mat-label>
-      <input matInput type="number" [(ngModel)]="maxMinDeStock.max_stock" name="max_stock" min="1" onkeypress="return event.charCode >= 46 && event.charCode <= 57" required>
+      <input matInput type="number" [(ngModel)]="maxMinDeStock.max_stock" name="max_stock" min="1" max="1000" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required>
+      <mat-error *ngIf="maxEx.invalid">{{getErrorMessageMax()}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="espaciado">
       <mat-label>Mínimo de stock</mat-label>
-      <input matInput type="number" [(ngModel)]="maxMinDeStock.min_stock" name="min_stock" max="{{maxMinDeStock.max_stock}}" min="0" onkeypress="return event.charCode >= 46 && event.charCode <= 57" (input)="validarMaxMin($event.target.value)" required>
+      <input matInput type="number" [(ngModel)]="maxMinDeStock.min_stock" name="min_stock" max="{{maxMinDeStock.max_stock}}" min="0" onkeypress='return event.charCode >= 48 && event.charCode <= 57' (input)="validarMaxMin($event.target.value)" required>
       <mat-error *ngIf="controlMax.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <br>
@@ -48,8 +49,9 @@
   <br>
   <br>
   <h1>Tabla de maximos y  mínimos</h1>
+  <br>
   <mat-form-field appearance="standard">
-    <mat-label>Filtrar por </mat-label>
+    <mat-label>Buscar </mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ejemplo maximo 1" #input>
   </mat-form-field>
 </div>

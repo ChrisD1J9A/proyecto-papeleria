@@ -5,6 +5,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; text-transf
 button{text-transform: uppercase; }
 input{ text-transform: uppercase;}
 textarea{ text-transform: uppercase;}
+mat-error{ text-transform: none;}
 
 .mySnackbarSucess {
   color: white;

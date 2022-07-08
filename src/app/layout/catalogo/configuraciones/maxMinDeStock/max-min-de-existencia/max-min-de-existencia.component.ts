@@ -23,6 +23,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
   sucursal = new Sucursal();//Objeto sucursal
   banderaEditar = true;//Bandera que de ser false oculta el componente select donde se muestran las sucursales
   controlMax = new FormControl();//Form control para el Maximo de existencia
+  maxEx = new FormControl('', [Validators.required]);//Form control para cant max
   banderaCarga: Boolean;//Bandera para activar un spinner
   error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
@@ -119,7 +120,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
   public create(): void {
     //Se activa el spinner de carga
     this.banderaCarga = true;
-    if (this.maxMinDeExistencia.max_existencia && this.maxMinDeExistencia.min_existencia && this.sucursal.nombreSucursal) { //Se valida si el usuario relleno los datos requieridos
+    if (this.maxMinDeExistencia.max_existencia && this.maxMinDeExistencia.min_existencia && this.sucursal.nombreSucursal &&this.maxMinDeExistencia.max_existencia<=1000) { //Se valida si el usuario relleno los datos requieridos
       if (this.comprobarConfigExistente() == true) {//Metodo que comprueba que no existe una configuracion existente para la sucursal seleccionada
         //Detiene el spinner de carga
         this.banderaCarga = false;
@@ -179,7 +180,7 @@ export class MaxMinDeExistenciaComponent implements OnInit {
       swal.fire({
         icon: 'warning',
         title: 'Oops...',
-        text: 'Ingrese todos los datos para continuar',
+        text: 'Ingrese todos los datos correctamente para continuar',
       })
     }
   }
@@ -278,6 +279,11 @@ export class MaxMinDeExistenciaComponent implements OnInit {
   //Metodo para establecer que el maximo no puede ser meno que el minimo
   validarMaxMin(n: number) {
     this.controlMax = new FormControl(n, Validators.max(n - 1));
+  }
+
+  //Mensaje de error
+  getErrorMessageMax() {
+    return this.maxEx.hasError('required') ? 'Ingrese una cantidad válida' : '';
   }
 
   //Mensaje de error en caso de que el valor minimo supere al maximo

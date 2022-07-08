@@ -24,6 +24,7 @@ export class MaxMinDeStockComponent implements OnInit {
   sucursal: Sucursal;//Objeto para almacenar la sucursal
   banderaEditar = true;//Bandera que de ser false oculta el componente select donde se muestran las sucursales
   controlMax = new FormControl();//Form control para el Maximo de Stock
+  maxEx = new FormControl('', [Validators.required]);//Form control para cant max
   banderaCarga: Boolean;//Bandera para activar un spinner
   error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
@@ -113,7 +114,7 @@ export class MaxMinDeStockComponent implements OnInit {
   public create(): void {
     //Se activa el spinner de carga
     this.banderaCarga = true;
-    if (this.maxMinDeStock.max_stock && this.maxMinDeStock.min_stock && this.sucursal.nombreSucursal) {//Se valida si el usuario relleno los datos requieridos
+    if (this.maxMinDeStock.max_stock && this.maxMinDeStock.min_stock && this.sucursal.nombreSucursal &&this.maxMinDeStock.max_stock<=1000) {//Se valida si el usuario relleno los datos requieridos
       if (this.comprabarConfigExistente() == true) {//Metodo que comprueba que no existe una configuracion existente para la sucursal seleccionada
         swal.fire({ //En caso que ya exista una configuracion se manda al usuario un mensaje informandole
           icon: 'warning',
@@ -174,7 +175,7 @@ export class MaxMinDeStockComponent implements OnInit {
       swal.fire({
         icon: 'warning',
         title: 'Oops...',
-        text: 'Ingrese todos los datos para continuar',
+        text: 'Ingrese todos los datos correctamente para continuar',
       })
     }
   }
@@ -281,6 +282,11 @@ export class MaxMinDeStockComponent implements OnInit {
   //Metodo para establecer que el maximo no puede ser meno que el minimo
   validarMaxMin(n: number) {
     this.controlMax = new FormControl(n, Validators.max(n - 1));
+  }
+
+  //Mensaje de error
+  getErrorMessageMax() {
+    return this.maxEx.hasError('required') ? 'Ingrese una cantidad válida' : '';
   }
 
   //Mensaje de error en caso de que el valor minimo supere al maximo
