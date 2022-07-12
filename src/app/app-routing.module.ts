@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Municipios } from './administracion/servicios/municipios';
 import { HomeComponent } from './home';
 import { LayoutComponent } from './layout/layout.component';
 import { SolicitudesComponent } from './layout/solicitudes/solicitudes.component';
@@ -28,7 +27,7 @@ import { MaxMinDeExistenciaComponent } from './layout/catalogo/configuraciones/m
 import { RolGuard } from './_guards';
 import { AuthGuard } from './_guards/auth.guard';
 import {PermisosGuard} from './_guards/permisos.guard';
-import { Permisos } from './administracion/servicios/permisos';
+import { Permisos } from './administracion/modelos/permisos';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

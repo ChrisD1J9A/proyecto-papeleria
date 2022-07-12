@@ -64,6 +64,7 @@ export class ReportesViewComponent implements OnInit {
       //Se realiza la consulta en la bd, meses obtiene su valor en un select
       this.compraService.gastoMaxPorSucursales(this.meses).subscribe(
         datos => {
+          this.error = false;
           //Los datos obtenidos se proyectan en la tabla y en este apartado se cargan dichos datos
           this.dataSource = new MatTableDataSource(datos);
           if (datos.length == 0) { //En caso de que la consulta no genere ningun dato
@@ -86,6 +87,7 @@ export class ReportesViewComponent implements OnInit {
       //Se realiza la consulta  de acuerdo a un rango de fechas obtenidos en el datePicker
       this.compraService.gastoMaxPorSucursalesRangos(d1, d2).subscribe(
         datos => {
+          this.error = false;
           this.dataSource = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
           if (datos.length == 0) { //Si la consulta no devuelve dato alguno
             swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');//Mensaje de que la consulta no devolvió datos
@@ -106,6 +108,7 @@ export class ReportesViewComponent implements OnInit {
   gastosMaximosHistorico(){
     this.compraService.gastoMaxPorSucursalesHistorico().subscribe(
       datos => {
+        this.error = false;
         //Los datos obtenidos se cargan a la tabla
         this.dataSource = new MatTableDataSource(datos);
         if (datos.length == 0) { //Si la consulta no devuelve dato alguno
@@ -131,6 +134,7 @@ export class ReportesViewComponent implements OnInit {
       //Se realiza la consulta en la bd, meses obtiene su valor en un select
       this.compraService.gastoTotalPorSucursales(this.meses).subscribe(
         datos => {
+          this.error = false;
           //Los datos obtenidos se proyectan en la tabla y en este apartado se cargan dichos datos
           this.dataSource2 = new MatTableDataSource(datos);
           if (datos.length == 0) { //En caso de que la consulta no genere ningun dato
@@ -153,6 +157,7 @@ export class ReportesViewComponent implements OnInit {
       //Se realiza la consulta  de acuerdo a un rango de fechas obtenidos en el datePicker
       this.compraService.gastoTotalPorSucursalesRangos(d1, d2).subscribe(
         datos => {
+          this.error = false;
           this.dataSource2 = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
           if (datos.length == 0) { //Si la consulta no devuelve dato alguno
             swal.fire('Oops', 'No se encontraron datos en ese periodo de tiempo', 'info');//Mensaje de que la consulta no devolvió datos
@@ -173,6 +178,7 @@ export class ReportesViewComponent implements OnInit {
   gastosTotalessHistorico(){
     this.compraService.gastoTotalPorSucursalesHistorico().subscribe(
       datos => {
+        this.error = false;
         this.dataSource2 = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
         if (datos.length == 0) { //Si la consulta no devuelve dato alguno
           //Mensaje de que la consulta no devolvió datos
@@ -196,6 +202,7 @@ export class ReportesViewComponent implements OnInit {
     if (this.flagDatePicker3 == false) {
       this.compraService.getComprasPorTiempo(this.meses).subscribe(//Se realiza la consulta en la bd, meses obtiene su valor en un select
         datos => {
+          this.error = false;
           //Los datos obtenidos se proyectan en la tabla y en este apartado se cargan dichos datos
           this.dataSource3 = new MatTableDataSource(datos);
           if (datos.length == 0) { //En caso de que la consulta no genere ningun dato
@@ -218,6 +225,7 @@ export class ReportesViewComponent implements OnInit {
       //Se realiza la consulta  de acuerdo a un rango de fechas obtenidos en el datePicker
       this.compraService.getComprasPorRangos(d1, d2).subscribe(
         datos => {
+          this.error = false;
           console.log(datos);
           this.dataSource3 = new MatTableDataSource(datos);//Los datos obtenidos se cargan a la tabla
           if (datos.length == 0) { //Si la consulta no devuelve dato alguno
@@ -241,6 +249,7 @@ export class ReportesViewComponent implements OnInit {
   {
     this.compraService.getCompras().subscribe(
       datos => {
+        this.error = false;
         //Los datos obtenidos se cargan a la tabla
         this.dataSource3 = new MatTableDataSource(datos);
         if (datos.length == 0) { //Si la consulta no devuelve dato alguno
