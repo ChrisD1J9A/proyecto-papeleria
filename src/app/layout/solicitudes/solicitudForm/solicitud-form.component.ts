@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormArray } from '@angular/forms';
 import swal from 'sweetalert2';
+import {MatPaginator} from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Solicitud } from 'src/app/administracion/modelos/papeleria/solicitud';
