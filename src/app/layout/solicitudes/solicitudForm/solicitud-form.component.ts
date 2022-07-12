@@ -187,6 +187,7 @@ export class SolicitudFormComponent implements OnInit {
                 }
               },
               (err) => {
+                console.error(err);
                 //Se detiene el spinner
                 this.banderaCarga = false;
                 //Mensaje de error en caso de no almacenarse la solicitud
