@@ -84,7 +84,7 @@ export class SolicitudFormComponent implements OnInit {
   //Formulario reactivo que incluye por default información de acuerdo al usuario logeado
   solicitudForm = this.formBuilder.group({
     nombre_usuario: [this.nombre_usuario],
-    id_sucursal: [this.nombreSucursal],
+    nombre_sucursal: [this.nombreSucursal],
     fecha_solicitud: [this.date],
     observacion_solicitud: [''],//a excepción de los comentario, cuyo campo se podrá editar
   });
@@ -139,6 +139,7 @@ export class SolicitudFormComponent implements OnInit {
         } else {
           this.solicitud.pfdc = false;//se le asigna un falsa en caso de que solo tener productos dentro del catalogo
         }
+        console.log(this.solicitud)
         swal.fire({
           title: '¿Desea hacer una nueva solicitud? ',
           showDenyButton: true,
@@ -179,6 +180,7 @@ export class SolicitudFormComponent implements OnInit {
                   //Se detiene el spinner
                   this.banderaCarga = false;
                 } else {
+                  this.banderaCarga = false;
                   swal.fire(
                     'Mensaje',
                     `Error al enviar la solicitud`, //Mensaje de error en caso de no almacenarse la solicitud
