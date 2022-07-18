@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Validators, FormBuilder, FormArray } from '@angular/forms';
 import swal from 'sweetalert2';
 import {MatPaginator} from '@angular/material/paginator';
@@ -57,6 +57,8 @@ export class SolicitudFormComponent implements OnInit {
   banderaCarga: Boolean;//Bandera para activar un spinner
   error: boolean;//Bandera para mostrar un mensaje de error en el sistema
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   constructor(private productosService: ProductosService,
     private formBuilder: FormBuilder,
     private solicitudesService: SolicitudesService,
@@ -108,6 +110,7 @@ export class SolicitudFormComponent implements OnInit {
       productos => {//Se obtienen todos los productos de la base de datos
         this.pds = productos.filter(p => p.estatus === 1);//se realiza un filtro para obtener solo los productos activos
         this.dataSource = new MatTableDataSource(this.pds);//Se cargan a la tabla
+        this.dataSource.paginator = this.paginator;
       },
       (err) => {
         //En caso de error muestra el mensaje de alerta de la sección
@@ -139,7 +142,6 @@ export class SolicitudFormComponent implements OnInit {
         } else {
           this.solicitud.pfdc = false;//se le asigna un falsa en caso de que solo tener productos dentro del catalogo
         }
-        console.log(this.solicitud)
         swal.fire({
           title: '¿Desea hacer una nueva solicitud? ',
           showDenyButton: true,
@@ -150,6 +152,7 @@ export class SolicitudFormComponent implements OnInit {
           if (result.isConfirmed) {//Una vez que los formularios no contengan errores y el usuario decida continuar...
             this.solicitudesService.create(this.solicitud).subscribe(
               solicitud => { //Se hace un post al back end para almacenar la solicitud en la base de datos
+                console.log(solicitud);
                 for (var i = 0; i < this.detalles.getRawValue().length; i++) {//Se hace un ciclo for para recorrer los productos seleccionados del catalogo
                   this.deta = this.detalles.value.pop();
                   this.deta.solicitud = solicitud;//extrer cada detalle y asignarle la solicitud al que pertenece
@@ -285,6 +288,7 @@ export class SolicitudFormComponent implements OnInit {
     var indice = this.pds.findIndex(p => p === producto); //Aquí se obtiene el indice del producto seleccioado
     this.pds.splice(indice, 1); //se elimiina de la lista el producto seleccionado
     this.dataSource = new MatTableDataSource(this.pds); //y se actualiza la tabla
+    this.dataSource.paginator = this.paginator;
     this.snackBarSuccess();
     this.productosSeleccionados.add(producto); // añade el producto seleccionado a una lista auxiliar para llevar un control
     this.agregarDetalles(producto); //agregar el formulario para el producto que se selecciono
@@ -309,6 +313,7 @@ export class SolicitudFormComponent implements OnInit {
     this.pds.push(this.producto); //el producto se agrega nuevamente a la lista dónde se encuentran los demás productos
     this.pds.sort((a, b) => a.id_producto - b.id_producto);//se realiza un sort para ordenaor los producto de acuerdo al id_producto
     this.dataSource = new MatTableDataSource(this.pds);//se vuelve a cargar los datos a la tabla
+    this.dataSource.paginator = this.paginator;
     this.productosSeleccionados.delete(this.producto);//Se elimina el producto de la lista de productos seleccionados
     this.removerDetalles(index);//Borra el formulario creado para el producto
     this.snackBarDelete();//mensaje de aviso que fue el producto removido de la lista
@@ -360,7 +365,6 @@ export class SolicitudFormComponent implements OnInit {
                     ", Para ver a detalle la solicitud se sugiere revisar el sistema";
     this.mailService.enviar(this.mail).subscribe(//Una vez que quedó escrito el contenido del correo procede a enviarse a traves del backend
       correo => {
-        console.log(correo);
         console.log("correo enviado");
       });
   }

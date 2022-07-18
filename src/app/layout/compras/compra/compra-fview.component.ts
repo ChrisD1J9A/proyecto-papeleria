@@ -64,6 +64,7 @@ export class CompraFViewComponent implements OnInit {
   precioFormateado: string; //variable que se usa para dar formato de pesos en el input gasto total
   banderaCarga: Boolean;//Bandera para activar un spinner
   error: boolean;//Bandera para mostrar un mensaje de error en el sistema
+  rutaArchivo = "http://localhost:8080/api/compras/show/archivo/";
 
   constructor(private comprasService: ComprasService,
     private detalleCompraService: DetalleCompraService,
@@ -308,7 +309,7 @@ export class CompraFViewComponent implements OnInit {
   descargarTicket() {
     var nombreArchivo = this.compra.ticket;//Se obtiene el nombre del ticket
     //Mediatne a la ruta establecida en el backend + el nombre del archivo se abre una nueva venta para descargar el archivo
-    window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);
+    window.open(this.rutaArchivo + nombreArchivo);
   }
 
   //En este metodo se crea o se actualiza el inventario de la secursal
@@ -360,7 +361,7 @@ export class CompraFViewComponent implements OnInit {
   //Método para poder visualizar un pdf, abriendo un Dialog(Componente de Angular Material)
   openDialog() {
     //Se establece la ruta del ticket de la compra
-    var ubicacionArchivo = "http://localhost:8080/api/compras/show/archivo/" + this.compra.ticket;
+    var ubicacionArchivo = this.rutaArchivo + this.compra.ticket;
     this.dialog.open(TicketViewComponent, {//Se abre un nuevo dialogo con el contenido de TicketViewComponent
       width: "1000px",//Se establece el tamaño del componente
       data: {
