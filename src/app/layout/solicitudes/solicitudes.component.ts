@@ -12,10 +12,6 @@ import { MatTableDataSource } from '@angular/material/table';
 export class SolicitudesComponent implements OnInit {
   solicitud = new Solicitud();//Objeto solicitud
   solicitudes: Solicitud[];//Arreglo de solicitudes
-  aceptadas: Solicitud[];//Arreglo para almacenar solicitudes aceptadas
-  rechazadas: Solicitud[];//Arreglo para almacenar solicitudes rechazadas
-  pendientes: Solicitud[];//Arreglo para almacenar solicitudes pendientes
-  canceladas: Solicitud[];//Arreglo para almacenar solicitudes canceladas
   displayedColumns: string[] = ['id_solicitud', 'fecha_solicitud', 'fecha_revision', 'estatus', 'action'];//Encabezados de las columnas de las solicitudes
   dataSource1 = new MatTableDataSource();//tabla de solicitudes aceptadas
   dataSource2 = new MatTableDataSource();//tabla de solicitudes rechazadas
@@ -28,21 +24,38 @@ export class SolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
     this.error = false;
-    this.solicitudService.getSolicitudesBySucursal(this.idSucursal).subscribe(
-      solicitudes => {//Se obtienen las solicitudes de la sucursal donde se logeo
-        this.solicitudes = solicitudes;
-        this.aceptadas = this.filtrarAceptadas(solicitudes);
-        this.rechazadas = this.filtrarRechazadas(solicitudes);
-        this.pendientes = this.filtrarPendientes(solicitudes);
-        this.canceladas = this.filtrarCanceladas(solicitudes);
-        this.dataSource1 = new MatTableDataSource(this.aceptadas);
-        this.dataSource2 = new MatTableDataSource(this.rechazadas);
-        this.dataSource3 = new MatTableDataSource(this.pendientes);
-        this.dataSource4 = new MatTableDataSource(this.canceladas);
-      },(err) => {
-        //En caso de error muestra el mensaje de alerta de la sección
-        this.error = true;
-      });
+      //Se buscan las solicitudes de la sucursal y de estatus aceptada
+      this.solicitudService.getSolicitudesBySucursalAndEstatus(this.idSucursal, "Aceptada").subscribe(
+        solicitudesA => {
+          this.dataSource1 = new MatTableDataSource(solicitudesA);
+        },(err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+        });
+        //Se buscan las solicitudes de la sucursal y de estatus rechazada
+        this.solicitudService.getSolicitudesBySucursalAndEstatus(this.idSucursal, "Rechazada").subscribe(
+          solicitudesR => {
+            this.dataSource2 = new MatTableDataSource(solicitudesR);
+          },(err) => {
+            //En caso de error muestra el mensaje de alerta de la sección
+            this.error = true;
+          });
+      //Se buscan las solicitudes de la sucursal y de estatus pendiente
+      this.solicitudService.getSolicitudesBySucursalAndEstatus(this.idSucursal, "Pendiente").subscribe(
+        solicitudesP => {
+          this.dataSource3 = new MatTableDataSource(solicitudesP);
+        },(err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+        });
+      //Se buscan las solicitudes de la sucursal y de estatus cancelada
+      this.solicitudService.getSolicitudesBySucursalAndEstatus(this.idSucursal, "Cancelada").subscribe(
+        solicitudesC => {
+          this.dataSource4 = new MatTableDataSource(solicitudesC);
+        },(err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+        });
   }
 
   //Metodo para realizar busquedas en la tabla de solicitudes aceptadas
@@ -67,29 +80,5 @@ export class SolicitudesComponent implements OnInit {
   applyFilter4(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource4.filter = filterValue.trim().toLowerCase();
-  }
-
-  //Metodo para realizar filtrar la lista principal a solo aceptadas
-  filtrarAceptadas(solicitudes: Solicitud[]): Solicitud[] {
-    const aceptadas = solicitudes.filter(solicitud => solicitud.estatus === "Aceptada");
-    return aceptadas;
-  }
-
-  //Metodo para realizar filtrar la lista principal a solo rechazadas
-  filtrarRechazadas(solicitudes: Solicitud[]): Solicitud[] {
-    const rechazadas = solicitudes.filter(solicitud => solicitud.estatus === "Rechazada");
-    return rechazadas;
-  }
-
-  //Metodo para realizar filtrar la lista principal a solo pendientes
-  filtrarPendientes(solicitudes: Solicitud[]): Solicitud[] {
-    const pendientes = solicitudes.filter(solicitud => solicitud.estatus === "Pendiente");
-    return pendientes;
-  }
-
-  //Metodo para realizar filtrar la lista principal a solo canceladas
-  filtrarCanceladas(solicitudes: Solicitud[]): Solicitud[] {
-    const pendientes = solicitudes.filter(solicitud => solicitud.estatus === "Cancelada");
-    return pendientes;
   }
 }

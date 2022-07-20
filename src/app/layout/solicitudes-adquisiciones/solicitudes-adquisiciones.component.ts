@@ -11,9 +11,6 @@ import { MatTableDataSource } from '@angular/material/table';
 export class SolicitudesAdquisicionesComponent implements OnInit {
   solicitud = new Solicitud();//Objeto solicitud
   solicitudes: Solicitud[];//Arreglo de solicitudes
-  aceptadas: Solicitud[];//Arreglo de solicitudes aceptadas
-  rechazadas: Solicitud[];//Arreglo de solicitudes rechazadas
-  pendientes: Solicitud[];//Arreglo de solicitudes pendientes
   displayedColumns: string[] = ['id_solicitud',  'fecha_solicitud', 'fecha_revision', 'nombre_usuario', 'estatus', 'action'];
   dataSource1 = new MatTableDataSource();//Tabla de solicitudes aceptadas
   dataSource2 = new MatTableDataSource();//Tabla de solicitudes rechazadas
@@ -24,19 +21,30 @@ export class SolicitudesAdquisicionesComponent implements OnInit {
 
   ngOnInit(): void {
     this.error = false;
-    this.solicitudService.getSolicitudes().subscribe(
-      solicitudes => {//Se obtienen las solicitudes de la base de datos y se realizan filtros para cada tipo de solicitud
-        this.solicitudes = solicitudes
-        this.aceptadas = this.filtrarAceptadas(solicitudes);
-        this.rechazadas = this.filtrarRechazadas(solicitudes);
-        this.pendientes = this.filtrarPendientes(solicitudes);
-        this.dataSource1 = new MatTableDataSource(this.aceptadas);
-        this.dataSource2 = new MatTableDataSource(this.rechazadas);
-        this.dataSource3 = new MatTableDataSource(this.pendientes);
-      },(err) => {
-        //En caso de error muestra el mensaje de alerta de la sección
-        this.error = true;
-      });
+      //Se buscan las solicitudes de estatus aceptada
+      this.solicitudService.getSolicitudesByEstatus("Aceptada").subscribe(
+        solicitudesA => {
+          this.dataSource1 = new MatTableDataSource(solicitudesA);
+        },(err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+        });
+        //Se buscan las solicitudes de estatus rechazada
+        this.solicitudService.getSolicitudesByEstatus("Rechazada").subscribe(
+          solicitudesR => {
+            this.dataSource2 = new MatTableDataSource(solicitudesR);
+          },(err) => {
+            //En caso de error muestra el mensaje de alerta de la sección
+            this.error = true;
+          });
+      //Se buscan las solicitudes de estatus pendiente
+      this.solicitudService.getSolicitudesByEstatus("Pendiente").subscribe(
+        solicitudesP => {
+          this.dataSource3 = new MatTableDataSource(solicitudesP);
+        },(err) => {
+          //En caso de error muestra el mensaje de alerta de la sección
+          this.error = true;
+        });
   }
 
   //Metodo para realizar busquedas en la tabla de solicitudes aceptadas
@@ -56,23 +64,4 @@ export class SolicitudesAdquisicionesComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource3.filter = filterValue.trim().toLowerCase();
   }
-
-  //Metodo para realizar filtrar la lista principal a solo aceptadas
-  filtrarAceptadas(solicitudes: Solicitud[]): Solicitud[] {
-    const aceptadas = solicitudes.filter(solicitud => solicitud.estatus === "Aceptada");
-    return aceptadas;
-  }
-
-  //Metodo para realizar filtrar la lista principal a solo rechazadas
-  filtrarRechazadas(solicitudes: Solicitud[]): Solicitud[] {
-    const rechazadas = solicitudes.filter(solicitud => solicitud.estatus === "Rechazada");
-    return rechazadas;
-  }
-
-  //Metodo para realizar filtrar la lista principal a solo pendientes
-  filtrarPendientes(solicitudes: Solicitud[]): Solicitud[] {
-    const pendientes = solicitudes.filter(solicitud => solicitud.estatus === "Pendiente");
-    return pendientes;
-  }
-
 }

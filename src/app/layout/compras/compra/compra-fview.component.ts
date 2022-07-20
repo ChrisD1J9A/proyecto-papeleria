@@ -253,14 +253,15 @@ export class CompraFViewComponent implements OnInit {
               compra => {//Se actualiza la compra en la base ded atos
                 this.comprasService.cargarTicket(this.ticket, compra.id_compra).
                   subscribe(compra => {//Se carga el ticket a la compra
+                      console.log("ticket "+compra.ticket +"subido exitosamente");
+                  });
+                this.detalleCompraService.update(this.detalles_compra, compra.id_compra).subscribe(
+                  detalles => {//Se actualizan los detalles de compra con los productos del catalogo en la base de datos
                     if (compra.solicitud.pfdc === true) {//Se evalua si existen productos fuera del catalogo
                       this.detalles_compra_PFDC = this.dataSource2.data;//Se obtienen los datos de la tabla
                       //Se actualizan los detalles en la base de datos
                       this.detalleCompraPFDCService.update(this.detalles_compra_PFDC, compra.id_compra).subscribe(detas_pfdc => { });
                     }
-                  });
-                this.detalleCompraService.update(this.detalles_compra, compra.id_compra).subscribe(
-                  detalles => {//Se actualizan los detalles de compra con los productos del catalogo en la base de datos
                     if (detalles) {//Si la actualizacion se efectuó correctamente
                       //En este metodo se crea o se actualiza el inventario de la sucursal de la compra
                       this.crearActualizarInventario(detalles);
