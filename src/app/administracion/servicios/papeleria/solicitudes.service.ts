@@ -47,15 +47,22 @@ export class SolicitudesService {
     return this.http.get<Solicitud[]>(`${this.urlEndPoint}/sucursal/${id}`);
   }
 
+  /**
+   **@return Devuelve un arreglo de solicitudes de un determinado estatus
+   **/
   getSolicitudesByEstatus(estatus: string): Observable<Solicitud[]>
   {
     return this.http.get<Solicitud[]>(`${this.urlEndPoint}/estatus/${estatus}`);
   }
 
+  /**
+   **@return Devuelve un arreglo de solicitudes de una determinada sucursal y de determinado estatus
+   **/
   getSolicitudesBySucursalAndEstatus(id: number, estatus: string): Observable<Solicitud[]>
   {
     return this.http.get<Solicitud[]>(`${this.urlEndPoint}/sucursal/${id}/${estatus}`);
   }
+  
   /**
    **@return Devuelve una solicitud mediante su id en la base de datos
    **/

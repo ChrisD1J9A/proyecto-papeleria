@@ -123,4 +123,9 @@ export class ComprasService {
   getComprasPorRangos(fecha1: string, fecha2: string): Observable<Compra[]>{
     return this.http.get<Compra[]>(`${this.urlEndPoint}/tiempo/${fecha1}/${fecha2}`);
   }
+
+  getComprasByEstatus(estatus: string): Observable <Compra[]>
+  {
+    return this.http.get<Compra[]>(`${this.urlEndPoint}/estatus/${estatus}`);
+  }
 }

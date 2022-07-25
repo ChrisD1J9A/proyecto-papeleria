@@ -54,7 +54,7 @@ export class ProveedorFormComponent implements OnInit {
 
   //Metodo utilizado para mostrar mensaje de validacion del RFC
   getErrorMessage3() {
-    return this.telefonoProveedor.hasError('pattern') ? 'Sólo ingrese al menos 6 números' : '';
+    return this.telefonoProveedor.hasError('pattern') ? 'Ingrese al menos 10 números' : '';
   }
 
   //Metodo para cargar un proveedor de la tabla general de proveedores al formulario para editarlo
@@ -95,7 +95,7 @@ export class ProveedorFormComponent implements OnInit {
   public create(): void {
     //se activa el spinner
     this.banderaCarga = true;
-    if (this.proveedor.nombre && this.proveedor.rfc) {//Se valida que los datos requerido u obligatorios sean diferentes de null
+    if (this.proveedor.nombre && this.proveedor.rfc && this.proveedor.telefono && this.proveedor.telefono.length==10) {//Se valida que los datos requerido u obligatorios sean diferentes de null
       if (this.rfcflag == true) {//Se valida si la estructura del rfc fue la correcta
         swal.fire({
           title: '¿Desea guardar este nuevo elemento? ',//Se pregunta al usuario antes de continuar
@@ -151,7 +151,7 @@ export class ProveedorFormComponent implements OnInit {
       swal.fire({
         icon: 'warning',
         title: 'Oops...',
-        text: 'Ingrese los datos requeridos para continuar',
+        text: 'Ingrese los datos requeridos correctamente para continuar',
       });
     }
   }
@@ -160,7 +160,7 @@ export class ProveedorFormComponent implements OnInit {
   public update(): void {
     //se activa el spinner
     this.banderaCarga = true;
-    if (this.proveedor.nombre && this.proveedor.rfc) {//Se valida antes que nada que los datos obligatorios esten rellenados
+    if (this.proveedor.nombre && this.proveedor.rfc && this.proveedor.telefono && this.proveedor.telefono.length==10) {//Se valida antes que nada que los datos obligatorios esten rellenados
       if (this.rfcflag == false) {//Se valida si el rfc es correcto
         //se desactiva el spinner
         this.banderaCarga = false;
@@ -201,7 +201,7 @@ export class ProveedorFormComponent implements OnInit {
       swal.fire({//Mensaje de advertencia al usuario de que los datos necesarios no se han ingresado
         icon: 'warning',
         title: 'Oops...',
-        text: 'Ingrese los datos requeridos para continuar',
+        text: 'Ingrese los datos requeridos correctamente para continuar',
       })
     }
   }

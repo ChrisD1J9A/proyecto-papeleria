@@ -102,13 +102,13 @@ export class CompraAdqViewComponent implements OnInit {
   descargarTicket() {
     var nombreArchivo = this.compra.ticket; //Se guarda el nombre del ticket de la compra
     //Se descarga el archivo accediendo a la ruta + el nombre del ticket
-    window.open("http://localhost:8080/api/compras/show/archivo/" + nombreArchivo);
+    window.open(this.enlaceTicket + nombreArchivo);
   }
 
   //Metodo para visualizar el ticket en un Dialog
   openDialog() {
     //Se establece la ruta para acceder al archivo en cuestion
-    var ubicacionArchivo = "http://localhost:8080/api/compras/show/archivo/" + this.compra.ticket;
+    var ubicacionArchivo = this.enlaceTicket + this.compra.ticket;
     this.dialog.open(TicketViewComponent, {//Se abre nuevo dialogo
       width: "1000px",
       data: {

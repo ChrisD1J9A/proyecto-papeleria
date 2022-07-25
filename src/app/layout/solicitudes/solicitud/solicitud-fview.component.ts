@@ -21,6 +21,7 @@ export class SolicitudFViewComponent implements OnInit {
   detalle_solicitud_PFDC = new Detalle_solicitud_pfdc();//Objeto de detalle solicitud con productos fuera del catalogo
   detalles_solicitud_PFDC: Detalle_solicitud_pfdc[];//Arreglo de de detalles de solicitud con productos fuera del catalogo
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];//Encabezados para las columnas de la tabla de detalles
+  displayedColumns2: string[] = ['descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];//Encabezados para las columnas de la tabla de detalles_solicitud_pfdc
   dataSource = new MatTableDataSource();//Tabla para detales de solicitud
   dataSource2 = new MatTableDataSource();//Tabla para detales de solicitud con productos fuera del catalogo
   banderaCarga: Boolean;//Bandera para activar un spinner

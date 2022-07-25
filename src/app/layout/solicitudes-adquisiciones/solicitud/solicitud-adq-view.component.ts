@@ -35,6 +35,7 @@ export class SolicitudAdqViewComponent implements OnInit {
   compra = new Compra();//Objeto compra
   detalle_compra = new Detalle_compra();//Objeto de Detalle_compra
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];//Encabezados para las columnas de los detalles de solicitud
+  displayedColumns2: string[] = ['descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada'];//Encabezados para las columnas de los detalles de Detalle_solicitud_pfdc
   dataSource = new MatTableDataSource();//Tabla de los detalles de solicitud
   flag: boolean;//bandera para activar o desacticr componentes
   observacion_aprobacion_rechazo = new FormControl('', [Validators.required]);//Form control para validar los comentrios del formulario

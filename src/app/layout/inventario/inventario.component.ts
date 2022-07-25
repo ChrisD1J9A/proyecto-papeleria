@@ -70,7 +70,7 @@ export class InventarioComponent implements OnInit {
         //En caso de error muestra el mensaje de alerta de la sección
         this.error = true;
         //Mensaje relacionado con el error
-        swal.fire('Error',`Error al cargar las sucursales`,'error');
+        swal.fire('Error',`Error al cargar el inventario`,'error');
       });
   }
 

@@ -20,8 +20,6 @@ export class ComprasAdquisicionesComponent implements OnInit {
   compras: Compra[];//Arreglo de compras
   comprasSuc: Compra[];//Arreglo de compras de una sucursal
   detalle_compra: Detalle_compra;//Objeto Detalle de compra
-  enProceso: Compra[];//Arreglo para las compras en proceso
-  completadas: Compra[];////Arreglo para las compras completadas
   displayedColumns: string[] = ['id_compra', 'fecha_compra', 'usuario', 'sucursal', 'action'];//Encabezados para los titulos de las columnas de la tabla
   dataSource1 = new MatTableDataSource();//Tabla para compras en proceso
   dataSource2 = new MatTableDataSource();//Tbabla para compras completadas
@@ -52,11 +50,23 @@ export class ComprasAdquisicionesComponent implements OnInit {
     this.comprasService.getCompras().subscribe(
       compras => {
         this.compras = compras;
-        this.completadas = this.filtrarCompletadas(compras);
-        this.enProceso = this.filtrarEnProceso(compras);
-        this.dataSource1 = new MatTableDataSource(this.enProceso);
-        this.dataSource2= new MatTableDataSource(this.completadas);
         this.dataSource3 = new MatTableDataSource(this.compras);
+      },(err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
+      });
+    //Se Obtienen las compras en proceso
+    this.comprasService.getComprasByEstatus("En proceso").subscribe(
+      comprasEnP =>  {
+        this.dataSource1 = new MatTableDataSource(comprasEnP);
+      },(err) => {
+        //En caso de error muestra el mensaje de alerta de la sección
+        this.error = true;
+      });
+    //Se obtienen las compras completadas
+    this.comprasService.getComprasByEstatus("Completada").subscribe(
+      comprasComp => {
+        this.dataSource2= new MatTableDataSource(comprasComp);
       },(err) => {
         //En caso de error muestra el mensaje de alerta de la sección
         this.error = true;
@@ -64,17 +74,6 @@ export class ComprasAdquisicionesComponent implements OnInit {
       this.BanderaMostrar = false;
   }
 
-  //Se filtra la lista general de compras para obtener solo las de estatus completada
-  filtrarCompletadas(compras: Compra[]): Compra[] {
-    const completadas = compras.filter(compra => compra.estatus === "Completada");
-    return completadas;
-  }
-
-  //Se filtra la lista general de compras para obtener solo las de estatus en Proceso
-  filtrarEnProceso(enProceso: Compra[]): Compra[] {
-    const EnProces = enProceso.filter(compra => compra.estatus === "En proceso");
-    return EnProces;
-  }
 
   applyFilter1(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

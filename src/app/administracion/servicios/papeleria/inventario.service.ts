@@ -31,15 +31,6 @@ export class InventarioService {
   }
 
   /**
-   **@return Se obtienen todos los Inventarios de la base de datos
-   **/
-  public getInventarios(): Observable<Inventario[]> {
-    return this.http.get(this.urlEndPoint).pipe(
-      map(response => response as Inventario[])
-    );
-  }
-
-  /**
    **@return Se obtiene un Inventario de la base de datos mediante su id
    **/
   public getInventario(id): Observable<any>
