@@ -64,7 +64,7 @@ export class CompraFViewComponent implements OnInit {
   precioFormateado: string; //variable que se usa para dar formato de pesos en el input gasto total
   banderaCarga: Boolean;//Bandera para activar un spinner
   error: boolean;//Bandera para mostrar un mensaje de error en el sistema
-  rutaArchivo = "http://localhost:8080/api/compras/show/archivo/";
+  rutaArchivo = "http://192.168.1.189:8081/papeleria/compras/show/archivo/";
 
   constructor(private comprasService: ComprasService,
     private detalleCompraService: DetalleCompraService,
