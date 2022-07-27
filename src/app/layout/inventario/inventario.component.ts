@@ -79,7 +79,11 @@ export class InventarioComponent implements OnInit {
   En dado caso de no existir una configuracion para la sucursal se colocarán valores por default*/
   obtenerMaximosMinimosDeLaSucursal(inventario: Inventario)
   {
-    var nombreSucursal:string = inventario.nombre_sucursal;
+    if(inventario.nombre_sucursal){
+      var nombreSucursal:string = inventario.nombre_sucursal;
+    }else{
+      var nombreSucursal:string = JSON.parse(localStorage.getItem('sucursalIngresa')!);
+    }
     this.maxMinStockService.getMaxMinDeStockBySucursal(nombreSucursal).subscribe(
       maxMinStockSucursal => {
         if(maxMinStockSucursal === null){
