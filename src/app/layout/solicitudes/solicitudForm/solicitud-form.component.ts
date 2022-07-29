@@ -14,6 +14,7 @@ import { ProductosService } from 'src/app/administracion/servicios/papeleria/pro
 import { Producto } from 'src/app/administracion/modelos/papeleria/producto';
 import { Mail } from 'src/app/administracion/modelos/papeleria/Mail';
 import { MailService } from 'src/app/administracion/servicios/papeleria/mail.service';
+import { UsuarioService } from 'src/app/administracion/modelos/usuario.service';
 import { MaxMinStockService } from 'src/app/administracion/servicios/papeleria/max-min-stock.service';
 import { MaxMinExistenciaService } from 'src/app/administracion/servicios/papeleria/max-min-existencia.service';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/administracion/modelos/format-datepicker';
@@ -49,6 +50,7 @@ export class SolicitudFormComponent implements OnInit {
   nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!); //Asignar la sucursal desde donde se logea
   idSucursal: any;
   nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);//Asignar el nombre del usuario que se logeo
+  correo_usuario: string; //variable para almacenar el correo del usuario que realiza la solicitud
   maxStock: number; //configuracion de maximo de stock
   minStock: number; //configuracion del minimo de stock
   maxExistencia: number;  //configuracion de maximo de existencia
@@ -69,7 +71,7 @@ export class SolicitudFormComponent implements OnInit {
     private maxMinStockService: MaxMinStockService,
     private maxMinExistenciaService: MaxMinExistenciaService,
     private _snackBar: MatSnackBar,
-    private dateAdapter: DateAdapter<Date>) {
+    private usuarioService: UsuarioService) {
     const currentYear = new Date().getFullYear();
   }
 
@@ -118,6 +120,14 @@ export class SolicitudFormComponent implements OnInit {
       });
     this.idSucursal = JSON.parse(localStorage.getItem('idSucursal')!);//Se obtiene la sucursaldesde donde se inicio sesion
     this.obtenerMaximosMinimosDeLaSucursal();//Se obtiene la configuracion de maximos y minimos de la sucursal logeada
+    //En el login se guardó el nombre de usuario que se ingresó, aca solo se recupera
+    var username = JSON.parse(localStorage.getItem('currentUser')!).username;
+    this.usuarioService.getUsername(username) //Buscarmos el usuario mediante el username
+    .toPromise()
+    .then((usuario) => {
+      this.correo_usuario = usuario.empleado.email;
+      console.log(this.correo_usuario);
+    });
   }
 
   //Metodo para realizar busquedas en la tabla de productos
@@ -136,6 +146,7 @@ export class SolicitudFormComponent implements OnInit {
         this.solicitud = this.solicitudForm.value; //Toma los datos establecidos en el sistema y los asigna al Objeto Solicitud
         this.solicitud.estatus = "Pendiente";//Como será una nueva solicitud, su estatus será el de pendiente
         this.solicitud.idSucursal = this.idSucursal; //Se le asigna el id de la sucursal
+        this.solicitud.correo_solicitante = this.correo_usuario;//Se asigna el correo del usuario 
         this.solicitud.nombre_sucursal = this.nombreSucursal; //se le asigna el nombre de la sucursal
         if (this.detalles2.getRawValue().length >= 1) { //Corrobora si hay uno o mas productos que no formen parte del catalogo de productos...
           this.solicitud.pfdc = true; //se le asigna un true en caso de haber un producto fuera del catalogo

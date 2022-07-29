@@ -20,6 +20,7 @@ import { MailService } from 'src/app/administracion/servicios/papeleria/mail.ser
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, Validators } from '@angular/forms';
 
+
 @Component({
   selector: 'app-solicitud-adq-view',
   templateUrl: './solicitud-adq-view.component.html',
@@ -335,13 +336,12 @@ export class SolicitudAdqViewComponent implements OnInit {
   {
     var fecha = new Date;
     var fechaForm = fecha.getDate() + "/" + (fecha.getMonth()+1)+ "/"+fecha.getFullYear();//Formato de fecha para enviar en el correo
-    this.mail.para = "16161339@itoaxaca.edu.mx"; //Destinatario, en este caso tendría que ser al correo de quién envía la solicitud
+    this.mail.para = solicitud.correo_solicitante ; //Destinatario, en este caso tendría que ser al correo de quién envía la solicitud
     this.mail.asunto = "Solicitud " + solicitud.estatus;
     this.mail.mensaje = "Su solicitud ha sido " + solicitud.estatus + " por adquisiciones el día: " +
                         fechaForm + ", Para ver a detalle la solicitud se sugiere revisar el sistema";
     this.mailService.enviar(this.mail).subscribe(
       correo => {
-        console.log(correo);
         console.log("correo enviado");
       });
   }

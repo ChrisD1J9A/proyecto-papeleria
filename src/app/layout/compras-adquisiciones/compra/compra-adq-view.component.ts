@@ -28,6 +28,7 @@ export class CompraAdqViewComponent implements OnInit {
   dataSource = new MatTableDataSource();//Tabla para los detalles de la compra
   dataSource2 = new MatTableDataSource();//Tabla para los detalles de la compra con productos fuera del catalogo
   displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];//Encabezados para las columnas de los detalles de compra
+  displayedColumns2: string[] = ['descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];//Encabezados para las columnas de los detalles de compra con productos fuera del catalogo
   banderaEditar: Boolean;//Bandera que determina si se muestran determinados datos en la vista
   nombreProveedor: String;//Variable para almacenar el nombre del proveedor
   solicitud = new Solicitud();//Objeto solicitud

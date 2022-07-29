@@ -4,6 +4,7 @@ export class Solicitud{
   idSucursal: number;
   nombre_sucursal: string;
   nombre_usuario: string;
+  correo_solicitante: string;
   fecha_solicitud: Date;
   fecha_rechazo: Date;
   fecha_aprobacion: Date;
