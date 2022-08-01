@@ -206,7 +206,7 @@
 
         <ng-container matColumnDef="fecha_revision">
           <th mat-header-cell *matHeaderCellDef> Fecha de cancelacion</th>
-          <td mat-cell *matCellDef="let solicitud"> {{solicitud.fecha_cancelacion}}</td>
+          <td mat-cell *matCellDef="let solicitud"> {{solicitud.fecha_cancelacion | date: 'dd/MM/yyyy'}}</td>
         </ng-container>
 
         <ng-container matColumnDef="estatus">
