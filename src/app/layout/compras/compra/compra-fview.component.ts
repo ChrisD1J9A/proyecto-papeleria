@@ -43,7 +43,8 @@ export class CompraFViewComponent implements OnInit {
   proveedor = new Proveedor();//Objeto proveedor
   proveedores: Proveedor[];//Arreglo para proveedores
   inventario: Inventario;//Objeto inventario
-  displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];//Encabezados para las columnas de los detalles de la compra
+  displayedColumns: string[] = ['tipo_unidad', 'descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];//Encabezados para las columnas de los detalles de la compr
+  displayedColumns2: string[] = ['descripcion_producto', 'cant_existente', 'cant_solicitada', 'cant_autorizada', 'cant_comprada'];//Encabezados para las columnas de los detalles de la compra con productos fuera del catalogo
   dataSource = new MatTableDataSource(); //Tabla para mostrar los detalles de la compra
   dataSource2 = new MatTableDataSource();//Tabla para mostrar los detalles de la compra con productos fuera del catalogo
   nombreProveedor: String;//Variable para almacenar el nombre del proveedor de la compra
@@ -64,7 +65,7 @@ export class CompraFViewComponent implements OnInit {
   precioFormateado: string; //variable que se usa para dar formato de pesos en el input gasto total
   banderaCarga: Boolean;//Bandera para activar un spinner
   error: boolean;//Bandera para mostrar un mensaje de error en el sistema
-  rutaArchivo = "http://192.168.1.189:8081/papeleria/compras/show/archivo/";
+  rutaArchivo = "http://192.168.1.189:8081/papeleria/api/compras/show/archivo/";
 
   constructor(private comprasService: ComprasService,
     private detalleCompraService: DetalleCompraService,

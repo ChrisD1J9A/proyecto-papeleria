@@ -32,7 +32,7 @@ export class CompraAdqViewComponent implements OnInit {
   banderaEditar: Boolean;//Bandera que determina si se muestran determinados datos en la vista
   nombreProveedor: String;//Variable para almacenar el nombre del proveedor
   solicitud = new Solicitud();//Objeto solicitud
-  enlaceTicket = "http://192.168.1.189:8081/papeleria/compras/show/archivo/";//Enlace al back del tick, solo hace falta indicar el nombre del ticket
+  enlaceTicket = "http://192.168.1.189:8081/papeleria/api/compras/show/archivo/";//Enlace al back del tick, solo hace falta indicar el nombre del ticket
   pfdcFlag: boolean;//Bandera que se activa si hay productosfuera del catalogo en la compra
   precioFormateado: string; //variable que se usa para dar formato de pesos en el input gasto total
   banderaCarga: Boolean;//Bandera para activar un spinner
