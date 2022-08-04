@@ -16,6 +16,7 @@ export class SolicitudesAdquisicionesComponent implements OnInit {
   dataSource2 = new MatTableDataSource();//Tabla de solicitudes rechazadas
   dataSource3 = new MatTableDataSource();//Tabla de solicitudes pendientes
   error: boolean;//Bandera para mostrar un mensaje de error en el sistema
+  solicitudesPendientes: number; //Para almacenar la cantidad de solicitudes Pendientes
 
   constructor(private solicitudService: SolicitudesService) { }
 
@@ -41,6 +42,7 @@ export class SolicitudesAdquisicionesComponent implements OnInit {
       this.solicitudService.getSolicitudesByEstatus("Pendiente").subscribe(
         solicitudesP => {
           this.dataSource3 = new MatTableDataSource(solicitudesP);
+          this.solicitudesPendientes = solicitudesP.length;
         },(err) => {
           //En caso de error muestra el mensaje de alerta de la sección
           this.error = true;
