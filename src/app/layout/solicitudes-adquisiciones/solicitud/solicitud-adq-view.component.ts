@@ -65,8 +65,8 @@ export class SolicitudAdqViewComponent implements OnInit {
               private mailService: MailService) { }
 
   ngOnInit(): void {
-    this.banderaCarga = false;
-    this.error = false;
+    this.banderaCarga = false;//Bandera del spinner se inicializa en false
+    this.error = false;//Bandera del mensaje de error se inicializa en false
     this.cargarSolicitud();//Metodo mediante el cual se carga la solicitud
   }
 

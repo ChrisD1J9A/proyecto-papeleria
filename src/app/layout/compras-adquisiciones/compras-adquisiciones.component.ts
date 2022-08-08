@@ -37,7 +37,7 @@ export class ComprasAdquisicionesComponent implements OnInit {
 
   ngOnInit(): void
   {
-    this.error = false;
+    this.error = false;//Bandera que activa un mensaje de erorr se inicializa en false en este método
     //Se obtienen las sucursales para poder realizar filtros de coompras de acuerdo a una sucursal
     this.sucursalService.getSucursales().subscribe(val => {
       this.sucursales = val;

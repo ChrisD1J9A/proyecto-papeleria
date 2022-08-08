@@ -48,7 +48,7 @@ export class SolicitudFormComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'center'; //variable para asignar a mensaje
   verticalPosition: MatSnackBarVerticalPosition = 'top';//variable para asignar a mensaje
   nombreSucursal = JSON.parse(localStorage.getItem('sucursalIngresa')!); //Asignar la sucursal desde donde se logea
-  idSucursal: any;
+  idSucursal: any; //Variable para almacenar el id de la sucural donde se logea
   nombre_usuario = JSON.parse(localStorage.getItem('nombreCUsuario')!);//Asignar el nombre del usuario que se logeo
   correo_usuario: string; //variable para almacenar el correo del usuario que realiza la solicitud
   maxStock: number; //configuracion de maximo de stock
@@ -146,7 +146,7 @@ export class SolicitudFormComponent implements OnInit {
         this.solicitud = this.solicitudForm.value; //Toma los datos establecidos en el sistema y los asigna al Objeto Solicitud
         this.solicitud.estatus = "Pendiente";//Como será una nueva solicitud, su estatus será el de pendiente
         this.solicitud.idSucursal = this.idSucursal; //Se le asigna el id de la sucursal
-        this.solicitud.correo_solicitante = this.correo_usuario;//Se asigna el correo del usuario 
+        this.solicitud.correo_solicitante = this.correo_usuario;//Se asigna el correo del usuario
         this.solicitud.nombre_sucursal = this.nombreSucursal; //se le asigna el nombre de la sucursal
         if (this.detalles2.getRawValue().length >= 1) { //Corrobora si hay uno o mas productos que no formen parte del catalogo de productos...
           this.solicitud.pfdc = true; //se le asigna un true en caso de haber un producto fuera del catalogo

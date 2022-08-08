@@ -46,8 +46,8 @@ export class CompraAdqViewComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.banderaCarga = false;
-    this.error = false;
+    this.banderaCarga = false;//Bandera que activa el spinner se inicializa en false
+    this.error = false;//Bandera que activa un mensaje de error se inicializa en false
     this.cargarCompra();//Metodo para cargar la compra desde la base de datos
   }
 
